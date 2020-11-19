@@ -1,0 +1,34 @@
+body{
+  background-color: #F5F5F5;
+}
+
+#brentlab-logo {
+  border-style: double;
+}
+
+#weights input {
+    width: 50px;
+}
+
+#home-reference {
+   padding-top: 25px;
+   font-size: 50px;
+}
+
+#home-reference > a{
+  color: black;
+}
+#home-reference > a:hover{
+  color: blue;
+}
+
+#organism-heading{
+  padding-top:50px;
+}
+
+.organism-selector{
+  width: auto;
+  height: auto;
+  max-width: 250px;
+  max-height: 200px;
+}

@@ -52,8 +52,13 @@ def main():
         target_names = ff_score.loc[tf].iloc[tf_nonzero_idx].index.values
         target_scores = ff_score.loc[tf].iloc[tf_nonzero_idx].values
 
-        ff_tf_to_target.append({"id": tf, "type": "tf", "linked": target_names.tolist(), "scores": target_scores.tolist()})
-    
+        ff_tf_to_target.append({
+            "id": tf, "type": "tf", 
+            "linked": target_names.tolist(), 
+            "scores": target_scores.tolist()})
+      
+    print("tf to target complete")
+
     for i in range(len(ff_gene_id.values[:, 0])):
         gene = ff_gene_id.values[:, 0][i]
         gene_nonzero_idx = ff_score.T.loc[gene].to_numpy().nonzero()
@@ -61,13 +66,19 @@ def main():
         reg_scores = ff_score.T.loc[gene].iloc[gene_nonzero_idx].values
 
         ff_target_to_tf.append({"id": gene, "type": "gene", "linked": reg_names.tolist(), "scores": reg_scores.tolist()})
-   
+        
+    
+    print("target to tf complete")
+  
     for obj in ff_tf_to_target:
         links = [{"source": obj["id"], "target": i} for i in obj['linked']]
-        ff_links += links
-
+        ff_links = ff_links + links
+        counter += 1
+        print(counter)
+        
     ff_node_link = {"nodes": ff_target_to_tf + ff_tf_to_target, "links": ff_links}
-    
+
+    print("node_link complete")
     ff_tf_target_output_path = "../data/fruitfly/ff_network.json"
     y_tf_target_output_path = "../data/yeast/y_network.json"
 

@@ -12,10 +12,14 @@
         //Creating instances for each visualization
         var network = new Network();
 
-        //load the data corresponding to all the election years
-        var files = ["data/fruitfly/ff_gene_info.json", "data/yeast/yeast_gene_info.json"];
+        //load the data
+        var files = 
+        [
+            "data/fruitfly/ff_gene_info.json", 
+            "data/yeast/yeast_gene_info.json"
+    
+        ];
         var promises = [];
-
         files.forEach(function(url) {
           promises.push(d3.json(url));
         });

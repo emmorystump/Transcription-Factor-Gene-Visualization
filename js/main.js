@@ -1,6 +1,7 @@
 /*
  * Root file that handles instances of all the charts and loads the visualization
  */
+
 (function(){
     var instance = null;
 
@@ -8,26 +9,47 @@
      * Creates instances for every chart (classes created to handle each chart;
      * the classes are defined in the respective javascript files.
      */
-    function init() {
+    function init(organism_selection) {
+        var self = this;
+
+        // set organism depending on what user clicked on home page
+        this.organism_selection = organism_selection;
+        switch (this.organism_selection){
+          case "fly":
+            this.organism = "Drosophila melanogaster"
+          case "yeast":
+            this.organism = "Saccharomyces cerevisiae"
+          case "human":
+            this.organism = "Human"
+        }
+
+        // load main visualization html
+        window.location.href = "index.html";
+        // add organism heading to index.html
+        var heading = "<h1 id=\"organism-heading\" class=\"h2\">" + this.organism + " Network</h1>"
+        console.log(heading);
+        $('#organism-heading').append(heading); //HAVING TROUBLE HERE
         //Creating instances for each visualization
+
+        // var edgeWeightDistribution = new edgeWeightDistribution();
         var network = new Network();
 
-        //load the data
-        var files = 
+        //load the data TODO: BASED ON ORGANISM SELECTION
+        var files =
         [
-            "data/fruitfly/ff_gene_info.json", 
+            "data/fruitfly/ff_gene_info.json",
             "data/yeast/yeast_gene_info.json"
-    
+
         ];
         var promises = [];
-        files.forEach(function(url) {
-          promises.push(d3.json(url));
-        });
-        Promise.all(promises).then(function(values) {
-            var data = values[0];
-            console.log(data)
-            network.update(data);   
-        });
+        // files.forEach(function(url) {
+        //   promises.push(d3.json(url));
+        // });
+        // Promise.all(promises).then(function(values) {
+        //     var data = values[0];
+        //     console.log(data)
+        //     network.update(data);
+        // });
     } // end init()
 
     /**
@@ -49,12 +71,21 @@
         if(self.instance == null){
             self.instance = new Main();
 
+        $(document).ready(function(){
+          $(".organism-selector").click(function(d){
+            this.organism = d.currentTarget.id.split("-")[0]
+            init(this.organism);
+
+            // this.organism = d.currentTarget;
+              // window.location.href = "index.html";
+
+              }) // end click function
+            }) // end jquery
+
             //called only once when the class is initialized
-            init();
         }
         return instance;
     }
 
     Main.getInstance();
 })();
-

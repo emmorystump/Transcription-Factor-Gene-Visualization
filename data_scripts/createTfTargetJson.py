@@ -35,35 +35,57 @@ def main():
     y_score.columns = y_gene_id.values[:, 0]
     y_score.index = y_tf_id.values[:, 0]
 
-    # initialize output dicts
+    # initialize output lists
     ff_tf_to_target = []
+    ff_target_to_tf = []
     y_tf_to_target = []
 
-    output_path = "../data/ff_tf_target_dict.json"
+    ff_links = []
+    y_links = []
 
-    
-    ff_score_nonzero = ff_score[ff_score!=0.].stack()
+  
+    # ff_score_nonzero = ff_score[ff_score!=0.].stack()
     counter = 0
     for i in range(len(ff_tf_id.values[:, 0])):
         tf = ff_tf_id.values[:, 0][i]
-        tf_nonzero_idx = ff_score.loc[tf].nonzero()
+        tf_nonzero_idx = ff_score.loc[tf].to_numpy().nonzero()
         target_names = ff_score.loc[tf].iloc[tf_nonzero_idx].index.values
         target_scores = ff_score.loc[tf].iloc[tf_nonzero_idx].values
 
-        ff_tf_to_target.append({"id": tf, "type": "tf", "linked": target_names, "scores": target_scores})
+        ff_tf_to_target.append({
+            "id": tf, "type": "tf", 
+            "linked": target_names.tolist(), 
+            "scores": target_scores.tolist()})
+      
+    print("tf to target complete")
 
-        for j in range(len(target_names)):
-            gene = ff_gene_id.values[:, 0][j]
-            gene_nonzero_idx = ff_score.T.loc[gene].nonzero()
-            reg_names = ff_score.T.loc[gene].iloc[gene_nonzero_idx].index.values
-            reg_scores = ff_score.T.loc[gene].iloc[gene_nonzero_idx].values
-            
-            ff_tf_to_target.append({"id": target_names[i], "type": "gene", "linked": reg_names, "scores": reg_score})
+    for i in range(len(ff_gene_id.values[:, 0])):
+        gene = ff_gene_id.values[:, 0][i]
+        gene_nonzero_idx = ff_score.T.loc[gene].to_numpy().nonzero()
+        reg_names = ff_score.T.loc[gene].iloc[gene_nonzero_idx].index.values
+        reg_scores = ff_score.T.loc[gene].iloc[gene_nonzero_idx].values
+
+        ff_target_to_tf.append({"id": gene, "type": "gene", "linked": reg_names.tolist(), "scores": reg_scores.tolist()})
         
-    # with open(output_path, 'w') as fp:
-    #     json.dump(ff_tf_to_target, fp)
+    
+    print("target to tf complete")
+  
+    for obj in ff_tf_to_target:
+        links = [{"source": obj["id"], "target": i} for i in obj['linked']]
+        ff_links = ff_links + links
+        counter += 1
+        print(counter)
+        
+    ff_node_link = {"nodes": ff_target_to_tf + ff_tf_to_target, "links": ff_links}
+
+    print("node_link complete")
+    ff_tf_target_output_path = "../data/fruitfly/ff_network.json"
+    y_tf_target_output_path = "../data/yeast/y_network.json"
+
+    
+    with open(ff_tf_target_output_path, 'w') as fp:
+        json.dump(ff_node_link, fp)
 
 
 if __name__ == '__main__':
-    # main(sys.argv)
     main()

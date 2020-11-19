@@ -44,26 +44,26 @@ VisTemplate.prototype.update = function(){
     
 };
 
-window.onload=function(){
+// window.onload=function(){
     
-    document.getElementById("fly-button").addEventListener("click", function() {
-        console.log("Fly was selected");
-        $('#fly-button').css('border', 'solid 5px #007bff');
-        $('#yeast-button').css('border', 'solid 3px black');
-        $('#human-button').css('border', 'solid 3px black');
-    });
+//     document.getElementById("fly-button").addEventListener("click", function() {
+//         console.log("Fly was selected");
+//         $('#fly-button').css('border', 'solid 5px #007bff');
+//         $('#yeast-button').css('border', 'solid 3px black');
+//         $('#human-button').css('border', 'solid 3px black');
+//     });
 
-    document.getElementById("yeast-button").addEventListener("click", function() {
-        console.log("Yeast was selected");
-        $('#fly-button').css('border', 'solid 3px black');
-        $('#yeast-button').css('border', 'solid 5px #007bff');
-        $('#human-button').css('border', 'solid 3px black');
-    });
+//     document.getElementById("yeast-button").addEventListener("click", function() {
+//         console.log("Yeast was selected");
+//         $('#fly-button').css('border', 'solid 3px black');
+//         $('#yeast-button').css('border', 'solid 5px #007bff');
+//         $('#human-button').css('border', 'solid 3px black');
+//     });
 
-    document.getElementById("human-button").addEventListener("click", function() {
-        console.log("Human was selected");
-        $('#fly-button').css('border', 'solid 3px black');
-        $('#yeast-button').css('border', 'solid 3px black');
-        $('#human-button').css('border', 'solid 5px #007bff');
-    });
-}
+//     document.getElementById("human-button").addEventListener("click", function() {
+//         console.log("Human was selected");
+//         $('#fly-button').css('border', 'solid 3px black');
+//         $('#yeast-button').css('border', 'solid 3px black');
+//         $('#human-button').css('border', 'solid 5px #007bff');
+//     });
+// }

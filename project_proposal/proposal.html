@@ -1,0 +1,302 @@
+<!-- Comment to see if I can push -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="proposal_css/proposal.css">
+
+  <title>CSE 457A Final Project - Group 12</title>
+
+</head>
+<body>
+    <h1 id="pbTitle">Process Book</h1>
+  <div id="basicInfo" class="greyDiv">
+    <h1>Basic Info</h1>
+
+    <div class="row basicInfo">
+      Group Name: Group 12 - The Transcription Factors
+    </div>
+    <div class="row basicInfo">
+      <div class="col-sm-4">
+        <div class="row">
+          Emmory Stump
+        </div>
+        <div class="row">
+          457852
+        </div>
+        <div class="row">
+          emmorystump@wustl.edu
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="row">
+          Chase Mateusiak
+        </div>
+        <div class="row">
+          485709
+        </div>
+        <div class="row">
+          chasem@wustl.edu
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="row">
+          Lisa Liao
+        </div>
+        <div class="row">
+          455005
+        </div>
+        <div class="row">
+          lisa.liao@wustl.edu
+        </div>
+      </div>
+    </div>
+    <div class="row basicInfo">
+      <label>Github Repository:  &nbsp; </label><a href="https://github.com/cmatKhan/vis_final">https://github.com/cmatKhan/vis_final</a>
+    </div>
+  </div>
+
+<div id="background">
+  <h1>Background & Motivation</h1>
+  <p>Michael Brent, a PI in the genetics/CS department, and his lab have developed an algorithm, NetProphet, that uses various types of genomic data to infer
+    direct regulatory potential of transcription factors on genes in a given organism. Currently, networks exist for yeast, the fruit fly, and humans,
+    and other organisms are planned. However, there does not exist  an interface to access these networks. This limits the impact of the networks, as many
+    biologists are not comfortable using python/R/etc to extract data from a large data file. The goal of our project is to provide an interface for biologists
+    to easily explore the networks inferred by NetProphet.</p>
+</div>
+<div id = "projectObjectives" class="greyDiv">
+    <h1>Project Objectives</h1>
+    <h5>Through our project, we would like to answer the following questions:</h5>
+
+    <ul>
+      <li>How do I use the NetProphet output to find the genes which are regulated by my favorite transcription factor?</li>
+      <li>I have a list of genes, and I'd like to know what transcription factor(s) regulate this list. How do I extract that information fron the NetProphet output?</li>
+      <li>What functions (gene ontology annotation) do the target genes of my favorite transcription factor affect?</li>
+      <li>How many novel transcription factors does NetProphet predict for my favorite transcription factor compared to 'gold standard' transcription networks and data sources?</li>
+    </ul>
+
+    <h5>Through our project, we would like to learn and accomplish the following objectives:</h5>
+    <ul>
+      <li>
+        Provide an interface where biologists can easily search for targets of a transcription factor in the netprophet.
+      </li>
+      <li>
+        Alternatively, a user will be able to upload a list of genes and return any significant regulators.
+      </li>
+      <li>
+        Users will be able to narrow the returned results in accordance with a selected weight threshold.
+      </li>
+    </ul>
+
+    <h5>Through our project, we will achieve the following benefits:</h5>
+    <ul>
+        <li>
+            Allow users to more easily visualize which genes are significantly controlled by an input transcription factor
+        </li>
+        <li>
+            Allow users to more easily visualize which transcription factors are most influential on a list of genes
+        </li>
+        <li>
+            Allow users to visualize data based on significant weight thresholds relevant to the user’s objective task
+        </li>
+
+    </ul>
+</div>
+
+<div id="data">
+    <h1>Data</h1>
+    <h5>From where are we collecting data?</h5>
+    <ul>
+      <li><a href="https://mblab.wustl.edu/software.html">BrentLabWebsite</a>. Click <b>RELEASES</b> to find links to download the Yeast Data and Fly Data </li>
+      <li>Gene Ontology (functional gene annotations) and gene names are associated to the gene symbols used in the NetProhpet matricies using <a href="https://biit.cs.ut.ee/gprofiler/page/r">gprofiler</a>
+      </li>
+    </ul>
+    <h5>Description of Data:</h5>
+    <p class="indent">The NetProphet network data are quite large adjacency matricies. The data used to test the NetProphet network (the 'gold standard' TF networks for a given organism) are similarly shaped.</p>
+    <label>Link to our data: &nbsp;</label>
+    <ul>
+      <li><a href="https://github.com/cmatKhan/vis_final/tree/master/data">ProcessedData</a>  </li>
+    </ul>
+</div>
+<div id = "dataProcessing" class="greyDiv">
+    <h1>Data Processing</h1>
+    <h5>Do we expect to do substantial data cleanup?</h5>
+    <p class="indent">Cleanup is minimal and mostly involves re-shaping from a columnar format to json. The data is reasonably clean in terms of its organization. </p>
+    <h5>What quantities do we plan to derive from our data?</h5>
+    <ul>
+      <li>Counts of genes which are regulated by a given transcription factor above a user selected threshold on the control strength edge weights</li>
+      <li>Counts of transcription factors which regulate subsets of a user supplied list of genes</li>
+      <li>Edge weights between transcription factors and the genes they regulate</li>
+      <li>Some form of functional clustering, which will involve at the very least a count of functional annotation terms</li>
+    </ul>
+    <h5>How will data processing be implemented?</h5>
+    <p class="indent">All static data will be pre-parsed and processed with python and R. Some data manipulation will need to be done in javascript for interactive features</p>
+</div>
+
+<div id="visualizationDesign">
+    <h1>Visualization Design</h1>
+
+    <h4>Design 1: Lisa</h4>
+    <h5>Description:</h5>
+    <p>This design provides an initial overview of the entire network, and allows the viewers to toggle
+      between datasets of different organisms on the side panel. Additionally, there will be a input field on the 
+      side panel to allow user input of a trascription factor of interest or a list of genes of interest. 
+      After user input is complete, we will enter a focused view of the network, to the region where the user 
+      selected. User can also toggle to a view of the distribution of the edge scores using the navigation bar 
+      on the top of the page, then select a desired rank threshold to further filter down their selected data.</p>
+    <h5>Justification:</h5>
+    <p>The functionality of the page described above matches the desired features of an interface that is clean and intuitive
+      to use for someone without a technical background, but interested in certain aspects of the network generated by NetProphet.
+    </p>
+    <div>
+      <img class="diagram" src="img/lisa_vis_diagram.png">
+    </div>
+
+    <h4>Design 2: Emmory</h4>
+    <h5>Description:</h5>
+    <p>This design gives an outline of the basic functionality of our visualization. This includes allowing users to select an organism, allowing users to select whether to input a gene list or transcription factor, and allowing users to select a threshold of weights. Based on these input criteria, our visualization will output a network showing the relationships between genes and transcription factors, and the user can click on different nodes for more information.</p>
+    <h5>Justification:</h5>
+    <p>The justification for this design is that it addresses all the must have features that we have listed below, and it also allows for the implementation of some of our proposed optional features. </p>
+    <div>
+        <img class="diagram" src="img/emmory_vis_diagram.JPG">
+    </div>
+
+    <h4>Design 3: Chase</h4>
+    <h5>Description: Outline of basic functionality</h5>
+    <h5>Justification:</h5>
+      <p>Addresses the main uses that a biologist would have of a TF network. The researcher needs to be able to easily select
+        the organism of interest (fruit fly, mouse, yeast, human -- not all organisms may be finished for class). The researcher needs to select
+        a filter level on the edge weights, which are p-values measuring the significance of the effect of a regulator on a target. There are different
+        uses for which a researcher may want a tighter (less targets) or looser (more targets) bound. A biologist may be interested in the targets of a given transcription factor
+        or exploring the transcription factors which regulate a list of genes -- input options for both will be provided. In both cases, hovering over the nodes will provide information
+        and external links to outside resources on each gene. The user will be able to explore different methods of clustering TF targets based on annotation (GO). Importantly, an option
+        to export the data as a csv will be provided.</p>
+    <div>
+      <img class="diagram" src="img/chase_vis_diagram.jpg" alt="image not displayed: see repository project_proposal/img">
+    </div>
+    <h4>Final Design:</h4>
+    <h5>Description:</h5>
+    <p>
+        This final design is a design which incorporates the best features of our initial three designs. This design allows the user to initially select which organism which they wish to work with, and then prompts them to use a brushing feature to select the initial edge weight values, which thresholds the number of target genes per regulator. The user then reaches the landing page, which features a navigation bar and toggleable interface where the user can adjust their initial inputs. Based on whether the user inputs a transcription factor or a gene network, a network will appear showing transcription factors (nodes) and gene targets of those transcription factors (also nodes) in a layout that allows the user to see the relationship of TF to targets. 
+    </p>
+    <p>
+        The genes will be labelled with their common name. On click, information for the clicked gene will appear in the sidebar. This will include a link to external resources.
+    </p>
+    <p>
+        For both input options -- either TF or gene list -- the user will have options, based on functional annotation, of how to visually organize the gene.
+    </p>
+    <p>
+        A critical feature is the “output to csv” button. This will achieve the overarching goal of allowing a non command line savvy biologist to access the NetProphet network, explore, parse, and finally output a list which will be useful to their research.
+    </p>
+    <h5>Justification:</h5>
+    <p>We have chosen this design to be our final design because it is a concise and easily visualizable way to present the data that we are working with. The structure of our visualization will allow users to easily view the relationship between genes and transcription factors. The toggleable sidebar will also allow users to easily modify their input parameters. The users will be able to gain further information about genes of interest by hovering or clicking upon those genes, at which point detailed information will appear in the side panel. This will keep our visualization from being too cluttered, while still allowing users to further explore information of interest.
+    </p>
+    <div>
+        <img class="diagram" src="img/final_draft_diagram.jpg" alt="image not displayed: see repository project_proposal/img">
+      </div>
+</div>
+
+<div id="features" class="greyDiv">
+    <h1>Features</h1>
+    <h3 class="indent"> <u>Required</u></h3>
+    <ul>
+      <li>Options to select the various organisms for which we have network maps</li>
+      <li>An interactive method of selecting a threshold on edge weights (edges between transcription factors and their target genes). Users with different purposes may be interested in more/less genes per TF</li>
+      <li>Easy user input for either a Transcription factor to retrieve a list of a targets, or a list of genes and retrieve a list of signfiicant transcription factors that regulate subset(s) of the user supplied gene list</li>
+      <li>Interactivity with the transcription factor targets (genes). This should include some methods of clustering the genes (eg by functional annotation) and provide links to external inforamtion</li>
+      <li>Easy graphical representation of which genes are confirmed by other sources as targets of a given transcription factor, and which genes are otherwise newly identified by NetProphet</li>
+      <li>Ability of export and download filtered targets or regulators into csv</li>
+    </ul>
+    <h3 class="indent"> <u>Optional</u></h3>
+    <ul>
+      <li>The <a href="http://geneontology.org/">GeneOntology</a> annotations are a deep dark rabbit hole of connections between genes. There is a wealth of information here that we can weave into our project, much of which will be time dependent. Dealing with the GO enrichment analysis, and the output itself, is quite tedious and time consuming. </li>
+      <li>Show via color whether TF is activating the gene or repressing it</li>
+      <li><a href="http://aegis.stanford.edu/tutorial/">ThisSite</a> is a similar concept, though their focus is on simply visually exploring GO terms as opposed to performing enrichment analysis on a set of genes.</li>
+    </ul>
+</div>
+<div id="projectSchedule">
+
+</div>
+    <h1>Project Schedule</h1>
+    <table id="projectSchedule">
+      <tr>
+        <th>Date</th>
+        <th>Task</th>
+      </tr>
+      <tr class="greyDiv">
+        <td>Week 1: 11/8-11/14</td>
+        <td>
+          <ol>
+            <li>Create Project Proposal Document</li>
+            <li>Begin Data Wrangling/Manipulation</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>Week 2: 11/15-11/21</td>
+        <td>
+          <ol>
+            <li>Project Proposal Document Due 11/16</li>
+            <li>Finish Data Manipulation</li>
+            <li>Create Initial Visualization Selection Structure</li>
+            <li>Create Initial Prototype of Visualization for Selecting Transcription Factors</li>
+            <li>Update Process Book and Project Website for Milestone 1 Submission</li>
+          </ol>
+        </td>
+      </tr>
+      <tr class="greyDiv">
+        <td>Week 3: 11/22-11/28</td>
+        <td>
+          <ol>
+            <li>Milestone 1 Due 11/23</li>
+            <li>Continue working on Transcription Factor Selection Visualization</li>
+            <li>Begin working on Gene List Selection Visualization</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>Week 4: 11/29-12/5</td>
+        <td>
+          <ol>
+            <li>Finish Gene List Selection Visualization</li>
+            <li>Update Process Book and Project Website for Milestone 2 Submission</li>
+          </ol>
+        </td>
+      </tr>
+      <tr class="greyDiv">
+        <td>Week 5: 12/6-12/12</td>
+        <td>
+          <ol>
+            <li>Milestone 2 Due 12/7</li>
+            <li>In-class User Studies 12/8 & 12/10</li>
+            <li>Finishing Touches for Visualization</li>
+            <li>Work on Presentation</li>
+            <li>Work on Project Website, Process Book and Project Video</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>Week 6: 12/13-12/19</td>
+        <td>
+          <ol>
+            <li>Final Project Presentations 12/15 & 12/17</li>
+            <li>Finish Presentation</li>
+            <li>Finish Project Website, Process Book and Project Video</li>
+          </ol>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  </body>
+  </html>

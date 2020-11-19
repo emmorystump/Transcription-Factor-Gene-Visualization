@@ -1,0 +1,23 @@
+﻿
+– First visualization is of distribution of edge weights, allow user to select  
+  threshold (maybe by brushing over distribution with percentage captured above)
+
+- As user selects a threshold, display the average number of targets per TF and SD
+
+- The user would then either select a TF or input a cluster of genes
+
+
+If a TF is selected:
+- Once a threshold is selected and a TF selected, display targets (somehow – there may be a lot) possibly by color corresponding to how likely it is that the gene is an exclusive target of a given TF (this may not be biologically sound – need to ask).
+
+- Allow user to export gene x weight csv at this point
+
+- some basic info on the TF/gene cluster – GO terms may be the easiest, separate the genes by visually clustering them into groups based on GO.
+	- maybe links to articles (just link to a ncbi search with the TF and target 
+      as terms – doesn’t need to be fancy for the project, at least).
+
+- There may be some ideas in the paper – I haven’t read it for a good long while.
+
+If a cluster is given:
+- This is a bit trickier – the likelihood that a cluster would overlap much with the high ranking targets of just one TF is probably quite low, and the more genes you put in, the more overlaps you’ll have. Maybe just return the top n (like 2) overlaps visually. Maybe visualize the entire input cluster as a circle of little circles, with a table below that gives some info like TF, # in TF target group, # of input list that overlaps, dominant GO terms, and as the user mouses over the table, sets of the genes in the input list (the circle of little points) lights up with some color.
+

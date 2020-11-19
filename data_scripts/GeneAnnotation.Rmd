@@ -1,0 +1,89 @@
+---
+title: "R Notebook"
+---
+For instructions and web interface for gprofiler:
+http://biit.cs.ut.ee/gprofiler/gost
+Other options:
+http://cbl-gorilla.cs.technion.ac.il/#contact
+http://www.pantherdb.org/
+```{r setup}
+#install.packages("gprofiler2") # note: there is also a conda package, if using a conda environment
+library(tidyverse)
+library(gprofiler2)
+```
+
+load TF ids and gene ids. For the NetProphet data, see this website. The genes and regulators are in the subdirectory RESOURCES (click RELEASES until NetProphet2:
+https://mblab.wustl.edu/software.html
+
+```{r}
+# frult fly gene targets and regulators
+ff_gene_targets = read.csv('/home/chase/class/intro_to_vis/vis_final/data/FRUIT_FLY/RESOURCES/genes', col.names = "gene_targets")
+ff_regulators = read.csv('/home/chase/class/intro_to_vis/vis_final/data/FRUIT_FLY/RESOURCES/regulators', col.names = "regulators")
+
+# yeast gene targets and regulators
+y_gene_targets = read.csv('/home/chase/class/intro_to_vis/vis_final/data/YEAST/RESOURCES/genes', col.names = "gene_targets")
+y_regulators = read.csv('/home/chase/class/intro_to_vis/vis_final/data/YEAST/RESOURCES/regulators', col.names = "regulators")
+```
+
+list or organism names here:
+http://biit.cs.ut.ee/gprofiler/page/organism-list
+list of target name space here:
+http://biit.cs.ut.ee/gprofiler/page/namespaces-list
+```{r}
+# map gene ids to gene names
+ff_gene_id_list = as.character(ff_gene_targets$gene_targets)
+ff_geneID_to_geneName_df = gconvert(query = ff_gene_id_list, organism="dmelanogaster", target="UNIPROTSPTREMBL", mthreshold=Inf, filter_na = FALSE)
+
+ff_regulator_id_list = as.character(ff_regulators$regulators)
+ff_regulatorID_to_regulatorName_df = gconvert(query = ff_regulator_id_list, organism="dmelanogaster", target="UNIPROTSPTREMBL", mthreshold=Inf, filter_na = FALSE)
+
+y_gene_id_list = as.character(y_gene_targets$gene_targets)
+y_geneID_to_geneName_df = gconvert(query = y_gene_id_list, organism="scerevisiae", target="ENSG", mthreshold=Inf, filter_na = FALSE)
+
+y_regulator_id_list = as.character(y_regulators$regulators)
+y_regulatorID_to_regulatorName_df = gconvert(query = y_regulator_id_list, organism="scerevisiae", target="ENSG", mthreshold=Inf, filter_na = FALSE)
+
+```
+
+associate go terms
+```{r}
+
+ff_gene_go = gconvert(query = ff_gene_id_list, organism = "dmelanogaster",
+target="GO", mthreshold = Inf, filter_na = TRUE)
+
+y_gene_go = gconvert(query = y_gene_id_list, organism = "scerevisiae",
+target="GO", mthreshold = Inf, filter_na = TRUE)
+
+```
+
+filter
+```{r}
+
+length(ff_gene_id_list)
+dim(ff_geneID_to_geneName_df)
+dim(ff_gene_go)
+length(unique(ff_geneID_to_geneName_df$input))
+
+# take first match to geneID only
+ff_geneID_to_geneName_unique_df = distinct(ff_geneID_to_geneName_df, input, .keep_all = TRUE)
+ff_regulatorID_to_regulatorName_unique_df = distinct(ff_regulatorID_to_regulatorName_df, input, .keep_all = TRUE)
+
+y_geneID_to_geneName_unique_df = distinct(y_geneID_to_geneName_df, input, .keep_all = TRUE)
+y_regulatorID_to_regulatorName_unique_df = distinct(y_regulatorID_to_regulatorName_df, input, .keep_all = TRUE)
+  
+```
+
+
+write out
+```{r}
+
+write.csv(ff_geneID_to_geneName_unique_df, '~/class/intro_to_vis/vis_final/data/fruitfly/ff_geneID_to_geneName.csv', row.names=FALSE)
+write.csv(ff_regulatorID_to_regulatorName_unique_df, '~/class/intro_to_vis/vis_final/data/fruitfly/ff_regulatorID_to_regulatorName.csv', row.names=FALSE)
+
+write.csv(y_geneID_to_geneName_unique_df, '~/class/intro_to_vis/vis_final/data/yeast/y_geneID_to_geneName.csv', row.names=FALSE)
+write.csv(y_regulatorID_to_regulatorName_unique_df, '~/class/intro_to_vis/vis_final/data/yeast/y_regulatorID_to_regulatorName.csv', row.names=FALSE)
+
+write.csv(ff_gene_go, '~/class/intro_to_vis/vis_final/data/fruitfly/ff_geneID_to_go.csv', row.names=FALSE)
+write.csv(y_gene_go, '~/class/intro_to_vis/vis_final/data/yeast/y_geneID_to_go.csv', row.names=FALSE)
+```
+

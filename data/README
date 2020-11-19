@@ -1,0 +1,10 @@
+
+raw network data is too large for github. There is a .gitignore that will ignore the directories YEAST and FRUIT_FLY (with the three subdirectories in each)
+that are in the network directories available on the brentlab website.
+
+Download here:
+https://mblab.wustl.edu/software.html
+
+click on RELEASES under Netprophet2.0. NOTE: .gitignore will ignore the following paths ./data/FRUIT_FLY and ./data/YEAST
+
+NOTE: data/fruitfly and data/yeast are not in .gitignore and do contain use-able data

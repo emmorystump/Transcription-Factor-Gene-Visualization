@@ -26,11 +26,15 @@
         }
 
         // load main visualization html
-        window.location.replace("index.html");
+        window.location.href = "index.html";
         // add organism heading to index.html
         var heading = "<h1 id=\"organism-heading\" class=\"h2\">" + this.organism + " Network</h1>"
         console.log(heading);
-        $('#organism-heading').append(heading); //HAVING TROUBLE HERE
+
+        $(document).ready(function(){
+          var x = $("body").append("TEST"); //HAVING TROUBLE HERE
+                    console.log(x)
+        }) // end jquery
         //Creating instances for each visualization
 
         // var edgeWeightDistribution = new edgeWeightDistribution();
@@ -76,7 +80,6 @@
         $(document).ready(function(){
           $(".organism-selector").click(function(d){
             this.organism = d.currentTarget.id.split("-")[0];
-            console.log("here: ")
             init(this.organism);
 
             // this.organism = d.currentTarget;

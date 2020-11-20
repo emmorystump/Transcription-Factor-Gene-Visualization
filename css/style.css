@@ -159,7 +159,6 @@ img {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
   }
 
-
 	.modal.right .modal-dialog {
 		position: fixed;
 		margin: auto;
@@ -180,7 +179,6 @@ img {
 		padding: 15px 15px 80px;
 	}	
         
-/*Right*/
 	.modal.right.fade .modal-dialog {
     right: -320px;
     -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
@@ -193,7 +191,6 @@ img {
 		right: 0;
 	}
 
-/* ----- MODAL STYLE ----- */
 	.modal-content {
 		border-radius: 0;
 		border: none;

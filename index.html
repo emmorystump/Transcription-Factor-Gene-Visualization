@@ -53,10 +53,16 @@
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">NetProphet2.0</a>
           <input class="form-control form-control-dark w-100" type="text" placeholder="Search a single gene or enter a comma separated list" aria-label="Search">
+          <div id="modal-button-div" class="navbar-brand col-sm-3 col-md-2">
+            <button id="modal-button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal2">
+              Update Inputs
+            </button>
+          </div>
         </nav>
 
+
         <div class="container-fluid">
-          <div class="row">
+          <div class="row wrapper">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
@@ -132,6 +138,26 @@
 
                 </div>
             </main>
+
+            	<!-- Modal -->
+            <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
+                  </div>
+
+                  <div class="modal-body">
+                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </p>
+                  </div>
+
+                </div><!-- modal-content -->
+              </div><!-- modal-dialog -->
+            </div><!-- modal -->
+
 
           </div>
         </div>

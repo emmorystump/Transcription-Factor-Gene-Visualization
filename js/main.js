@@ -39,6 +39,13 @@
               $("#edge-chart-heading").text(this.organism + " Network");
 
             }) // end click function
+
+            // Add jQuery event for toggleable side bar
+            $('#sidebarCollapse').on('click', function () {
+                $('#toggle-sidebar').toggleClass('active');
+            });
+          
+       
           }); // end jquery
 
           // on click function for Organisms link on main-vis (return to homepage/organism selector)

@@ -10,92 +10,132 @@
     </head>
     <body>
 
-      <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">NetProphet2.0</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search a single gene or enter a comma separated list" aria-label="Search">
-      </nav>
+    <div id="homepage" class="container">
+      <div id="brentlab-logo" class="row justify-content-md-center">
+        <a href="https://mblab.wustl.edu/" target="_blank">
+          <img src="images/BrentLabLogo.png" alt="BrentLab">
+        </a>
+      </div>
+      <div id="home-reference" class="row justify-content-md-center">
+        <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
+          NetProphet2.0 Interactive
+        </a>
+      </div>
+      <div id="home-cite" class="row justify-content-md-center">
+        <cite>
+          Kang Y, Liow HH, Maier EJ, Brent MR. NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources.
+          Bioinformatics. 2018 Jan 15;34(2):249-257. doi: 10.1093/bioinformatics/btx563. PMID: 28968736; PMCID: PMC5860202.
+        </cite>
+      </div>
+      <div id="home-organism-heading" class="row justify-content-md-center">
+          <h3>Select an Organism</h3>
+      </div>
+      <div id="organism-images" class="row justify-content-md-center">
+        <div class="col align-self-start">
+          <a href="#">
+            <img id="fly-img" class="organism-selector" src="images/fly.png" alt="Fly Network">
+          </a>
+        </div>
+        <div class="col align-self-center">
+          <a href="#">
+            <img id="yeast-img" class="organism-selector" src="images/yeast.png" alt="Yeast Network">
+          </a>
+        </div>
+        <div class="col align-self-end">
+          <a href="#">
+            <img id="human-img" class="organism-selector" src="images/human.png" alt="Human Network">
+          </a>
+        </div>
+      </div>
+    </div> <!-- end homepage -->
 
-      <div class="container-fluid">
-        <div class="row">
-          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" href="home.html">
-                    <span data-feather="home"></span>
-                    Organisms <span class="sr-only">(current)</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file"></span>
-                    Instructions
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file"></span>
-                    Export Results
-                  </a>
-                </li>
+  <div id="main-vis" class="hide">
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+          <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">NetProphet2.0</a>
+          <input class="form-control form-control-dark w-100" type="text" placeholder="Search a single gene or enter a comma separated list" aria-label="Search">
+        </nav>
 
-              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Reference:</span>
-              </h6>
-              <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                  <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
-                    <span data-feather="file-text"></span>
-                    NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <span class = "nav-link">To Cite:</span>
-                    <p class = "nav-link">
-                      <cite>
-                        Kang Y, Liow HH, Maier EJ, Brent MR. NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources.
-                        Bioinformatics. 2018 Jan 15;34(2):249-257. doi: 10.1093/bioinformatics/btx563. PMID: 28968736; PMCID: PMC5860202.
-                      </cite>
-                    </p>
-                </li>
-                <li class="nav-item">
-                  <span class = "nav-link">Contact:</span>
-                    <p class = "nav-link">
-                      brent@wustl.edu
-                    </p>
-                </li>
-              </ul>
-            </div>
-          </nav>
+        <div class="container-fluid">
+          <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+              <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a id="homepage-return" class="nav-link active" href="#">
+                      <span data-feather="home"></span>
+                      Organisms <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <span data-feather="file"></span>
+                      Instructions
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <span data-feather="file"></span>
+                      Export Results
+                    </a>
+                  </li>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                  <span>Reference:</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
+                      <span data-feather="file-text"></span>
+                      NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <span class = "nav-link">To Cite:</span>
+                      <p class = "nav-link">
+                        <cite>
+                          Kang Y, Liow HH, Maier EJ, Brent MR. NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources.
+                          Bioinformatics. 2018 Jan 15;34(2):249-257. doi: 10.1093/bioinformatics/btx563. PMID: 28968736; PMCID: PMC5860202.
+                        </cite>
+                      </p>
+                  </li>
+                  <li class="nav-item">
+                    <span class = "nav-link">Contact:</span>
+                      <p class = "nav-link">
+                        brent@wustl.edu
+                      </p>
+                  </li>
+                </ul>
+              </div>
+            </nav>
 
 
 
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="organism-heading d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-               <h1 class="h2">Organism</h1>  <!-- NOTE: I don't like the "h2" class here -- that was part of the template -->
-            </div>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                 <h1 id="edge-chart-heading" class="h2">Organism</h1>  <!-- NOTE: I don't like the "h2" class here -- that was part of the template -->
+              </div>
 
-            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+              <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
 
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-8 network-vis">
-                      <h2>Network Visualization</h2>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-8 network-vis">
+                        <h2>Network Visualization</h2>
 
-                  </div>
-                  <div class="col-md-4 network-detail">
-                      <h2>Network Detail</h2>
+                    </div>
+                    <div class="col-md-4 network-detail">
+                        <h2>Network Detail</h2>
+
+                    </div>
 
                   </div>
 
                 </div>
+            </main>
 
-              </div>
-          </main>
-
+          </div>
         </div>
-      </div>
-
+  </div> <!-- end main-vis -->
 
       <!-- Bootstrap core JavaScript
       ================================================== -->
@@ -155,10 +195,9 @@
         <script>
           feather.replace()
         </script>
-
-        <script type="application/javascript" src="js/vis_template.js"></script>
         <script type="application/javascript" src="js/edgeWeightDistribution.js"></script>
         <script type="application/javascript" src="js/network.js"></script>
+        <script type="application/javascript" src="js/togglePage.js"></script>
         <script type="application/javascript" src="js/main.js"></script>
     </body>
 </html>

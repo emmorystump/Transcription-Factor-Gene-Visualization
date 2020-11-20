@@ -5,6 +5,55 @@ img {
     max-height: 100%;
   }
 
+  #homepage {
+    padding-top: 100px;
+    background-color: #F5F5F5;
+
+  }
+
+  #brentlab-logo {
+    border-style: double;
+  }
+
+  #weights input {
+      width: 50px;
+  }
+
+  #home-reference {
+     padding-top: 25px;
+     font-size: 50px;
+  }
+
+  #home-reference > a{
+    color: black;
+  }
+  #home-reference > a:hover{
+    color: #bfb9b8;
+  }
+
+  #home-organism-heading{
+    padding-top:50px;
+  }
+
+  .organism-selector{
+    width: auto;
+    height: auto;
+    max-width: 250px;
+    max-height: 200px;
+  }
+
+  .show
+  {
+      display: block;
+      height: 260px;
+  }
+
+  .hide
+  {
+      display: none;
+      height:0;
+  }
+
   .sidebar-titles {
       font-weight: bold;
   }

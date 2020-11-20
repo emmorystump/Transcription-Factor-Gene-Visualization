@@ -9,35 +9,51 @@
      * Creates instances for every chart (classes created to handle each chart;
      * the classes are defined in the respective javascript files.
      */
-    function init(organism_selection) {
+    function init() {
         var self = this;
         // set organism depending on what user clicked on home page
-        console.log(organism_selection);
-        switch (organism_selection){
-          case "fly":
-            this.organism = "Drosophila melanogaster"
-            break;
-          case "yeast":
-            this.organism = "Saccharomyces cerevisiae"
-            break;
-          case "human":
-            this.organism = "Human"
-            break;
-        }
 
-        // load main visualization html
-        window.location.href = "index.html";
         // add organism heading to index.html
-        var heading = "<h1 id=\"organism-heading\" class=\"h2\">" + this.organism + " Network</h1>"
-        console.log(heading);
-
         $(document).ready(function(){
-          var x = $("body").append("TEST"); //HAVING TROUBLE HERE
-                    console.log(x)
-        }) // end jquery
+        $(".organism-selector").click(function(d){
+              $('#homepage').addClass("hide");
+              $('#main-vis').removeClass("hide");
+              $('#main-vis').addClass("show");
+
+              var img_selection = d.currentTarget.id.split("-")[0];
+              console.log(img_selection)
+
+              switch (img_selection){
+                case "fly":
+                  this.organism = "Drosophila melanogaster"
+                  break;
+                case "yeast":
+                  this.organism = "Saccharomyces cerevisiae"
+                  break;
+                case "human":
+                  this.organism = "Human"
+                  break;
+              } // end switch
+
+              // update edge chart heading for selected species
+              $("#edge-chart-heading").text(this.organism + " Network");
+
+            }) // end click function
+          }); // end jquery
+
+          // on click function for Organisms link on main-vis (return to homepage/organism selector)
+          $(document).ready(function(){
+              $("#homepage-return").click(function(d){
+                $('#main-vis').removeClass("show");
+                $('#main-vis').addClass("hide");
+                $('#homepage').removeClass("hide");
+              }) // end click function
+            }) // end jquery
+
         //Creating instances for each visualization
 
         // var edgeWeightDistribution = new edgeWeightDistribution();
+        //var togglePage = new togglePage();
         var network = new Network();
 
         //load the data TODO: BASED ON ORGANISM SELECTION
@@ -66,6 +82,7 @@
         if(instance  !== null){
             throw new Error("Cannot instantiate more than one Class");
         }
+
     }
 
     /**
@@ -77,18 +94,8 @@
         if(self.instance == null){
             self.instance = new Main();
 
-        $(document).ready(function(){
-          $(".organism-selector").click(function(d){
-            this.organism = d.currentTarget.id.split("-")[0];
-            init(this.organism);
-
-            // this.organism = d.currentTarget;
-              // window.location.href = "index.html";
-
-              }) // end click function
-            }) // end jquery
-
             //called only once when the class is initialized
+            init();
         }
         return instance;
     }

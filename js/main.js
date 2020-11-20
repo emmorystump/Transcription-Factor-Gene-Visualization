@@ -11,20 +11,22 @@
      */
     function init(organism_selection) {
         var self = this;
-
         // set organism depending on what user clicked on home page
-        this.organism_selection = organism_selection;
-        switch (this.organism_selection){
+        console.log(organism_selection);
+        switch (organism_selection){
           case "fly":
             this.organism = "Drosophila melanogaster"
+            break;
           case "yeast":
             this.organism = "Saccharomyces cerevisiae"
+            break;
           case "human":
             this.organism = "Human"
+            break;
         }
 
         // load main visualization html
-        window.location.href = "index.html";
+        window.location.replace("index.html");
         // add organism heading to index.html
         var heading = "<h1 id=\"organism-heading\" class=\"h2\">" + this.organism + " Network</h1>"
         console.log(heading);
@@ -73,7 +75,8 @@
 
         $(document).ready(function(){
           $(".organism-selector").click(function(d){
-            this.organism = d.currentTarget.id.split("-")[0]
+            this.organism = d.currentTarget.id.split("-")[0];
+            console.log("here: ")
             init(this.organism);
 
             // this.organism = d.currentTarget;

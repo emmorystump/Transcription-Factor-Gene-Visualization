@@ -26,7 +26,7 @@ VisTemplate.prototype.init = function(){
     //creates svg element within the div
     self.svg = divVisTemplate.append("svg")
         .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight)
+        .attr("height",self.svgHeight);
 };
 
 

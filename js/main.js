@@ -85,6 +85,7 @@
         // var edgeWeightDistribution = new edgeWeightDistribution();
         //var togglePage = new togglePage();
         var network = new Network();
+        var weights = new Weights();
 
         //load the data TODO: BASED ON ORGANISM SELECTION
         var files =

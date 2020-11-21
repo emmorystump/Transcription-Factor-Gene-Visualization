@@ -21,7 +21,6 @@
               $('#main-vis').addClass("show");
 
               var img_selection = d.currentTarget.id.split("-")[0];
-              console.log(img_selection)
 
               switch (img_selection){
                 case "fly":
@@ -34,6 +33,7 @@
                   this.organism = "Human"
                   break;
               } // end switch
+                      console.log(this.organism);
 
               // update edge chart heading for selected species
               $("#edge-chart-heading").text(this.organism + " Network");
@@ -44,8 +44,8 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#toggle-sidebar').toggleClass('active');
             });
-          
-       
+
+
           }); // end jquery
 
           // on click function for Organisms link on main-vis (return to homepage/organism selector)
@@ -83,7 +83,7 @@
         //Creating instances for each visualization
 
         // var edgeWeightDistribution = new edgeWeightDistribution();
-        //var togglePage = new togglePage();
+        var togglePage = new networkDetail("test");
         var network = new Network();
         var weights = new Weights();
 

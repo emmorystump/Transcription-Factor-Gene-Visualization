@@ -20,51 +20,64 @@ Network.prototype.init = function(){
         .attr("height",self.svgHeight)
 };
 
-Network.prototype.update = function(data){
+Network.prototype.update = function(data, organism){
     var self = this;
     var svg = self.svg;
-    console.log(data[0]);
+    if(organism == "fly"){
+        var dataDir = "data/fruitfly/tf_to_target/"
+    }; 
 
-     // DEFINE 'NODES' AND 'EDGES'
-    var links = data.links.map(d => Object.create(d));
-    var nodes = data.nodes.map(d => Object.create(d));
+    var dataDir = "data/fruitfly/tf_to_target/"
+    console.log("here")
+    d3.json(dataDir+"FBgn0000014"+".json",function(tf){
+        console.log(tf)
+         // DEFINE 'NODES' AND 'EDGES'
 
-    console.log("here"+ links)
-    // START RUNNING THE SIMULATION
-    var simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).distance(40))
-        .force("center", d3.forceCenter(width/2, height/2))
-        .force('collision', d3.forceCollide().radius(function(d) {
-        return 10;
-        }));
+        //  var links = data.links.map(d => Object.create(d));
+        //  var nodes = data.nodes.map(d => Object.create(d));
+ 
+        //  console.log("here"+ links)
+        //  // START RUNNING THE SIMULATION
+        //  var simulation = d3.forceSimulation(nodes)
+        //      .force('link', d3.forceLink(links).distance(40))
+        //      .force("center", d3.forceCenter(width/2, height/2))
+        //      .force('collision', d3.forceCollide().radius(function(d) {
+        //          return 10;
+        //      }));
+ 
+        //  // DRAW THE LINKS (SVG LINE)
+ 
+        //  var link = svg.append("g")
+        //      .selectAll("line")
+        //      .data(links)
+        //      .join("line")
+        //      .attr("stroke-width", function(d){
+        //          return Math.sqrt(d.value)
+        //      })
+        //      .attr("stroke", "#999")
+        //      .attr("stroke-opacity", 0.6);
+             
+ 
+        //  // DRAW THE NODES (SVG CIRCLE)
+        //  var node = svg.selectAll(".node")
+        //      .data(nodes)
+        //      .enter()
+        //      .append("circle")
+        //      .attr("class", "node")
+        //      .attr("r", 5)
+        //      .attr("fill", function(d){
+        //          if(d.country == "United States"){
+        //              return "blue";
+        //          }
+        //          else{
+        //              return "red";
+        //          }
+        //      });
 
-    // DRAW THE LINKS (SVG LINE)
-
-    var link = svg.append("g")
-        .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("stroke-width", function(d){
-        return Math.sqrt(d.value)
-        })
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
+    })
         
 
-    // DRAW THE NODES (SVG CIRCLE)
-    var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter()
-        .append("circle")
-        .attr("class", "node")
-        .attr("r", 5)
-        .attr("fill", function(d){
-        if(d.country == "United States"){
-            return "blue";
-        }
-        else{
-            return "red";
-        }
-        })
+
+    
 
     }

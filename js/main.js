@@ -86,23 +86,25 @@
         var togglePage = new networkDetail("test");
         var network = new Network();
         var weights = new Weights();
-
         //load the data TODO: BASED ON ORGANISM SELECTION
         var files =
         [
             "data/fruitfly/ff_gene_info.json",
             "data/yeast/yeast_gene_info.json"
-
         ];
         var promises = [];
-        // files.forEach(function(url) {
-        //   promises.push(d3.json(url));
-        // });
-        // Promise.all(promises).then(function(values) {
-        //     var data = values[0];
-        //     console.log(data)
-        //     network.update(data);
-        // });
+        files.forEach(function(url) {
+          promises.push(d3.json(url));
+        });
+        Promise.all(promises).then(function(values) {
+            if(this.organism == "fly"){
+                var data = values[0];
+            }
+            else if(this.organism == "yeast"){
+                var data = values[1]
+            }
+            network.update(data,this.organism);
+        });
     } // end init()
 
     /**

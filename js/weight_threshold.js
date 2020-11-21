@@ -18,5 +18,22 @@ Weights.prototype.init = function(){
     //creates svg element within the div
     self.svg = divWeights.append("svg")
         .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight)
+        .attr("height",self.svgHeight);
+
+    Weights.prototype.createNormalDist(30, 15)
+};
+
+Weights.prototype.createNormalDist = function(mean, std) {
+    data = [];
+    for (var i = mean - 4 * std; i < mean + 4 * std; i += 1) {
+        x = i
+        y = jStat.normal.pdf(i, mean, std);
+        arr = {
+            "x": x,
+            "y": y
+        }
+        data.push(arr);
+    };
+    print(data);
+    return data;
 };

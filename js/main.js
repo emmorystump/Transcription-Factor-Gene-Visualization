@@ -57,6 +57,29 @@
               }) // end click function
             }) // end jquery
 
+
+          // When tf/gene list select input is changed, get which option it is
+          $(document).ready(function(){
+            $('#selectUploadType').on('change', function() {
+              // based on this value, which is equal to the option id, choose whether to hide or show an input box for tf and a file upload for gene list
+              if(this.value==="gene-input-form") {
+                $('#gene-input-form').removeClass("hide");
+                $('#gene-input-form').addClass("show");
+
+                $('#tf-form').removeClass("show");
+                $('#tf-form').addClass("hide");
+              }
+              else {
+                $('#tf-form').removeClass("hide");
+                $('#tf-form').addClass("show");
+
+                $('#gene-input-form').removeClass("show");
+                $('#gene-input-form').addClass("hide");
+              }
+
+            });
+          }) // end jquery
+
         //Creating instances for each visualization
 
         // var edgeWeightDistribution = new edgeWeightDistribution();

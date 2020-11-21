@@ -156,20 +156,26 @@
                     </div>
 
                     <label class="sidebar-titles">File Upload:</label>
+                    
                     <div id="user-input">
                       <form>
                         <div class="form-group">
                           <label for="selectUploadType">Are you uploading a Transcripion Factor or a Gene List?</label>
                           <select class="form-control" id="selectUploadType">
-                            <option id="tf-input">Transcription Factor</option>
-                            <option id="gene-input">Gene List</option>
+                            <option id="tf-option" value="tf-form">Transcription Factor</option>
+                            <option id="gene-option" value="gene-input-form">Gene List</option>
                           </select>
                         </div>
-                        <div class="form-group">
-                            <label for="selectFile">Please select a File:</label>
-                            <input type="file" class="form-control-file" id="selectFile">
+                        <div id="gene-input-form" class="form-group hide">
+                            <label for="selectGeneFile">Please Upload a Gene List:</label>
+                            <input type="file" class="form-control-file" id="selectGeneFile">
                         </div>
-                          
+                        <div id="tf-form" class="form-group show">
+                          <label for="selectTfFile">Please Enter a Transcription Factor:</label>
+                          <br/>
+                          <input type="text" id="selectTfFile">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Update</button>
                       </form>
                     </div>
                 

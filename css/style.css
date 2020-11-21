@@ -162,7 +162,7 @@ img {
 	.modal.right .modal-dialog {
 		position: fixed;
 		margin: auto;
-		width: 320px;
+		width: 500px;
     height: 100%;
     -webkit-transform: translate3d(0%, 0, 0);
     -ms-transform: translate3d(0%, 0, 0);
@@ -180,7 +180,7 @@ img {
 	}	
         
 	.modal.right.fade .modal-dialog {
-    right: -320px;
+    right: -500px;
     -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
     -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
       -o-transition: opacity 0.3s linear, right 0.3s ease-out;

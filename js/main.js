@@ -39,6 +39,13 @@
               $("#edge-chart-heading").text(this.organism + " Network");
 
             }) // end click function
+
+            // Add jQuery event for toggleable side bar
+            $('#sidebarCollapse').on('click', function () {
+                $('#toggle-sidebar').toggleClass('active');
+            });
+          
+       
           }); // end jquery
 
           // on click function for Organisms link on main-vis (return to homepage/organism selector)
@@ -50,11 +57,35 @@
               }) // end click function
             }) // end jquery
 
+
+          // When tf/gene list select input is changed, get which option it is
+          $(document).ready(function(){
+            $('#selectUploadType').on('change', function() {
+              // based on this value, which is equal to the option id, choose whether to hide or show an input box for tf and a file upload for gene list
+              if(this.value==="gene-input-form") {
+                $('#gene-input-form').removeClass("hide");
+                $('#gene-input-form').addClass("show");
+
+                $('#tf-form').removeClass("show");
+                $('#tf-form').addClass("hide");
+              }
+              else {
+                $('#tf-form').removeClass("hide");
+                $('#tf-form').addClass("show");
+
+                $('#gene-input-form').removeClass("show");
+                $('#gene-input-form').addClass("hide");
+              }
+
+            });
+          }) // end jquery
+
         //Creating instances for each visualization
 
         // var edgeWeightDistribution = new edgeWeightDistribution();
         //var togglePage = new togglePage();
         var network = new Network();
+        var weights = new Weights();
 
         //load the data TODO: BASED ON ORGANISM SELECTION
         var files =

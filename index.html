@@ -53,10 +53,16 @@
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">NetProphet2.0</a>
           <input class="form-control form-control-dark w-100" type="text" placeholder="Search a single gene or enter a comma separated list" aria-label="Search">
+          <div id="modal-button-div" class="navbar-brand col-sm-3 col-md-2">
+            <button id="modal-button" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal2">
+              Update Inputs
+            </button>
+          </div>
         </nav>
 
+
         <div class="container-fluid">
-          <div class="row">
+          <div class="row wrapper">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
@@ -133,6 +139,53 @@
                 </div>
             </main>
 
+            	<!-- Modal -->
+            <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Update Inputs</h4>
+                  </div>
+
+                  <div class="modal-body">
+                    <label class="sidebar-titles">Weights:</label>
+                    <div id="weights">
+                      <p>Insert Normal Distribution Here!</p>
+                    </div>
+
+                    <label class="sidebar-titles">File Upload:</label>
+                    
+                    <div id="user-input">
+                      <form>
+                        <div class="form-group">
+                          <label for="selectUploadType">Are you uploading a Transcripion Factor or a Gene List?</label>
+                          <select class="form-control" id="selectUploadType">
+                            <option id="tf-option" value="tf-form">Transcription Factor</option>
+                            <option id="gene-option" value="gene-input-form">Gene List</option>
+                          </select>
+                        </div>
+                        <div id="gene-input-form" class="form-group hide">
+                            <label for="selectGeneFile">Please Upload a Gene List:</label>
+                            <input type="file" class="form-control-file" id="selectGeneFile">
+                        </div>
+                        <div id="tf-form" class="form-group show">
+                          <label for="selectTfFile">Please Enter a Transcription Factor:</label>
+                          <br/>
+                          <input type="text" id="selectTfFile">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Update</button>
+                      </form>
+                    </div>
+                
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
           </div>
         </div>
   </div> <!-- end main-vis -->
@@ -197,6 +250,7 @@
         </script>
         <script type="application/javascript" src="js/edgeWeightDistribution.js"></script>
         <script type="application/javascript" src="js/network.js"></script>
+        <script type="application/javascript" src="js/weight_threshold.js"></script>
         <script type="application/javascript" src="js/togglePage.js"></script>
         <script type="application/javascript" src="js/main.js"></script>
     </body>

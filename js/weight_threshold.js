@@ -21,7 +21,7 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist(30, 15);
+    var dataArray = self.createNormalDist(0, 15);
 
     var xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])

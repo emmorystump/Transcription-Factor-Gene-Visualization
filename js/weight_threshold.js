@@ -20,7 +20,7 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist( 0.00044677325327633944, 0.0001881886776192946);
+    var dataArray = self.createNormalDist(0.00044677325327633944, 0.0001881886776192946);
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
@@ -67,14 +67,13 @@ Weights.prototype.init = function(){
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);
-
-    self.test();
 };
 
-Weights.prototype.brushed = function(event) {
+Weights.prototype.brushed = function(self, event) {
     self = this;
+
+    console.log(self);
     console.log(event);
-    test();
 };
 
 Weights.prototype.createNormalDist = function(mean, std) {
@@ -93,9 +92,3 @@ Weights.prototype.createNormalDist = function(mean, std) {
     
     return data;
 };
-
-function test() {
-    self = this;
-    console.log("hi");
-    console.log(self.svg);
-}

@@ -21,7 +21,7 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist(0, 15);
+    var dataArray = self.createNormalDist(0, 1);
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
@@ -69,26 +69,32 @@ Weights.prototype.init = function(){
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);
 
+    self.test();
+};
 
+Weights.prototype.brushed = function({selection}) {
+    self = this;
+    console.log(selection);
 };
 
 Weights.prototype.createNormalDist = function(mean, std) {
+    var self = this;
+    console.log(self.svg);
+
     let data = [];
-    let minI = mean - 4 * std;
-    let maxI = mean + 4 * std;
-    for (var i = minI; i < maxI; i += 1) {
+    let minI = mean - 3 * std;
+    let maxI = mean + 3 * std;
+    for (var i = minI; i < maxI; i += .01) {
         data.push({
             "x": i,
             "y": Math.exp((-0.5) * Math.pow((i - mean) / std, 2))
         });
     };
+    
     return data;
 };
 
-Weights.prototype.brushed = function({selection}) {
-    var self = this;
-
-    console.log(selection);
-    console.log(self.xScale(10));
-  
+Weights.prototype.test = function(){
+    self = this;
+    console.log(self.svg);
 }

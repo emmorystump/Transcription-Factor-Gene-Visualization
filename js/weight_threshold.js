@@ -56,6 +56,19 @@ Weights.prototype.init = function(){
 
     self.svg.select(".x-axis").call(d3.axisBottom(xScale));
 
+    // Create brush component
+    var brush = d3.brushX()
+        .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .on("brush", self.brushed);
+
+      // Append brush component
+    self.svg.append("g")
+        .attr("class", "brush")
+        .call(brush)
+        .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", self.svgHeight + 7);
+
 
 };
 
@@ -71,3 +84,8 @@ Weights.prototype.createNormalDist = function(mean, std) {
     };
     return data;
 };
+
+Weights.prototype.brushed = function({selection}) {
+    console.log(selection);
+
+}

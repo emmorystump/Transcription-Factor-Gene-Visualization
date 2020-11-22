@@ -2,6 +2,7 @@
 function Network() {
 
     var self = this;
+    self.networkDetail = new NetworkDetail();
     self.init();
 };
 
@@ -38,7 +39,7 @@ Network.prototype.update = function (data, organism, tfSelected) {
 
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
-            
+
             for (var i = 0; i < tf.linked.length; i++) {
                 tf.scores[i] = +tf.scores[i]
             }
@@ -137,8 +138,10 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     event.subject.fx = null;
                     event.subject.fy = null;
                 }));
-        });
-    })
+            // update networkDetail
+            //self.networkDetail.update([tfSelected], tf.linked);
+        }); // end d3.json
+    }) // end d3.csv
 
 
-}
+} // end network.update()

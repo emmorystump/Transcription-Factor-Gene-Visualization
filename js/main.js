@@ -56,15 +56,15 @@
 
             });
           }) // end jquery
-      var networkDetail = new NetworkDetail("test");
+      //var networkDetail = new NetworkDetail("test");
       var network = new Network();
       var weights = new Weights();
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =
       [
-          "data/fruitfly/ff_gene_info.json",
-          "data/yeast/yeast_gene_info.json"
+          "data/fruitfly/gene_info.json",
+          "data/yeast/gene_info.json"
       ];
       var promises = [];
       files.forEach(function(url) {

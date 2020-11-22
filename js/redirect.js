@@ -20,8 +20,8 @@ if (typeof(Storage) !== "undefined") {
                 window.location.href='main.html';
 
             }
-       
-        });
-    });
 
-}
+        }); // end on click
+    }); // end document ready
+
+} // end outer if

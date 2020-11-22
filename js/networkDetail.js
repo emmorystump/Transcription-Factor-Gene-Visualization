@@ -4,29 +4,31 @@
  *
  * replace all "networkDetail" with name of object
  */
-function NetworkDetail(tf_or_gene_list){
+function NetworkDetail(){
     var self = this;
-    if (tf_or_gene_list.length == 1){
-      self.input_type="tf"; // get this from right side panel TODO: this eliminates if statement
-      self.tf_or_gene_list = tf_or_gene_list;
-    } else{
-      self.input_type="tf"; // get this from right side panel
-      self.tf_or_gene_list = tf_or_gene_list;
-    }
+    // if (tf_or_gene_list.length == 1){
+    //   self.input_type="tf"; // get this from right side panel TODO: this eliminates if statement
+    //   self.tf_or_gene_list = tf_or_gene_list;
+    // } else{
+    //   self.input_type="tf"; // get this from right side panel
+    //   self.tf_or_gene_list = tf_or_gene_list;
+    // }
     self.init();
-    self.update();
+    //self.update();
 
-    self.goUrlMaker(self.test_go_terms, self.chart_url_prefix);
-    self.goUrlMaker(self.test_go_terms, self.json_url_prefix);
+    // self.goUrlMaker(self.test_go_terms, self.chart_url_prefix);
+    // self.downloadData("test")
 };
 
 /**
  * Initializes the svg elements required for this chart
  */
 NetworkDetail.prototype.init = function(){
+
     var self = this;
     self.chart_url_prefix = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=";
     self.json_url_prefix = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/graph?startIds=";
+    self.gprofiler_convert_prefix = "https://biit.cs.ut.ee/gprofiler/convert?organism=" // add organism based on selection
 
     // test data
     // test gene_info has four genes. test go terms added by hand
@@ -50,23 +52,23 @@ NetworkDetail.prototype.init = function(){
 
 NetworkDetail.prototype.downloadData = function(tf_or_gene_list){
   var self = this;
+
   //generate png path
-  switch (self.input_type){
+  switch (self.input_type){ // get this from input in right side panel
     case "tf":
-      //var png_url = self.GoChartUrl(tf_or_gene_list);
+      //var png_url = self.goUrlMaker(tf_or_gene_list);
       break;
     case "gene_list":
-      //var png_url = self.goChartUrl(tf_or_gene_list);
-      //var json_url = self.geneListGoGraphUrl(tf_or_gene_list)
+      //var png_url = self.goUrlMaker(tf_or_gene_list);
+      //var json_url = self.goUrlMaker(tf_or_gene_list);
       break;
    }; // end switch
 
-  // lists will
   var test_png_url = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165";
   var test_json_url = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/graph?startIds=GO%3A0035289%2CGO%3A0042063%2CGO%3A0042387%2CGO%3A0042690";
 
-  self.saveFile(test_png_url); // replace with png_url
-  self.saveFile(test_json_url); // replace with json_url
+  //self.saveFile(test_png_url, "go_chart_png"); // replace with png_url
+  self.saveFile(test_json_url, "go_network"); // replace with json_url
 }; // end downloadData()
 
 NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
@@ -90,107 +92,210 @@ NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
 
 }; // end goUrlMaker()
 
-NetworkDetail.prototype.update = function(){
+NetworkDetail.prototype.update = function(tf_array, target_array){
   var self = this;
+
+  // retrieve
+  self.gProfilerConvert("dmelanogaster", tf_array, "FLYBASENAME_GENE", "tf_name_json");
+  console.log(sessionStorage.getItem("tf_name_json"));
+
+  // self.gProfilerConvert("dmelanogaster", target_array, "FLYBASENAME_GENE", "gene_name_json");
+  // console.log(sessionStorage.getItem("gene_name_json"));
+  //
+  // self.gProfilerGO("dmelanogaster", target_array, "profile_tester");
+  // console.log(sessionStorage.getItem("profile_tester"));
+
+
+
 
   // get path to graph -- Emmory and Lisa -- how do you suggest saving the data?
 
   // read in PNG # TODO: error handing if png file not found
-  path_to_png = 'data/fruitfly/chart.png'
-  path_to_json = 'data/fruitfly/graph.json'
-
-  // place link to png in network detail
-  var network_description_chart_link = document.getElementById("go-network-chart")
-  network_description_chart_link.href = path_to_png;
-
-  d3.json(path_to_json).then(function(data) {
-    var gene_list = Object.keys(self.test_gene_info);
-    var gene_name_list = []
-    var go_terms = [];
-    var heatmap_data =[];
-    var go_term_counter = 0
-    gene_list.forEach((gene_id, gene_id_index) => {
-      self.test_gene_info[gene_id]["go"].forEach((go_term, go_term_index) => {
-        gene_name_list[go_term_counter] = self.test_gene_info[gene_id].name;
-        heatmap_entry = {gene_name: self.test_gene_info[gene_id].name, go_term: go_term, value: 10};
-        heatmap_data[go_term_counter] = heatmap_entry
-        go_terms[go_term_counter] = go_term;
-        go_term_counter = go_term_counter + 1;
-      });
-    });
-              //console.log(go_terms);
-              //console.log(heatmap_data)
-    //cite: https://stackoverflow.com/a/59600626
-        var goTally = items => {
-         const tally = {};
-         for (let i = 0; i < go_terms.length; i++) {
-            if (!tally[items[i]]) {
-               tally[items[i]] = 0;
-            }
-            tally[items[i]]++;
-         }
-         return tally
-      }
-
-      var go_tally = goTally(go_terms);
-
-          // Build X scales and axis:
-    var x = d3.scaleBand()
-      .range([ 0, self.width ])
-      .domain(gene_name_list)
-      .padding(0.01);
-    self.svg.append("g")
-      .attr("transform", "translate(0," + self.height + ")")
-      .call(d3.axisBottom(x))
-
-    // Build X scales and axis:
-    var y = d3.scaleBand()
-      .range([ self.height, 0 ])
-      .domain(go_terms) //only unique go terms
-      .padding(0.01);
-    self.svg.append("g")
-      .call(d3.axisLeft(y));
-
-      // Build color scale
-      var myColor = d3.scaleLinear()
-        .range(["white", "#69b3a2"])
-        .domain([1,10]);
-
-    heatmap_data.forEach((item, i) => {
-        console.log(item)
-      });
-
-      self.svg.selectAll("rect")
-      .data(heatmap_data)
-      .enter()
-      .append("rect")
-      .attr("x", function(d,i) { return x(d.gene_name) })
-      .attr("y", function(d,i) { return y(d.go_term) })
-      .attr("width", x.bandwidth() )
-      .attr("height", y.bandwidth() )
-      .style("fill", "blue" )
-
-  }); // end read in json.then
+  // path_to_png = 'data/fruitfly/chart.png'
+  // path_to_json = 'data/fruitfly/graph.json'
+  //
+  // // place link to png in network detail
+  // var network_description_chart_link = document.getElementById("go-network-chart")
+  // network_description_chart_link.href = path_to_png;
+  //
+  // d3.json(path_to_json).then(function(data) {
+  //   var gene_list = Object.keys(self.test_gene_info);
+  //   var gene_name_list = []
+  //   var go_terms = [];
+  //   var heatmap_data =[];
+  //   var go_term_counter = 0
+  //   gene_list.forEach((gene_id, gene_id_index) => {
+  //     self.test_gene_info[gene_id]["go"].forEach((go_term, go_term_index) => {
+  //       gene_name_list[go_term_counter] = self.test_gene_info[gene_id].name;
+  //       heatmap_entry = {gene_name: self.test_gene_info[gene_id].name, go_term: go_term, value: 10};
+  //       heatmap_data[go_term_counter] = heatmap_entry
+  //       go_terms[go_term_counter] = go_term;
+  //       go_term_counter = go_term_counter + 1;
+  //     });
+  //   });
+  //             //console.log(go_terms);
+  //             //console.log(heatmap_data)
+  //   //cite: https://stackoverflow.com/a/59600626
+  //       var goTally = items => {
+  //        const tally = {};
+  //        for (let i = 0; i < go_terms.length; i++) {
+  //           if (!tally[items[i]]) {
+  //              tally[items[i]] = 0;
+  //           }
+  //           tally[items[i]]++;
+  //        }
+  //        return tally
+  //     }
+  //
+  //     var go_tally = goTally(go_terms);
+  //
+  //         // Build X scales and axis:
+  //   var x = d3.scaleBand()
+  //     .range([ 0, self.width ])
+  //     .domain(gene_name_list)
+  //     .padding(0.01);
+  //   self.svg.append("g")
+  //     .attr("transform", "translate(0," + self.height + ")")
+  //     .call(d3.axisBottom(x))
+  //
+  //   // Build X scales and axis:
+  //   var y = d3.scaleBand()
+  //     .range([ self.height, 0 ])
+  //     .domain(go_terms) //only unique go terms
+  //     .padding(0.01);
+  //   self.svg.append("g")
+  //     .call(d3.axisLeft(y));
+  //
+  //     // Build color scale
+  //     var myColor = d3.scaleLinear()
+  //       .range(["white", "#69b3a2"])
+  //       .domain([1,10]);
+  //
+  //   heatmap_data.forEach((item, i) => {
+  //       console.log(item)
+  //     });
+  //
+  //     self.svg.selectAll("rect")
+  //     .data(heatmap_data)
+  //     .enter()
+  //     .append("rect")
+  //     .attr("x", function(d,i) { return x(d.gene_name) })
+  //     .attr("y", function(d,i) { return y(d.go_term) })
+  //     .attr("width", x.bandwidth() )
+  //     .attr("height", y.bandwidth() )
+  //     .style("fill", "blue" )
+  //
+  // }); // end read in json.then
 
 }; // end update()
 
-// Download a file form a url.
-NetworkDetail.prototype.saveFile = function(url) {
-  // cite: https://codepen.io/theConstructor/pen/vKNRdE
-  var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function() {
-    var a = document.createElement('a');
-    a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob. it is also the item that we want
-    a.download = filename; // Set the file name.
-    a.style.display = 'none';
-    document.body.appendChild(a);
+NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target, data_attr_name){
+  var self = this;
+
+  //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
+
+  // // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
+  // var test_url = "https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC"
+  // var xmlhttp = new XMLHttpRequest(),
+  //     url =  test_url
+  //     method = "POST"
+  //
+  // xmlhttp.open(method, url, true);
+  // xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  // xmlhttp.onload = function () {
+  //     //sessionStorage.setItem("test", xmlhttp.response);
+  //     console.log(xmlhttp.response);
+  // };
+  // xmlhttp.send();
+    $.ajax({
+      type: "POST",
+      url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
+      data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+gene_array.join('","')+'"]}',
+      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
+      //data: '{"organism": "hsapiens", "target": "FLYBASENAME_GENE", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}' //data: '{"organism": organism, "target": target, "query": gene_array}' //      data: '{"organism": "hsapiens", "target": "mmusculus", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}'
+    }).done(function( data ) {
+        self.download(data, 'TestSave.txt', 'text/plain')
+       // if(sessionStorage.getItem(data_attr_name)!==null){
+       //   sessionStorage.removeItem(data_attr_name);
+       // }
+       //sessionStorage.setItem(data_attr_name, data);
+
+    });
+
+} // end gProfilerConvert()
+
+NetworkDetail.prototype.download = function(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
     a.click();
-    delete a;
+}
+
+NetworkDetail.prototype.gProfilerGO = function(organism, gene_array, data_attr_name){
+
+  //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
+
+  // // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
+  // var test_url = "https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC"
+  // var xmlhttp = new XMLHttpRequest(),
+  //     url =  test_url
+  //     method = "POST"
+  //
+  // xmlhttp.open(method, url, true);
+  // xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  // xmlhttp.onload = function () {
+  //     //sessionStorage.setItem("test", xmlhttp.response);
+  //     console.log(xmlhttp.response);
+  // };
+  // xmlhttp.send();
+  //var test_arr = ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]
+  //var test_organism = "hsapiens"
+    $.ajax({
+      type: "POST",
+      url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
+      data: '{"organism": "'+organism+'", "query": '+'["'+gene_array.join('","')+'"], '+'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":1e-3, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
+      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
+    }).done(function( data ) {
+       if(sessionStorage.getItem(data_attr_name) !== null){
+         sessionStorage.removeItem(data_attr_name)
+       }
+       sessionStorage.setItem(data_attr_name, data);
+    });
+
+
+
+} // end gProfilerConvert()
+
+// Download a file form a url.
+NetworkDetail.prototype.saveFile = function(url, data_attr_name) {
+
+  // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
+  var xmlhttp = new XMLHttpRequest(),
+  method = 'GET',
+  url = url;
+
+  xmlhttp.open(method, url, true);
+  xmlhttp.onload = function () {
+      sessionStorage.setItem(data_attr_name, xmlhttp.response);
   };
-  xhr.open('GET', url);
-  xhr.send();
+  xmlhttp.send();
+
+  // cite: https://codepen.io/theConstructor/pen/vKNRdE
+  // var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
+  // var xhr = new XMLHttpRequest();
+  // xhr.responseType = 'blob';
+  // xhr.onload = function() {
+  //   var a = document.createElement('a');
+  //   a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob. it is also the item that we want
+  //   a.download = filename; // Set the file name.
+  //   a.style.display = 'none';
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   delete a;
+  // };
+  // xhr.open('GET', url);
+  // xhr.send();
 }; // end saveFile()
 // //
 // // // retrieve PNG ontology graph here:

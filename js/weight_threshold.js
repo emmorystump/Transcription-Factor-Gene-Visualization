@@ -6,7 +6,6 @@ function Weights(){
 
 Weights.prototype.init = function(){
     var self = this;
-    // self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     //Gets access to the div element created for this chart from HTML
     var divWeights = d3.select("#weights").classed("content", true);
@@ -21,7 +20,7 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist(0, 1);
+    var dataArray = self.createNormalDist( 0.00044677325327633944, 0.0001881886776192946);
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
@@ -72,9 +71,10 @@ Weights.prototype.init = function(){
     self.test();
 };
 
-Weights.prototype.brushed = function({selection}) {
+Weights.prototype.brushed = function(event) {
     self = this;
-    console.log(selection);
+    console.log(event);
+    test();
 };
 
 Weights.prototype.createNormalDist = function(mean, std) {
@@ -84,7 +84,7 @@ Weights.prototype.createNormalDist = function(mean, std) {
     let data = [];
     let minI = mean - 3 * std;
     let maxI = mean + 3 * std;
-    for (var i = minI; i < maxI; i += .01) {
+    for (var i = minI; i < maxI; i += .00001) {
         data.push({
             "x": i,
             "y": Math.exp((-0.5) * Math.pow((i - mean) / std, 2))
@@ -94,7 +94,8 @@ Weights.prototype.createNormalDist = function(mean, std) {
     return data;
 };
 
-Weights.prototype.test = function(){
+function test() {
     self = this;
+    console.log("hi");
     console.log(self.svg);
 }

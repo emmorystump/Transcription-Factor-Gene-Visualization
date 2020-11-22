@@ -1,8 +1,11 @@
 function Weights(){
 
     var self = this;
+    self.mean = 0.00044677325327633944;
+    self.std = 0.0001881886776192946;
+    self.weightRange = [0,0];
     self.init();
-};
+}
 
 Weights.prototype.init = function(){
     var self = this;
@@ -20,7 +23,7 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist(0.00044677325327633944, 0.0001881886776192946);
+    var dataArray = self.createNormalDist(self.mean, self.std);
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
@@ -53,12 +56,15 @@ Weights.prototype.init = function(){
         .style("fill", "rgb(103, 120, 208)")
         .style("opacity", "1");
 
-    self.svg.select(".x-axis").call(d3.axisBottom(self.xScale));
+    self.svg.select(".x-axis").call(d3.axisBottom(self.xScale).tickFormat(d3.format(".1e")));
 
     // Create brush component
     var brush = d3.brushX()
         .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
-        .on("brush", self.brushed);
+        .on("brush", function({selection}) {
+            self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
+            console.log(self.weightRange);
+        });
 
       // Append brush component
     self.svg.append("g")
@@ -67,14 +73,13 @@ Weights.prototype.init = function(){
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);
-};
+}
 
-Weights.prototype.brushed = function(self, event) {
-    self = this;
+// Weights.prototype.brushed = function(event) {
+//     self = this;
 
-    console.log(self);
-    console.log(event);
-};
+//     console.log(event);
+// };
 
 Weights.prototype.createNormalDist = function(mean, std) {
     var self = this;
@@ -91,4 +96,4 @@ Weights.prototype.createNormalDist = function(mean, std) {
     };
     
     return data;
-};
+}

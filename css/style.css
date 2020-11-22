@@ -5,6 +5,10 @@ img {
     max-height: 100%;
   }
 
+  #gene-detail {
+    margin-top:100px;
+  }
+
   #homepage {
     padding-top: 100px;
     background-color: #F5F5F5;
@@ -174,11 +178,11 @@ img {
 		height: 100%;
 		overflow-y: auto;
 	}
-	
+
 	.modal.right .modal-body {
 		padding: 15px 15px 80px;
-	}	
-        
+	}
+
 	.modal.right.fade .modal-dialog {
     right: -500px;
     -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
@@ -186,7 +190,7 @@ img {
       -o-transition: opacity 0.3s linear, right 0.3s ease-out;
          transition: opacity 0.3s linear, right 0.3s ease-out;
 	}
-	
+
 	.modal.right.fade.in .modal-dialog {
 		right: 0;
 	}
@@ -201,7 +205,7 @@ img {
     background-color: #FAFAFA;
     display: inline;
   }
-  
+
   #modal-button {
     height: auto;
     width: auto;

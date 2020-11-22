@@ -3,6 +3,7 @@ function Network() {
 
     var self = this;
     self.networkDetail = new NetworkDetail();
+    self.geneDetail = new GeneDetail();
     self.init();
 };
 
@@ -138,6 +139,24 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     event.subject.fx = null;
                     event.subject.fy = null;
                 }));
+
+            node.on("click", function(node_info,gene_info){
+                  self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+                  //console.log(gene_info)
+                })
+                .on("mouseover", function(node_info,gene_info){
+                  d3.select(this).attr("fill", "green")
+                })
+                .on("mouseout", function(node_info,gene_info){
+                  d3.select(this).attr("fill", function(d,i){
+                    if(gene_info.type == "tf"){
+                      return "#6778d0"
+                    } else{
+                      return "#ba495b"
+                    }
+                  }) // end d3.select
+                })
+                //.on("mouseout", handleMouseOut);
             // update networkDetail
             //self.networkDetail.update([tfSelected], tf.linked);
         }); // end d3.json

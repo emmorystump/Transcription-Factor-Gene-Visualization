@@ -75,6 +75,7 @@ NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
   // input must be iterable array
   //gene_array = [GO:0003700,GO:0005515,GO:0007403,GO:0035165]; // testing -- being passed in contructor now for testing purposes
   var self = this;
+  console.log(gene_array)
   self.gene_array = gene_array;
   //GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165" // this is what the string needs to look like to be appended to prefix
 

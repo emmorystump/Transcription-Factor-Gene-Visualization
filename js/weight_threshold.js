@@ -6,7 +6,6 @@ function Weights(){
 
 Weights.prototype.init = function(){
     var self = this;
-    // self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     //Gets access to the div element created for this chart from HTML
     var divWeights = d3.select("#weights").classed("content", true);
@@ -21,13 +20,13 @@ Weights.prototype.init = function(){
         .attr("width", self.svgWidth)
         .attr("height", self.svgHeight);
 
-    var dataArray = self.createNormalDist(0, 15);
+    var dataArray = self.createNormalDist(0.00044677325327633944, 0.0001881886776192946);
 
-    var xScale = d3.scaleLinear()
+    self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
             .domain([d3.min(dataArray, function (d) { return d.x; }), d3.max(dataArray, function (d) { return d.x })]);
 
-    var yScale = d3.scaleLinear()
+    self.yScale = d3.scaleLinear()
         .range([self.svgHeight-self.padding, 0])
         .domain([0, d3.max(dataArray, function(d) {
             return d.y;
@@ -35,10 +34,10 @@ Weights.prototype.init = function(){
 
     var line = d3.line()
         .x(function(d) {
-            return xScale(d.x);
+            return self.xScale(d.x);
         })
         .y(function(d) {
-            return yScale(d.y);
+            return self.yScale(d.y);
         });
 
     self.svg.append("g")
@@ -54,20 +53,42 @@ Weights.prototype.init = function(){
         .style("fill", "rgb(103, 120, 208)")
         .style("opacity", "1");
 
-    self.svg.select(".x-axis").call(d3.axisBottom(xScale));
+    self.svg.select(".x-axis").call(d3.axisBottom(self.xScale));
 
+    // Create brush component
+    var brush = d3.brushX()
+        .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .on("brush", self.brushed);
 
+      // Append brush component
+    self.svg.append("g")
+        .attr("class", "brush")
+        .call(brush)
+        .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", self.svgHeight + 7);
+};
+
+Weights.prototype.brushed = function(self, event) {
+    self = this;
+
+    console.log(self);
+    console.log(event);
 };
 
 Weights.prototype.createNormalDist = function(mean, std) {
+    var self = this;
+    console.log(self.svg);
+
     let data = [];
-    let minI = mean - 4 * std;
-    let maxI = mean + 4 * std;
-    for (var i = minI; i < maxI; i += 1) {
+    let minI = mean - 3 * std;
+    let maxI = mean + 3 * std;
+    for (var i = minI; i < maxI; i += .00001) {
         data.push({
             "x": i,
             "y": Math.exp((-0.5) * Math.pow((i - mean) / std, 2))
         });
     };
+    
     return data;
 };

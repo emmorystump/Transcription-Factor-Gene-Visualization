@@ -28,11 +28,14 @@ Network.prototype.update = function (data, organism, tfSelected) {
     var svg = self.svg;
     if (organism == "fly") {
         var dataDir = "data/fruitfly/"
+        var regID_to_regName = "ff_regulatorID_to_regulatorName.csv"
     }
     else if (organism == "yeast") {
         var dataDir = "data/yeast/"
+        var regID_to_regName = "y_regulatorID_to_regulatorName.csv"
+
     }
-    d3.csv(dataDir + "ff_regulatorID_to_regulatorName.csv").then(function (allTFs) {
+    d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
         if (tfSelected == "") {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;

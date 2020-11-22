@@ -212,3 +212,9 @@ img {
   #modal-button-div {
     margin: 0px;
   }
+
+  .index_button {
+    border: none;
+    background: none;
+    
+  }

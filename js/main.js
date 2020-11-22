@@ -32,7 +32,7 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#toggle-sidebar').toggleClass('active');
             });
-        
+
           }); // end jquery
 
           // When tf/gene list select input is changed, get which option it is
@@ -56,6 +56,7 @@
 
             });
           }) // end jquery
+      var networkDetail = new NetworkDetail("test");
       var network = new Network();
       var weights = new Weights();
       //load the data TODO: BASED ON ORGANISM SELECTION

@@ -4,7 +4,7 @@
  *
  * replace all "networkDetail" with name of object
  */
-function networkDetail(tf_or_gene_list){
+function NetworkDetail(tf_or_gene_list){
     var self = this;
     if (tf_or_gene_list.length == 1){
       self.input_type="tf"; // get this from right side panel TODO: this eliminates if statement
@@ -23,7 +23,7 @@ function networkDetail(tf_or_gene_list){
 /**
  * Initializes the svg elements required for this chart
  */
-networkDetail.prototype.init = function(){
+NetworkDetail.prototype.init = function(){
     var self = this;
     self.chart_url_prefix = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=";
     self.json_url_prefix = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/graph?startIds=";
@@ -48,7 +48,7 @@ networkDetail.prototype.init = function(){
           "translate(" + self.margin.left + "," + self.margin.top + ")");
 };
 
-networkDetail.prototype.downloadData = function(tf_or_gene_list){
+NetworkDetail.prototype.downloadData = function(tf_or_gene_list){
   var self = this;
   //generate png path
   switch (self.input_type){
@@ -69,7 +69,7 @@ networkDetail.prototype.downloadData = function(tf_or_gene_list){
   self.saveFile(test_json_url); // replace with json_url
 }; // end downloadData()
 
-networkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
+NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
   // input must be iterable array
   //gene_array = [GO:0003700,GO:0005515,GO:0007403,GO:0035165]; // testing -- being passed in contructor now for testing purposes
   var self = this;
@@ -90,7 +90,7 @@ networkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
 
 }; // end goUrlMaker()
 
-networkDetail.prototype.update = function(){
+NetworkDetail.prototype.update = function(){
   var self = this;
 
   // get path to graph -- Emmory and Lisa -- how do you suggest saving the data?
@@ -175,7 +175,7 @@ networkDetail.prototype.update = function(){
 }; // end update()
 
 // Download a file form a url.
-networkDetail.prototype.saveFile = function(url) {
+NetworkDetail.prototype.saveFile = function(url) {
   // cite: https://codepen.io/theConstructor/pen/vKNRdE
   var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
   var xhr = new XMLHttpRequest();
@@ -191,7 +191,7 @@ networkDetail.prototype.saveFile = function(url) {
   };
   xhr.open('GET', url);
   xhr.send();
-};
+}; // end saveFile()
 // //
 // // // retrieve PNG ontology graph here:
 // // https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165

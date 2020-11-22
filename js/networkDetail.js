@@ -191,7 +191,7 @@ networkDetail.prototype.saveFile = function(url) {
   };
   xhr.open('GET', url);
   xhr.send();
-};
+}; // end saveFile()
 // //
 // // // retrieve PNG ontology graph here:
 // // https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165

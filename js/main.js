@@ -56,7 +56,7 @@
 
             });
           }) // end jquery
-      //var networkDetail = new networkDetail("test");
+      var networkDetail = new NetworkDetail("test");
       var network = new Network();
       //load the data TODO: BASED ON ORGANISM SELECTION
 

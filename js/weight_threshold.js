@@ -37,7 +37,7 @@ Weights.prototype.init = function(){
         })]);
 
 
-    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }).toExponential());
+    document.getElementById("min-weight").setAttribute("value", self.mean.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
 
     $('#min-weight').on('change', function() {
@@ -73,7 +73,7 @@ Weights.prototype.init = function(){
 
     // Create brush component
     var brush = d3.brushX()
-        .extent([[(self.svgWidth-self.padding/2)/2, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .extent([[self.xScale(self.mean), 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
 
@@ -87,7 +87,6 @@ Weights.prototype.init = function(){
     self.svg.append("g")
         .attr("class", "brush")
         .call(brush)
-        .call(brush.move, [3*self.svgWidth/4, self.svgWidth-self.padding])
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);

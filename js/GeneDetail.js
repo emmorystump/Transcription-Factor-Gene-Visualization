@@ -21,6 +21,23 @@ GeneDetail.prototype.init = function(){
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     self.gene_detail_view = $("#gene-detail")
+
+    // =============== Experimental D3 code to line things up =====================
+    
+    // //Gets access to the div element created for this chart from HTML
+    // var divNetwork = d3.select("#gene-detail").classed("content", true);
+    // self.svgBounds = divNetwork.node().getBoundingClientRect();
+    // self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
+    // self.svgHeight = 500;
+
+    // //creates svg element within the div
+    // self.svg = divNetwork.append("svg")
+    //     .attr("id", "gene-detail-svg")
+    //     .attr("width", self.svgWidth)
+    //     .attr("height", self.svgHeight)
+   
+    // ===============================================================================
+    
 };
 
 
@@ -62,6 +79,8 @@ GeneDetail.prototype.visualize = function(node_detail_array, gene_id_to_name_arr
   var gene_score = '<p class="gene-detail-text">Score: '+node_detail_array[[1]]+ '</p>'
   var gene_link = '<a href="'+gene_url + '" target="_blank">Gene Info</a><br>'
   var gene_cluster_png_link = '<a href="'+chart_url + '" target="_blank">Gene Cluster GO map</a>'
+
+
   $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
   $("#gene-detail").append(gene_id);
   $("#gene-detail").append(gene_name);
@@ -71,7 +90,7 @@ GeneDetail.prototype.visualize = function(node_detail_array, gene_id_to_name_arr
   $("#gene-detail").append('<br>');
   self.createInput("Download_Supplementary_Data")
 
-  // handle button clicks
+
   //Handle Button click
  $(':button').on('click', function(e){ //NOTE SINGLE GENE IS PASSED -- THAT SINGLE GENE CAN BE VISUALIZED AS THE PNG
    //self.gProfilerConvert(localStorage.getItem("organism_code"), gene_id, localStorage.getItem("gene_name_database"));

@@ -73,7 +73,7 @@ Weights.prototype.init = function(){
 
     // Create brush component
     var brush = d3.brushX()
-        .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .extent([[(self.svgWidth-self.padding/2)/2, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
 

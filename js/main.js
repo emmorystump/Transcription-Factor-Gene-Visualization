@@ -56,7 +56,7 @@
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
       var goNetwork = new GoNetwork();
       var networkDetail = new NetworkDetail(goNetwork);
-      var weights = new Weights();
+      var weights = new Weights(organism);
 
       var geneDetail = new GeneDetail(networkDetail)
       var network = new Network(networkDetail, geneDetail, goNetwork)
@@ -105,7 +105,7 @@
           console.log("First Update: ");
           console.log(sessionStorage.getItem("min-weight"));
           console.log(sessionStorage.getItem("max-weight"));
-          
+
           network.update(
             data,
             organism,

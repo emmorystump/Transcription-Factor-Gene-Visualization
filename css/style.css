@@ -226,6 +226,6 @@ img {
     font-size: 150%;
   }
 
-.weight-inputs{
-  width: 200px;
+#weight-labels label {
+  width: 75px;
 }

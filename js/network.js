@@ -141,6 +141,9 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     return 15;
                 }));
 
+            svg.selectAll("g").remove();
+            svg.selectAll(".node").remove();
+
             // DRAW THE LINKS (SVG LINE)
 
             var link = svg.append("g")
@@ -179,9 +182,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             link.transition()
                 .duration(2000)
                 .attr('opacity', 1)
-            
-            link.exit().remove();
-            node.exit().remove();
 
             simulation.on("tick", () => {
                 node

@@ -35,15 +35,16 @@ Network.prototype.update = function (data, organism, tfSelected) {
         var regID_to_regName = "y_regulatorID_to_regulatorName.csv"
 
     }
+
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
         if (tfSelected == "") {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }
 
+        console.log("tfSelected" + tfSelected)
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
-
             for (var i = 0; i < tf.linked.length; i++) {
                 tf.scores[i] = +tf.scores[i]
             }
@@ -73,16 +74,26 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     linkCounter += 1;
                 }
             }
-            console.log(allNodeLinks)
+
+            d3.select("#edge-chart-heading-text")
+            .text(tfSelected)
+
 
             var links = allNodeLinks.links;
             var nodes = allNodeLinks.nodes;
 
+            var linkScale = d3.scaleLinear()
+                .domain([d3.min(nodes, function(d){
+                    return d.score;
+                }), d3.max(nodes, function (d) {
+                    return d.score;
+                })])
+                .range([1, 10]);
             // START RUNNING THE SIMULATION
             var simulation = d3.forceSimulation(nodes)
                 .force('link', d3.forceLink(links).distance(50))
                 .force("charge", d3.forceManyBody())
-                .force("center", d3.forceCenter(self.svgWidth / 2 - 200, self.svgHeight / 2))
+                .force("center", d3.forceCenter(self.svgWidth / 2 - 50, self.svgHeight / 2))
                 .force('collision', d3.forceCollide().radius(function (d) {
                     return 10;
                 }));
@@ -93,7 +104,9 @@ Network.prototype.update = function (data, organism, tfSelected) {
                 .selectAll("line")
                 .data(links)
                 .join("line")
-                .attr("stroke-width", 1)
+                .attr("stroke-width", function (d) {
+                    return linkScale(d.score)
+                })
                 .attr("stroke", "#999")
                 .attr("stroke-opacity", 0.6);
 
@@ -114,12 +127,20 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     }
                 })
                 .attr("stroke", "white")
-                .attr("stroke-width", 1)
+                .attr("stroke-width", 1);
+
+            node.transition()
+                .duration(2000)
+                .attr('opacity', 1)
+
+            link.transition()
+                .duration(2000)
+                .attr('opacity', 1)
 
             simulation.on("tick", () => {
                 node
-                    .attr("cx", d => d.x)
-                    .attr("cy", d => d.y);
+                    .attr("cx", d => d.x = Math.max(5, Math.min(self.svgWidth - 5, d.x)))
+                    .attr("cy", d => d.y = Math.max(5, Math.min(self.svgHeight - 5, d.y)));
                 link
                     .attr("x1", d => d.source.x)
                     .attr("y1", d => d.source.y)
@@ -143,24 +164,27 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     event.subject.fy = null;
                 }));
 
-            node.on("click", function(node_info,gene_info){
-                  self.geneDetail.update([gene_info.name, gene_info.score], nodes)
-                })
-                .on("mouseover", function(node_info,gene_info){
-                  d3.select(this).attr("fill", "green")
-                })
-                .on("mouseout", function(node_info,gene_info){
-                  d3.select(this).attr("fill", function(d,i){
-                    if(gene_info.type == "tf"){
-                      return "#6778d0"
-                    } else{
-                      return "#ba495b"
-                    }
-                  }) // end d3.select
-                })
-                //.on("mouseout", handleMouseOut);
-            // update networkDetail
-            //self.networkDetail.update([tfSelected], tf.linked);
+//<<<<<<< HEAD
+            // node.on("click", function(node_info,gene_info){
+            //       self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+//=======
+//             node.on("click", function (node_info, gene_info) {
+//                 self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+//                 //console.log(gene_info)
+//             })
+//                 .on("mouseover", function (node_info, gene_info) {
+//                     d3.select(this).attr("fill", "green")
+// //>>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
+//                 })
+//                 .on("mouseout", function (node_info, gene_info) {
+//                     d3.select(this).attr("fill", function (d, i) {
+//                         if (gene_info.type == "tf") {
+//                             return "#6778d0"
+//                         } else {
+//                             return "#ba495b"
+//                         }
+//                     }) // end d3.select
+//                 })
         }); // end d3.json
     }) // end d3.csv
 

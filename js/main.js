@@ -20,14 +20,10 @@
         case "yeast":
           this.organism = "Saccharomyces cerevisiae"
           break;
-        case "human":
-          this.organism = "Human"
-          break;
+     
       } // end switch
 
-      // update edge chart heading for selected species
-      $("#edge-chart-heading").text(this.organism + " Network");
-
+    
       $(document).ready(function(){
             // Add jQuery event for toggleable side bar
             $('#sidebarCollapse').on('click', function () {
@@ -61,6 +57,9 @@
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
       var networkDetail = new NetworkDetail();
       var weights = new Weights();
+
+      var geneDetail = new GeneDetail(networkDetail)
+      var network = new Network(networkDetail, geneDetail)
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =
@@ -79,10 +78,13 @@
           else if (organism == "yeast"){
             var data = values[1]
           }
-          var geneDetail = new GeneDetail(networkDetail)
-          var network = new Network(networkDetail, geneDetail)
-          network.update(data, organism, "");
+          d3.select("#selectedSubmit").on('click', function(){
+            localStorage.setItem("selectedTf", $('#selectTfFile').val())
+          })
+        
+          network.update(data, organism, localStorage.getItem("selectedTf"));
 
+        
       });
   } // end init()
 

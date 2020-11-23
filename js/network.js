@@ -37,7 +37,7 @@ Network.prototype.update = function (data, organism, tfSelected) {
     }
 
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
-        if (tfSelected == "") {
+        if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }

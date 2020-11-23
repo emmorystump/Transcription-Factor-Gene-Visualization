@@ -60,7 +60,7 @@
 
       var geneDetail = new GeneDetail(networkDetail)
       var network = new Network(networkDetail, geneDetail)
-      //load the data TODO: BASED ON ORGANISM SELECTION
+      //load the data 
 
       var files =
       [
@@ -77,14 +77,14 @@
           }
           else if (organism == "yeast"){
             var data = values[1]
-          }
+          };
+
           d3.select("#selectedSubmit").on('click', function(){
             localStorage.setItem("selectedTf", $('#selectTfFile').val())
-          })
-        
+            
+          }); 
           network.update(data, organism, localStorage.getItem("selectedTf"));
 
-        
       });
   } // end init()
 

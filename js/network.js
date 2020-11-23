@@ -96,7 +96,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                         gene_id_list[gene_id_list.length] = curGeneID;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID, 
+                                "id": i, "name": curGeneID,
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })

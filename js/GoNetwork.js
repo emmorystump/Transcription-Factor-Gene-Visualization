@@ -21,16 +21,30 @@ GoNetwork.prototype.init = function(){
     var divGoNetwork = d3.select(".go-network").classed("content", true);
     self.svgBounds = divGoNetwork.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
-    self.svgHeight = 150;
+    self.svgHeight = 300;
 
     //creates svg element within the div
     self.svg = divGoNetwork.append("svg")
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight);
+
+    var go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
+    // Build X scales and axis:
+    self.x = d3.scaleBand()
+      .domain(go_categories)
+      .range([ 0, self.svgWidth ])
+      //.padding(0.01);
+
+    // Build X scales and axis:
+    self.y = d3.scaleLinear()
+      .range([ self.svgHeight, 0 ]);
+
+      // Build color scale
+      self.goClassColor = d3.scaleBand()
+        .domain(["GO:BP", "GO:CC","GO:MF","KEGG"])
+        .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
+
 };
-
-
-
 /**
  * accepts gene_id_list, passes to gProfilerGO
  * @params gene_name_list a list of gene_id
@@ -61,5 +75,40 @@ GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
 } // end gProfilerGO()
 
 GoNetwork.prototype.visualize = function(go_object){
-  console.log(go_object)
+  // need to fix margin around svg, axis, etc
+  var self = this;
+  console.log(self.goClassColor("GO:MF"))
+
+  var min_negLog10_pval = 1.3;
+  var max_negLog10_pval = 6;
+
+  // append axis to svg object
+  self.svg.append("g")
+    .attr("transform", "translate(0," + 280 + ")")
+    .attr("class", "x-axis")
+    .call(d3.axisBottom(self.x));
+
+  self.y.domain([min_negLog10_pval, max_negLog10_pval]);
+
+  self.svg.append("g")
+    .call(d3.axisLeft(self.y));
+
+  var pointScale = d3.scaleLinear()
+                     .domain([min_negLog10_pval, max_negLog10_pval])
+                     .range([1,10])
+
+  self.svg.selectAll("circle")
+    .data(go_object)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d,i) { return self.x((d.source))+180 })
+    .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
+    .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
+    .attr("fill", function(d,i) {return self.goClassColor(d.source)})
+    .attr("class", "my-circles")
+    .call(log, "dataset")
+
+    function log(sel,msg) {
+    console.log(msg,sel);
+  }
 } // end visualize

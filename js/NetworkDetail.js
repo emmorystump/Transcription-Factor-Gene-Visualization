@@ -191,44 +191,44 @@ NetworkDetail.prototype.update = function(tf_array, target_array){
 
 }; // end update()
 
-NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target){
-  var self = this;
-
-  //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
-
-  // // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
-  // var test_url = "https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC"
-  // var xmlhttp = new XMLHttpRequest(),
-  //     url =  test_url
-  //     method = "POST"
-  //
-  // xmlhttp.open(method, url, true);
-  // xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  // xmlhttp.onload = function () {
-  //     //sessionStorage.setItem("test", xmlhttp.response);
-  //     console.log(xmlhttp.response);
-  // };
-  // xmlhttp.send();
-    $.ajax({
-      type: "POST",
-      url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
-      data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+gene_array.join('","')+'"]}',
-      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
-      //data: '{"organism": "hsapiens", "target": "FLYBASENAME_GENE", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}' //data: '{"organism": organism, "target": target, "query": gene_array}' //      data: '{"organism": "hsapiens", "target": "mmusculus", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}'
-    }).done(function( data ) {
-        if(sessionStorage.getItem("tmp_name") !== null){
-          sessionStorage.removeItem("tmp_name")
-        }
-          sessionStorage.setItem("tmp_name") = gene_name;
-        //self.download(data, 'geneID_to_geneName.json', 'text/plain')
-       // if(sessionStorage.getItem(data_attr_name)!==null){
-       //   sessionStorage.removeItem(data_attr_name);
-       // }
-       //sessionStorage.setItem(data_attr_name, data);
-
-    });
-
-} // end gProfilerConvert()
+// NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target){
+//   var self = this;
+//
+//   //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
+//
+//   // // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
+//   // var test_url = "https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC"
+//   // var xmlhttp = new XMLHttpRequest(),
+//   //     url =  test_url
+//   //     method = "POST"
+//   //
+//   // xmlhttp.open(method, url, true);
+//   // xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+//   // xmlhttp.onload = function () {
+//   //     //sessionStorage.setItem("test", xmlhttp.response);
+//   //     console.log(xmlhttp.response);
+//   // };
+//   // xmlhttp.send();
+//     $.ajax({
+//       type: "POST",
+//       url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
+//       data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+gene_array.join('","')+'"]}',
+//       headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
+//       //data: '{"organism": "hsapiens", "target": "FLYBASENAME_GENE", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}' //data: '{"organism": organism, "target": target, "query": gene_array}' //      data: '{"organism": "hsapiens", "target": "mmusculus", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}'
+//     }).done(function( data ) {
+//         if(sessionStorage.getItem("tmp_name") !== null){
+//           sessionStorage.removeItem("tmp_name")
+//         }
+//           sessionStorage.setItem("tmp_name") = gene_name;
+//         //self.download(data, 'geneID_to_geneName.json', 'text/plain')
+//        // if(sessionStorage.getItem(data_attr_name)!==null){
+//        //   sessionStorage.removeItem(data_attr_name);
+//        // }
+//        //sessionStorage.setItem(data_attr_name, data);
+//
+//     });
+//
+// } // end gProfilerConvert()
 
 NetworkDetail.prototype.download = function(content, fileName, contentType) {
     var a = document.createElement("a");

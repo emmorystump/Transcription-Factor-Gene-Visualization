@@ -37,13 +37,12 @@ Network.prototype.update = function (data, organism, tfSelected) {
     }
 
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
-        if (tfSelected == "") {
+        if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }
 
 
-        console.log("tfSelected" + tfSelected)
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
             for (var i = 0; i < tf.linked.length; i++) {

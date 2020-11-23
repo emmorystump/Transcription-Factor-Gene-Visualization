@@ -20,7 +20,7 @@ img {
   }
 
   #weights input {
-      width: 50px;
+      width: 200px;
   }
 
   #home-reference {
@@ -225,3 +225,7 @@ img {
   #edge-chart-heading{
     font-size: 150%;
   }
+
+.weight-inputs{
+  width: 200px;
+}

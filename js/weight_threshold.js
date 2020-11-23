@@ -26,7 +26,7 @@ Weights.prototype.init = function(){
     var dataArray = self.createNormalDist(self.mean, self.std);
 
     document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }));
-    document.getElementById("max-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }));
+    document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }));
 
 
     self.xScale = d3.scaleLinear()

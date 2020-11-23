@@ -41,7 +41,11 @@ Network.prototype.update = function (data, organism, tfSelected) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
         console.log("tfSelected" + tfSelected)
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
@@ -74,7 +78,11 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     linkCounter += 1;
                 }
             }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
             d3.select("#edge-chart-heading-text")
             .text(tfSelected)
 
@@ -164,27 +172,22 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     event.subject.fy = null;
                 }));
 
-//<<<<<<< HEAD
-            // node.on("click", function(node_info,gene_info){
-            //       self.geneDetail.update([gene_info.name, gene_info.score], nodes)
-//=======
-//             node.on("click", function (node_info, gene_info) {
-//                 self.geneDetail.update([gene_info.name, gene_info.score], nodes)
-//                 //console.log(gene_info)
-//             })
-//                 .on("mouseover", function (node_info, gene_info) {
-//                     d3.select(this).attr("fill", "green")
-// //>>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
-//                 })
-//                 .on("mouseout", function (node_info, gene_info) {
-//                     d3.select(this).attr("fill", function (d, i) {
-//                         if (gene_info.type == "tf") {
-//                             return "#6778d0"
-//                         } else {
-//                             return "#ba495b"
-//                         }
-//                     }) // end d3.select
-//                 })
+            node.on("click", function (node_info, gene_info) {
+                self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+                //console.log(gene_info)
+            })
+                .on("mouseover", function (node_info, gene_info) {
+                    d3.select(this).attr("fill", "green")
+                })
+                .on("mouseout", function (node_info, gene_info) {
+                    d3.select(this).attr("fill", function (d, i) {
+                        if (gene_info.type == "tf") {
+                            return "#6778d0"
+                        } else {
+                            return "#ba495b"
+                        }
+                    }) // end d3.select
+                })
         }); // end d3.json
     }) // end d3.csv
 

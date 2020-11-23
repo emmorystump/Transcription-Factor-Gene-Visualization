@@ -23,7 +23,7 @@ Network.prototype.init = function () {
         .attr("height", self.svgHeight)
 };
 
-Network.prototype.update = function (data, organism, tfSelected) {
+Network.prototype.update = function (data, organism, tfSelected, minScore, maxScore) {
     var self = this;
     var svg = self.svg;
     if (organism == "fly") {
@@ -36,13 +36,13 @@ Network.prototype.update = function (data, organism, tfSelected) {
 
     }
 
+    console.log(regID_to_regName)
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }
-
-
+        console.log(tfSelected)
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
             for (var i = 0; i < tf.linked.length; i++) {
@@ -58,33 +58,46 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     "id": 0, "name": tf.id,
                     "type": "tf", "score": 0,
                     "x": self.svgWidth / 2, "y": self.svgHeight / 2
-                })
+                });
             var linkCounter = 1;
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
                 var curGeneScore = tf.scores[i]
-                if (curGeneScore > threshold) {
-                    allNodeLinks.nodes.push(
-                        {
-                            "id": i, "name": curGeneID,
-                            "type": "gene", "score": curGeneScore,
-                            "x": self.svgWidth / 2, "y": self.svgHeight / 2
-                        })
-                    allNodeLinks.links.push({ "source": 0, "target": linkCounter });
-                    linkCounter += 1;
+                if (minScore != null && maxScore != null) {
+                    if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
+                        allNodeLinks.nodes.push(
+                            {
+                                "id": i, "name": curGeneID,
+                                "type": "gene", "score": curGeneScore,
+                                "x": self.svgWidth / 2, "y": self.svgHeight / 2
+                            })
+                        allNodeLinks.links.push({ "source": 0, "target": linkCounter });
+                        linkCounter += 1;
+                    }
+                }
+                else {
+                    if (curGeneScore > threshold) {
+                        allNodeLinks.nodes.push(
+                            {
+                                "id": i, "name": curGeneID,
+                                "type": "gene", "score": curGeneScore,
+                                "x": self.svgWidth / 2, "y": self.svgHeight / 2
+                            })
+                        allNodeLinks.links.push({ "source": 0, "target": linkCounter });
+                        linkCounter += 1;
+                    }
                 }
             }
 
-
             d3.select("#edge-chart-heading-text")
-            .text(tfSelected)
+                .text(tfSelected)
 
 
             var links = allNodeLinks.links;
             var nodes = allNodeLinks.nodes;
 
             var linkScale = d3.scaleLinear()
-                .domain([d3.min(nodes, function(d){
+                .domain([d3.min(nodes, function (d) {
                     return d.score;
                 }), d3.max(nodes, function (d) {
                     return d.score;

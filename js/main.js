@@ -79,10 +79,19 @@
             var data = values[1]
           }
           d3.select("#selectedSubmit").on('click', function(){
-            localStorage.setItem("selectedTf", $('#selectTfFile').val())
+            sessionStorage.setItem("selectedTf", $('#selectTfFile').val())
           })
-        
-          network.update(data, organism, localStorage.getItem("selectedTf"));
+          d3.select("#weights-submitted").on('click', function(){
+            sessionStorage.setItem("min-weight",$("#min-weight").val())
+            sessionStorage.setItem("max-weight",$("#max-weight").val())
+
+          })
+          network.update(
+            data, 
+            organism, 
+            sessionStorage.getItem("selectedTf"), 
+            sessionStorage.getItem("min-weight"),
+            sessionStorage.getItem("max-weight"));
 
         
       });

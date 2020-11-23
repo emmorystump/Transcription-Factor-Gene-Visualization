@@ -190,7 +190,7 @@ NetworkDetail.prototype.update = function(tf_array, target_array){
 
 }; // end update()
 
-NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target, data_attr_name){
+NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target){
   var self = this;
 
   //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
@@ -215,7 +215,32 @@ NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
       //data: '{"organism": "hsapiens", "target": "FLYBASENAME_GENE", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}' //data: '{"organism": organism, "target": target, "query": gene_array}' //      data: '{"organism": "hsapiens", "target": "mmusculus", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}'
     }).done(function( data ) {
-        self.download(data, 'TestSave.txt', 'text/plain')
+        console.log(data)
+        self.download(data, 'geneID_to_geneName.json', 'text/plain')
+       // if(sessionStorage.getItem(data_attr_name)!==null){
+       //   sessionStorage.removeItem(data_attr_name);
+       // }
+       //sessionStorage.setItem(data_attr_name, data);
+
+    });
+
+} // end gProfilerConvert()
+
+NetworkDetail.prototype.gProfilerGO = function(organism, gene_array){
+
+    $.ajax({
+      type: "POST",
+      url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
+      data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "no_evidences": true, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
+      headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
+      success: function( data ) {
+        console.log(data)
+        var a = document.createElement("a");
+        var file = new Blob([data], {type: "text/plain"});
+        a.href = URL.createObjectURL(file);
+        a.download = 'Go_Analysis.json';
+        a.click();
+      }
        // if(sessionStorage.getItem(data_attr_name)!==null){
        //   sessionStorage.removeItem(data_attr_name);
        // }
@@ -232,41 +257,6 @@ NetworkDetail.prototype.download = function(content, fileName, contentType) {
     a.download = fileName;
     a.click();
 }
-
-NetworkDetail.prototype.gProfilerGO = function(organism, gene_array, data_attr_name){
-
-  //https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC
-
-  // // cite: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/onload
-  // var test_url = "https://biit.cs.ut.ee/gprofiler/convert?organism=dmelanogaster&query=FBgn0004914&target=GO&numeric_namespace=ENTREZGENE_ACC"
-  // var xmlhttp = new XMLHttpRequest(),
-  //     url =  test_url
-  //     method = "POST"
-  //
-  // xmlhttp.open(method, url, true);
-  // xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  // xmlhttp.onload = function () {
-  //     //sessionStorage.setItem("test", xmlhttp.response);
-  //     console.log(xmlhttp.response);
-  // };
-  // xmlhttp.send();
-  //var test_arr = ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]
-  //var test_organism = "hsapiens"
-    $.ajax({
-      type: "POST",
-      url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
-      data: '{"organism": "'+organism+'", "query": '+'["'+gene_array.join('","')+'"], '+'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":1e-3, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
-      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
-    }).done(function( data ) {
-       if(sessionStorage.getItem(data_attr_name) !== null){
-         sessionStorage.removeItem(data_attr_name)
-       }
-       sessionStorage.setItem(data_attr_name, data);
-    });
-
-
-
-} // end gProfilerConvert()
 
 // Download a file form a url.
 NetworkDetail.prototype.saveFile = function(url, data_attr_name) {

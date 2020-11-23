@@ -70,13 +70,13 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             // if (minScore == null || maxScore == null){
             //     minScore = threshold
             // }
-            if (minScore < mean){
-                minScore = mean;
-            };
-            console.log(tfSelected)
-            console.log(minScore)
-            console.log(maxScore)
-            console.log(threshold)
+            // if (minScore < mean){
+            //     minScore = mean;
+            // };
+            // console.log(tfSelected)
+            // console.log(minScore)
+            // console.log(maxScore)
+            // console.log(threshold)
             allNodeLinks.nodes.push(
                 {
                     "id": 0, "name": tf.id,
@@ -101,7 +101,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     }
                 }
                 else {
-                    if (curGeneScore > threshold) {
+                    if (curGeneScore > minScore) {
                         gene_id_list[gene_id_list.length] = curGeneID;
                         allNodeLinks.nodes.push(
                             {

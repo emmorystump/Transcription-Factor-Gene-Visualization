@@ -46,43 +46,45 @@ def main():
     ff_tf_target_output_path = "../data/fruitfly/tf_to_target/"
     y_tf_target_output_path = "../data/yeast/tf_to_target/"
 
-    for i in range(len(ff_tf_id.values[:, 0])):
-        tf = ff_tf_id.values[:, 0][i]
-        tf_nonzero_idx = ff_score.loc[tf].to_numpy().nonzero()
-        target_names = ff_score.loc[tf].iloc[tf_nonzero_idx].index.values
-        target_scores = ff_score.loc[tf].iloc[tf_nonzero_idx].values
+    print(np.mean(y_score.values), np.std(y_score.values))
 
-        ff_tf_to_target.append({
-            "id": tf, 
-            "type": "tf", 
-            "linked": target_names.tolist(), 
-            "scores": target_scores.tolist()})
+    # for i in range(len(ff_tf_id.values[:, 0])):
+    #     tf = ff_tf_id.values[:, 0][i]
+    #     tf_nonzero_idx = ff_score.loc[tf].to_numpy().nonzero()
+    #     target_names = ff_score.loc[tf].iloc[tf_nonzero_idx].index.values
+    #     target_scores = ff_score.loc[tf].iloc[tf_nonzero_idx].values
+
+    #     ff_tf_to_target.append({
+    #         "id": tf, 
+    #         "type": "tf", 
+    #         "linked": target_names.tolist(), 
+    #         "scores": target_scores.tolist()})
     
-    for obj in ff_tf_to_target:
+    # for obj in ff_tf_to_target:
     
-        with open(ff_tf_target_output_path+obj["id"]+".json", 'w') as fp:
-            json.dump(obj, fp)
+    #     with open(ff_tf_target_output_path+obj["id"]+".json", 'w') as fp:
+    #         json.dump(obj, fp)
 
-    print("Fly tf to target done")
+    # print("Fly tf to target done")
 
-    for i in range(len(y_tf_id.values[:, 0])):
-        tf = y_tf_id.values[:, 0][i]
-        tf_nonzero_idx = y_score.loc[tf].to_numpy().nonzero()
-        target_names = y_score.loc[tf].iloc[tf_nonzero_idx].index.values
-        target_scores = y_score.loc[tf].iloc[tf_nonzero_idx].values
+    # for i in range(len(y_tf_id.values[:, 0])):
+    #     tf = y_tf_id.values[:, 0][i]
+    #     tf_nonzero_idx = y_score.loc[tf].to_numpy().nonzero()
+    #     target_names = y_score.loc[tf].iloc[tf_nonzero_idx].index.values
+    #     target_scores = y_score.loc[tf].iloc[tf_nonzero_idx].values
 
-        y_tf_to_target.append({
-            "id": tf, 
-            "type": "tf", 
-            "linked": target_names.tolist(), 
-            "scores": target_scores.tolist()})
+    #     y_tf_to_target.append({
+    #         "id": tf, 
+    #         "type": "tf", 
+    #         "linked": target_names.tolist(), 
+    #         "scores": target_scores.tolist()})
     
-    for obj in y_tf_to_target:
+    # for obj in y_tf_to_target:
     
-        with open(y_tf_target_output_path+obj["id"]+".json", 'w') as fp:
-            json.dump(obj, fp)
+    #     with open(y_tf_target_output_path+obj["id"]+".json", 'w') as fp:
+    #         json.dump(obj, fp)
 
-    print("Yeast tf to target done")
+    # print("Yeast tf to target done")
 
     # for i in range(len(ff_gene_id.values[:, 0])):
     #     gene = ff_gene_id.values[:, 0][i]

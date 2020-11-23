@@ -57,6 +57,9 @@
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
       var networkDetail = new NetworkDetail();
       var weights = new Weights();
+
+      var geneDetail = new GeneDetail(networkDetail)
+      var network = new Network(networkDetail, geneDetail)
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =
@@ -78,16 +81,10 @@
           d3.select("#selectedSubmit").on('click', function(){
             localStorage.setItem("selectedTf", $('#selectTfFile').val())
           })
-            // update edge chart heading for selected species
-          // $("#edge-chart-heading-text").text(localStorage.getItem("selectedTf"));
-
+        
           network.update(data, organism, localStorage.getItem("selectedTf"));
 
-          
-          var geneDetail = new GeneDetail(networkDetail)
-          var network = new Network(networkDetail, geneDetail)
-          network.update(data, organism, "");
-
+        
       });
   } // end init()
 

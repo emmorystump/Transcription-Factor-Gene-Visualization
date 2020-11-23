@@ -1,61 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>CSE 457A Final Project - Group 12</title>
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/style.css"/>
-        <script src="https://d3js.org/d3.v6.js"></script>
-    </head>
-    <body>
+<head>
+  <meta charset="UTF-8">
+  <title>CSE 457A Final Project - Group 12</title>
 
-    <div id="homepage" class="container">
-      <div id="brentlab-logo" class="row justify-content-md-center">
-        <a href="https://mblab.wustl.edu/" target="_blank">
-          <img src="images/BrentLabLogo.png" alt="BrentLab">
-        </a>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://d3js.org/d3.v6.js"></script>
+</head>
+
+<body>
+
+  <div id="homepage" class="container">
+    <div id="brentlab-logo" class="row justify-content-md-center">
+      <a href="https://mblab.wustl.edu/" target="_blank">
+        <img src="images/BrentLabLogo.png" alt="BrentLab">
+      </a>
+    </div>
+    <div id="home-reference" class="row justify-content-md-center">
+      <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
+        NetProphet2.0 Interactive
+      </a>
+    </div>
+    <div id="home-cite" class="row justify-content-md-center">
+      <cite>
+        Kang Y, Liow HH, Maier EJ, Brent MR. NetProphet 2.0: mapping transcription factor networks by exploiting
+        scalable data resources.
+        Bioinformatics. 2018 Jan 15;34(2):249-257. doi: 10.1093/bioinformatics/btx563. PMID: 28968736; PMCID:
+        PMC5860202.
+      </cite>
+    </div>
+    <div id="home-organism-heading" class="row justify-content-md-center">
+      <h3>Select an Organism</h3>
+    </div>
+    <div id="organism-images" class="row justify-content-md-center">
+      <div class="col align-self-start">
+        <button id="redirect_fly" class="index_button">
+          <img id="fly-img" class="organism-selector" src="images/fly.png" alt="Fly Network">
+        </button>
       </div>
-      <div id="home-reference" class="row justify-content-md-center">
-        <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
-          NetProphet2.0 Interactive
-        </a>
+      <div class="col align-self-center">
       </div>
-      <div id="home-cite" class="row justify-content-md-center">
-        <cite>
-          Kang Y, Liow HH, Maier EJ, Brent MR. NetProphet 2.0: mapping transcription factor networks by exploiting scalable data resources.
-          Bioinformatics. 2018 Jan 15;34(2):249-257. doi: 10.1093/bioinformatics/btx563. PMID: 28968736; PMCID: PMC5860202.
-        </cite>
+      <div class="col align-self-end">
+        <button id="redirect_yeast" class="index_button">
+          <img id="yeast-img" class="organism-selector" src="images/yeast.png" alt="Yeast Network">
+        </button>
       </div>
-      <div id="home-organism-heading" class="row justify-content-md-center">
-          <h3>Select an Organism</h3>
-      </div>
-      <div id="organism-images" class="row justify-content-md-center">
-        <div class="col align-self-start">
-          <button id="redirect_fly" class="index_button">
-            <img id="fly-img" class="organism-selector" src="images/fly.png" alt="Fly Network">
-          </button>
-        </div>
-        <div class="col align-self-center">
-        </div>
-        <div class="col align-self-end">
-          <button id="redirect_yeast" class="index_button">
-            <img id="yeast-img" class="organism-selector" src="images/yeast.png" alt="Yeast Network">
-          </button>
-        </div>
-      </div>
-    </div> <!-- end homepage -->
+    </div>
+  </div> <!-- end homepage -->
 
 
-      <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
       ================================================== -->
 
-      <script src="js/jquery.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="js/redirect.js"></script>
-    </body>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="js/redirect.js"></script>
+</body>
+
 </html>

@@ -153,7 +153,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 .attr("stroke", "#999")
                 .attr("stroke-opacity", 0.6);
 
-
+        
             // DRAW THE NODES (SVG CIRCLE)
             var node = svg.selectAll(".node")
                 .data(nodes)
@@ -179,6 +179,9 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             link.transition()
                 .duration(2000)
                 .attr('opacity', 1)
+            
+            link.exit().remove();
+            node.exit().remove();
 
             simulation.on("tick", () => {
                 node

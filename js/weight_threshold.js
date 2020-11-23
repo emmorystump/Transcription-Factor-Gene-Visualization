@@ -25,9 +25,6 @@ Weights.prototype.init = function(){
 
     var dataArray = self.createNormalDist(self.mean, self.std);
 
-    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }).toExponential());
-    document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
-
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])
@@ -38,6 +35,18 @@ Weights.prototype.init = function(){
         .domain([0, d3.max(dataArray, function(d) {
             return d.y;
         })]);
+
+
+    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }).toExponential());
+    document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
+
+    $('#min-weight').on('change', function() {
+        // When the textbox changes, update the brush
+    });
+
+    $('#max-weight').on('change', function() {
+        // When the textbox changes, update the brush
+    });
 
     var line = d3.line()
         .x(function(d) {
@@ -78,23 +87,18 @@ Weights.prototype.init = function(){
     self.svg.append("g")
         .attr("class", "brush")
         .call(brush)
+        .call(brush.move, [3*self.svgWidth/4, self.svgWidth-self.padding])
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);
 }
-
-// Weights.prototype.brushed = function(event) {
-//     self = this;
-
-//     console.log(event);
-// };
 
 Weights.prototype.createNormalDist = function(mean, std) {
     var self = this;
     console.log(self.svg);
 
     let data = [];
-    let minI = mean - 3 * std;
+    let minI = mean - 3 *std;
     let maxI = mean + 3 * std;
     for (var i = minI; i < maxI; i += .00001) {
         data.push({

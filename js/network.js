@@ -41,8 +41,13 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
+            console.log("Min and Max Scores: ")
+            console.log(minScore);
+            console.log(maxScore);
             if(minScore != null && maxScore != null){
                 sessionStorage.setItem("selectedTf", tfSelected);
+                console.log("Setting intial TF selection in storage");
+                console.log(sessionStorage.getItem('selectedTf'));
             }
 
         }

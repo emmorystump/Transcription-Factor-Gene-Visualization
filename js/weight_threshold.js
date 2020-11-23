@@ -40,6 +40,10 @@ Weights.prototype.init = function(){
     document.getElementById("min-weight").setAttribute("value", self.mean.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
 
+    sessionStorage.setItem("min-weight", self.mean);
+    sessionStorage.setItem("max-weight", d3.max(dataArray, function (d) { return d.x }));
+
+
     $('#min-weight').on('change', function() {
         // When the textbox changes, update the brush
     });
@@ -80,7 +84,6 @@ Weights.prototype.init = function(){
             document.getElementById("min-weight").setAttribute("value", self.weightRange[0].toExponential());
             document.getElementById("max-weight").setAttribute("value", self.weightRange[1].toExponential());
 
-            console.log(self.weightRange);
         });
 
       // Append brush component

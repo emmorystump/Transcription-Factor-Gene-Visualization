@@ -83,11 +83,29 @@
           d3.select("#selectedSubmit").on('click', function(){
             sessionStorage.setItem("selectedTf", $('#selectTfFile').val())
           })
-          d3.select("#weights-submitted").on('click', function(){
-            sessionStorage.setItem("min-weight",$("#min-weight").val())
-            sessionStorage.setItem("max-weight",$("#max-weight").val())
+
+          // When user updates weight thresholds
+          d3.select("#weights-submitted").on('click', function(event){
+            console.log("Weights in main.js");
+            console.log($("#min-weight").val());
+            console.log($("#max-weight").val());
+
+            sessionStorage.setItem("min-weight",$("#min-weight").val());
+            sessionStorage.setItem("max-weight",$("#max-weight").val());
+            
+            network.update(
+              data,
+              organism,
+              sessionStorage.getItem("selectedTf"),
+              sessionStorage.getItem("min-weight"),
+              sessionStorage.getItem("max-weight"));
 
           })
+
+          console.log("First Update: ");
+          console.log(sessionStorage.getItem("min-weight"));
+          console.log(sessionStorage.getItem("max-weight"));
+          
           network.update(
             data,
             organism,

@@ -41,11 +41,8 @@ Network.prototype.update = function (data, organism, tfSelected) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
         }
-<<<<<<< HEAD
 
-=======
 
->>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
         console.log("tfSelected" + tfSelected)
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
@@ -78,11 +75,8 @@ Network.prototype.update = function (data, organism, tfSelected) {
                     linkCounter += 1;
                 }
             }
-<<<<<<< HEAD
 
-=======
 
->>>>>>> 3267aba35c2ffecb42e77bf97ff51d472f56e0ef
             d3.select("#edge-chart-heading-text")
             .text(tfSelected)
 

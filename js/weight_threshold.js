@@ -11,7 +11,7 @@ Weights.prototype.init = function(){
     var self = this;
 
     //Gets access to the div element created for this chart from HTML
-    var divWeights = d3.select("#weights").classed("content", true);
+    var divWeights = d3.select("#weight-svg").classed("content", true);
     self.svgBounds = divWeights.node().getBoundingClientRect();
     // self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgWidth = 500;
@@ -24,6 +24,10 @@ Weights.prototype.init = function(){
         .attr("height", self.svgHeight);
 
     var dataArray = self.createNormalDist(self.mean, self.std);
+
+    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }));
+    document.getElementById("max-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }));
+
 
     self.xScale = d3.scaleLinear()
             .range([0,  self.svgWidth-self.padding])

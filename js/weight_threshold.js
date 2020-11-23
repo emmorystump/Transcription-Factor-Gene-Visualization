@@ -25,8 +25,8 @@ Weights.prototype.init = function(){
 
     var dataArray = self.createNormalDist(self.mean, self.std);
 
-    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }));
-    document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }));
+    document.getElementById("min-weight").setAttribute("value", d3.min(dataArray, function (d) { return d.x; }).toExponential());
+    document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
 
 
     self.xScale = d3.scaleLinear()
@@ -67,9 +67,9 @@ Weights.prototype.init = function(){
         .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
-            
-            document.getElementById("min-weight").setAttribute("value", self.weightRange[0]);
-            document.getElementById("max-weight").setAttribute("value", self.weightRange[1]);
+
+            document.getElementById("min-weight").setAttribute("value", self.weightRange[0].toExponential());
+            document.getElementById("max-weight").setAttribute("value", self.weightRange[1].toExponential());
 
             console.log(self.weightRange);
         });

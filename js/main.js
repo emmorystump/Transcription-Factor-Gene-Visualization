@@ -20,10 +20,10 @@
         case "yeast":
           this.organism = "Saccharomyces cerevisiae"
           break;
-     
+
       } // end switch
 
-    
+
       $(document).ready(function(){
             // Add jQuery event for toggleable side bar
             $('#sidebarCollapse').on('click', function () {
@@ -54,11 +54,12 @@
             });
           }) // end jquery
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
-      var networkDetail = new NetworkDetail();
+      var goNetwork = new GoNetwork();
+      var networkDetail = new NetworkDetail(goNetwork);
       var weights = new Weights();
 
       var geneDetail = new GeneDetail(networkDetail)
-      var network = new Network(networkDetail, geneDetail)
+      var network = new Network(networkDetail, geneDetail, goNetwork)
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =
@@ -78,7 +79,7 @@
           else if (organism == "yeast"){
             var data = values[1]
           }
-        
+
           d3.select("#selectedSubmit").on('click', function(){
             sessionStorage.setItem("selectedTf", $('#selectTfFile').val())
           })
@@ -88,13 +89,13 @@
 
           })
           network.update(
-            data, 
-            organism, 
-            sessionStorage.getItem("selectedTf"), 
+            data,
+            organism,
+            sessionStorage.getItem("selectedTf"),
             sessionStorage.getItem("min-weight"),
             sessionStorage.getItem("max-weight"));
 
-        
+
       });
   } // end init()
 

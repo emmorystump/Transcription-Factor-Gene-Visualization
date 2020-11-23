@@ -1,9 +1,10 @@
 
-function Network(networkDetail, geneDetail) {
+function Network(networkDetail, geneDetail, goNetwork) {
 
     var self = this;
     self.networkDetail = networkDetail;
     self.geneDetail = geneDetail;
+    self.goNetwork = goNetwork;
     self.init();
 };
 
@@ -48,14 +49,17 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         console.log(tfSelected)
         console.log(minScore)
         console.log(maxScore)
-        // TODO: If we change TF using the side panel, the max and min score boundary is carried over 
-        // from the previous TF selection, not sure if we want to change this. Also 
-              
+        // TODO: If we change TF using the side panel, the max and min score boundary is carried over
+        // from the previous TF selection, not sure if we want to change this. Also
+
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
+            // chase todo: update TF png_url
+
             // DEFINE 'NODES' AND 'EDGES'
             for (var i = 0; i < tf.linked.length; i++) {
                 tf.scores[i] = +tf.scores[i]
             }
+            var gene_id_list = []; // store just the gene_id
             var allNodeLinks = { "nodes": [], "links": [] };
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
@@ -70,6 +74,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     "type": "tf", "score": 0,
                     "x": self.svgWidth / 2, "y": self.svgHeight / 2
                 });
+
             var linkCounter = 1;
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
@@ -88,9 +93,10 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 }
                 else {
                     if (curGeneScore > threshold) {
+                        gene_id_list[gene_id_list.length] = curGeneID;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID,
+                                "id": i, "name": curGeneID, 
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })
@@ -98,8 +104,11 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                         linkCounter += 1;
                     }
                 }
-            }
-          
+            } // allNodeLinks filling complete
+
+            // generate GO map from tf network cluster
+            self.goNetwork.update(gene_id_list);
+
             d3.select("#edge-chart-heading-text")
                 .text(tfSelected)
 
@@ -191,7 +200,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
 
             node.on("click", function (node_info, gene_info) {
                 self.geneDetail.update([gene_info.name, gene_info.score], nodes)
-                //console.log(gene_info)
             })
                 .on("mouseover", function (node_info, gene_info) {
                     d3.select(this).attr("fill", "green")

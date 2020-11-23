@@ -4,7 +4,7 @@
  *
  * replace all "networkDetail" with name of object
  */
-function NetworkDetail(){
+function NetworkDetail(goNetwork){
     var self = this;
     // if (tf_or_gene_list.length == 1){
     //   self.input_type="tf"; // get this from right side panel TODO: this eliminates if statement
@@ -14,6 +14,7 @@ function NetworkDetail(){
     //   self.tf_or_gene_list = tf_or_gene_list;
     // }
     self.init();
+    self.goNetwork = goNetwork;
     //self.update();
 
     // self.goUrlMaker(self.test_go_terms, self.chart_url_prefix);
@@ -215,32 +216,11 @@ NetworkDetail.prototype.gProfilerConvert = function(organism, gene_array, target
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
       //data: '{"organism": "hsapiens", "target": "FLYBASENAME_GENE", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}' //data: '{"organism": organism, "target": target, "query": gene_array}' //      data: '{"organism": "hsapiens", "target": "mmusculus", "query": ["CASQ2", "CASQ1", "GSTO1", "DMD", "GSTM2"]}'
     }).done(function( data ) {
-        console.log(data)
-        self.download(data, 'geneID_to_geneName.json', 'text/plain')
-       // if(sessionStorage.getItem(data_attr_name)!==null){
-       //   sessionStorage.removeItem(data_attr_name);
-       // }
-       //sessionStorage.setItem(data_attr_name, data);
-
-    });
-
-} // end gProfilerConvert()
-
-NetworkDetail.prototype.gProfilerGO = function(organism, gene_array){
-
-    $.ajax({
-      type: "POST",
-      url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
-      data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "no_evidences": true, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
-      headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
-      success: function( data ) {
-        console.log(data)
-        var a = document.createElement("a");
-        var file = new Blob([data], {type: "text/plain"});
-        a.href = URL.createObjectURL(file);
-        a.download = 'Go_Analysis.json';
-        a.click();
-      }
+        if(sessionStorage.getItem("tmp_name") !== null){
+          sessionStorage.removeItem("tmp_name")
+        }
+          sessionStorage.setItem("tmp_name") = gene_name;
+        //self.download(data, 'geneID_to_geneName.json', 'text/plain')
        // if(sessionStorage.getItem(data_attr_name)!==null){
        //   sessionStorage.removeItem(data_attr_name);
        // }

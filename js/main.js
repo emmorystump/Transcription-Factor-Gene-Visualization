@@ -11,6 +11,7 @@
    */
   function init() {
       var self = this;
+
       var organism = localStorage.getItem("organism")
       switch (organism){
         case "fly":
@@ -56,8 +57,9 @@
 
             });
           }) // end jquery
-      //var networkDetail = new NetworkDetail("test");
-      var network = new Network();
+
+      // instantiate classes that depend on, or are independent of, network (network instantiated below)
+      var networkDetail = new NetworkDetail();
       var weights = new Weights();
       //load the data TODO: BASED ON ORGANISM SELECTION
 
@@ -77,7 +79,10 @@
           else if (organism == "yeast"){
             var data = values[1]
           }
+          var geneDetail = new GeneDetail(networkDetail)
+          var network = new Network(networkDetail, geneDetail)
           network.update(data, organism, "");
+
       });
   } // end init()
 

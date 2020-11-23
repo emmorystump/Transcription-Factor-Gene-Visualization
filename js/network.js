@@ -1,9 +1,9 @@
 
-function Network() {
+function Network(networkDetail, geneDetail) {
 
     var self = this;
-    self.networkDetail = new NetworkDetail();
-    self.geneDetail = new GeneDetail();
+    self.networkDetail = networkDetail;
+    self.geneDetail = geneDetail;
     self.init();
 };
 

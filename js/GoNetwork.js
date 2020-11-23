@@ -28,11 +28,11 @@ GoNetwork.prototype.init = function(){
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight);
 
-    var go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
+    var go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
     // Build X scales and axis:
     self.x = d3.scaleBand()
       .domain(go_categories)
-      .range([ 0, self.svgWidth ])
+      .range([ 0, self.svgWidth ]);
       //.padding(0.01);
 
     // Build X scales and axis:
@@ -40,7 +40,7 @@ GoNetwork.prototype.init = function(){
       .range([ self.svgHeight, 0 ]);
 
       // Build color scale
-      self.goClassColor = d3.scaleBand()
+      self.goClassColor = d3.scaleOrdinal()
         .domain(["GO:BP", "GO:CC","GO:MF","KEGG"])
         .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
 
@@ -77,7 +77,7 @@ GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
 GoNetwork.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
-  console.log(self.goClassColor("GO:MF"))
+  console.log(self.goClassColor("KEGG"))
 
   var min_negLog10_pval = 1.3;
   var max_negLog10_pval = 6;

@@ -60,9 +60,9 @@ GeneDetail.prototype.update = function(gene_array, gene_cluster_object){
 
     // handle button clicks
     //Handle Button click
-   $(':button').on('click', function(e){
-     self.networkDetail.gProfilerConvert("dmelanogaster", gene_cluster_array, "FLYBASENAME_GENE");
-     self.networkDetail.gProfilerGO("dmelanogaster", gene_cluster_array);
+   $(':button').on('click', function(e){ //NOTE SINGLE GENE IS PASSED -- THAT SINGLE GENE CAN BE VISUALIZED AS THE PNG
+     self.networkDetail.gProfilerConvert(localStorage.getItem("organism_code"), gene_cluster_array, localStorage.getItem("gene_name_database"));
+     self.networkDetail.gProfilerGO(localStorage.getItem("organism_code"), gene_cluster_array);
    }); // end on click
 };
 

@@ -145,7 +145,6 @@ Network.prototype.update = function (data, organism, tfSelected) {
 
             node.on("click", function(node_info,gene_info){
                   self.geneDetail.update([gene_info.name, gene_info.score], nodes)
-                  //console.log(gene_info)
                 })
                 .on("mouseover", function(node_info,gene_info){
                   d3.select(this).attr("fill", "green")

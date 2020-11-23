@@ -6,12 +6,20 @@ if (typeof(Storage) !== "undefined") {
             e.preventDefault();
             if(e.target.id == "fly-img"){
                 organism = "fly";
+                organism_code = "dmelanogaster"
+                gene_name_database = "FLYBASENAME_GENE"
                 localStorage.setItem("organism", organism)
+                localStorage.setItem("organism_code", organism_code)
+                localStorage.setItem("gene_name_database", gene_name_database)
                 window.location.href='main.html';
             }
             else if(e.target.id == "yeast-img"){
                 organism = "yeast";
+                organism_code = "scerevisiae"
+                gene_name_database = "ENSG"
                 localStorage.setItem("organism", organism)
+                localStorage.setItem("organism_code", organism_code)
+                localStorage.setItem("gene_name_database", gene_name_database)
                 window.location.href='main.html';
             }
             else{

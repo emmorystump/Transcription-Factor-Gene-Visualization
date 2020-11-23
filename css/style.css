@@ -11,12 +11,15 @@ img {
 
   #homepage {
     padding-top: 100px;
+    padding-bottom: 50px;
     background-color: #F5F5F5;
 
   }
 
   #brentlab-logo {
     border-style: double;
+    margin-left: 50px;
+    margin-right: 50px;
   }
 
   #weights input {
@@ -35,14 +38,20 @@ img {
     color: #bfb9b8;
   }
 
+  #home-cite{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
   #home-organism-heading{
     padding-top:50px;
+    padding-bottom: 20px;
   }
 
   .organism-selector{
     width: auto;
     height: auto;
-    max-width: 250px;
+    max-width: 300px;
     max-height: 200px;
   }
 
@@ -232,8 +241,10 @@ img {
 
 #fly-div {
   text-align: right;
+  vertical-align: middle;
 }
 
 #yeast-div {
   text-align: left;
+  vertical-align: middle;
 }

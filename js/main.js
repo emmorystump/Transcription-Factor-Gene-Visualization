@@ -19,14 +19,10 @@
         case "yeast":
           this.organism = "Saccharomyces cerevisiae"
           break;
-        case "human":
-          this.organism = "Human"
-          break;
+     
       } // end switch
 
-      // update edge chart heading for selected species
-      $("#edge-chart-heading").text(this.organism + " Network");
-
+    
       $(document).ready(function(){
             // Add jQuery event for toggleable side bar
             $('#sidebarCollapse').on('click', function () {
@@ -77,7 +73,15 @@
           else if (organism == "yeast"){
             var data = values[1]
           }
-          network.update(data, organism, "");
+          d3.select("#selectedSubmit").on('click', function(){
+            localStorage.setItem("selectedTf", $('#selectTfFile').val())
+          })
+            // update edge chart heading for selected species
+          // $("#edge-chart-heading-text").text(localStorage.getItem("selectedTf"));
+
+          network.update(data, organism, localStorage.getItem("selectedTf"));
+
+          
       });
   } // end init()
 

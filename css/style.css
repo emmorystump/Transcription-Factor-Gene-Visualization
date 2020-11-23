@@ -229,3 +229,11 @@ img {
 #weight-labels label {
   width: 75px;
 }
+
+#fly-div {
+  text-align: right;
+}
+
+#yeast-div {
+  text-align: left;
+}

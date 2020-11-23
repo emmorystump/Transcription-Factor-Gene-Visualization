@@ -36,23 +36,34 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
 
     }
 
-    console.log(regID_to_regName)
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
+            if(minScore != null && maxScore != null){
+                sessionStorage.setItem("selectedTf", tfSelected);
+            }
+
         }
         console.log(tfSelected)
+        console.log(minScore)
+        console.log(maxScore)
+        // TODO: If we change TF using the side panel, the max and min score boundary is carried over 
+        // from the previous TF selection, not sure if we want to change this. Also 
+              
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // DEFINE 'NODES' AND 'EDGES'
             for (var i = 0; i < tf.linked.length; i++) {
                 tf.scores[i] = +tf.scores[i]
             }
             var allNodeLinks = { "nodes": [], "links": [] };
-
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
             var threshold = mean + 3 * std;
+            if (minScore < mean){
+                minScore = mean;
+            };
+
             allNodeLinks.nodes.push(
                 {
                     "id": 0, "name": tf.id,
@@ -88,11 +99,11 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     }
                 }
             }
-
+          
             d3.select("#edge-chart-heading-text")
                 .text(tfSelected)
 
-
+            console.log(allNodeLinks.links.length)
             var links = allNodeLinks.links;
             var nodes = allNodeLinks.nodes;
 

@@ -12,7 +12,7 @@
   function init() {
       var self = this;
 
-      var organism = localStorage.getItem("organism")
+      var organism = sessionStorage.getItem("organism")
       switch (organism){
         case "fly":
           this.organism = "Drosophila melanogaster"
@@ -53,7 +53,6 @@
 
             });
           }) // end jquery
-
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
       var networkDetail = new NetworkDetail();
       var weights = new Weights();
@@ -71,6 +70,7 @@
       files.forEach(function(url) {
         promises.push(d3.json(url));
       });
+
       Promise.all(promises).then(function(values) {
           if(organism == "fly"){
             var data = values[0];
@@ -78,6 +78,7 @@
           else if (organism == "yeast"){
             var data = values[1]
           }
+        
           d3.select("#selectedSubmit").on('click', function(){
             sessionStorage.setItem("selectedTf", $('#selectTfFile').val())
           })

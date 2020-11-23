@@ -31,7 +31,9 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a id="homepage-return" class="nav-link active" href="index.html">
+                                <!-- <a id="homepage-return" class="nav-link active" href="index.html"> -->
+                                <a id="homepage-return" class="nav-link active" onclick="redirectAndClearSession('index.html')">
+
                                     <span data-feather="home"></span>
                                     Organisms <span class="sr-only">(current)</span>
                                 </a>
@@ -209,6 +211,7 @@
     <script type="application/javascript" src="js/weight_threshold.js"></script>
     <script type="application/javascript" src="js/GeneDetail.js"></script>
     <script type="application/javascript" src="js/NetworkDetail.js"></script>
+    <script type="application/javascript" src="js/redirect.js"></script>
     <script type="application/javascript" src="js/main.js"></script>
 
 </body>

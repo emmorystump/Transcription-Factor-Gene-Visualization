@@ -67,6 +67,10 @@ Weights.prototype.init = function(){
         .extent([[0, 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
+            
+            document.getElementById("min-weight").setAttribute("value", self.weightRange[0]);
+            document.getElementById("max-weight").setAttribute("value", self.weightRange[1]);
+
             console.log(self.weightRange);
         });
 

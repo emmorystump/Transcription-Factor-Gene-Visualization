@@ -248,3 +248,17 @@ img {
   text-align: left;
   vertical-align: middle;
 }
+
+#instructions-modal-button {
+  background-color:  #FAFAFA;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* https://stackoverflow.com/questions/25859255/trying-to-make-bootstrap-modal-wider */
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+   max-width:1200px;
+  }
+}

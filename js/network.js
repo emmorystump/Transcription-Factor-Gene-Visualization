@@ -51,7 +51,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             }
 
         }
-       
+
         // TODO: If we change TF using the side panel, the max and min score boundary is carried over
         // from the previous TF selection, not sure if we want to change this. Also
 
@@ -90,6 +90,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 var curGeneScore = tf.scores[i]
                 if (minScore != null && maxScore != null) {
                     if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
+                        gene_id_list[gene_id_list.length] = curGeneID;
                         allNodeLinks.nodes.push(
                             {
                                 "id": i, "name": curGeneID,
@@ -156,7 +157,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 .attr("stroke", "#999")
                 .attr("stroke-opacity", 0.6);
 
-        
+
             // DRAW THE NODES (SVG CIRCLE)
             var node = svg.selectAll(".node")
                 .data(nodes)

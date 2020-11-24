@@ -48,11 +48,12 @@ Weights.prototype.init = function(){
             return d.y;
         })]);
 
+    let minThreshold = parseFloat(self.mean) + 0.5*parseFloat(self.std);
 
-    document.getElementById("min-weight").setAttribute("value", self.mean.toExponential() + self.std.toExponential());
+    document.getElementById("min-weight").setAttribute("value", minThreshold.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
 
-    sessionStorage.setItem("min-weight", self.mean);
+    sessionStorage.setItem("min-weight", minThreshold);
     sessionStorage.setItem("max-weight", d3.max(dataArray, function (d) { return d.x }));
 
 
@@ -89,7 +90,7 @@ Weights.prototype.init = function(){
 
     // Create brush component
     var brush = d3.brushX()
-        .extent([[self.xScale(self.mean+self.std), 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .extent([[self.xScale(minThreshold), 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
 

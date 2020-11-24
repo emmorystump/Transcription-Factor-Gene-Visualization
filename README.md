@@ -20,7 +20,7 @@ This function is important because different biologists will have different uses
 
 Next, a biologist would want to either enter their favorite transcription factor, or a gene list. Please notice the space in which that entry would happen in the right side panel. If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to decrease your threshold!
 
-At this point, imagine you've entered a TF (or maybe you really did). The graphs on your screen have populated for that TF/target network. You should play around with the nodes/edges graph at this point by dragging the nodes, hovering over them, and clicking on them.
+At this point, imagine you've entered a TF (or maybe you really did). The graphs on your screen have populated for that TF/target network. You should play around with the nodes/edges graph at this point by dragging the nodes, hovering over them, and clicking on them. Eventually, a user will have options of spacial organizations of these nodes.
 
 When you click a gene (all nodes are genes, but the blue one is special because it is a regulator of the red genes), information is populated in the "Gene Detail". This is a place holder at this point, though some information will be populated.
 

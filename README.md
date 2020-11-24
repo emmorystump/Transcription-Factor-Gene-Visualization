@@ -12,9 +12,11 @@ First choose if you are a Fly biologist or a Yeast biologist. Click your creatur
 
 A TF network will appear by default. The blue node is a Transcription Factor (read the tf story!), the red nodes are the genes that TF regulates.
 
-Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. It is here that you will determine a threshold to set on the strength of evidence that a TF actually controls a given gene. This is important because different biologists will have different uses for this data -- if this biologist is doing a large genomics experiment, they may want to allow more edges per TF, so that they get more genes per TF to test, even though those edges are less deterministic. If the biologist is going to explore these genes by hand in some way, they will want a more stringent threshold.
+Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. It is here that you will determine a threshold to set on the strength of evidence that a TF actually controls a given gene. 
 
-This is an aspect of the functionality that is important -- in the network data that the biologist would otherwise have to deal with, there is an edge from every TF to every gene, as the algorithm that determines the edges is probabilistic. The edge weights, however, are "scores" rather than "probabilities", and it is not immediately clear how to deal with setting a filter. This function offers a hopefully more intuitive method.
+Use the brush to select a portion of the curve. If the network is large (lots of red nodes), select less of the distrubtion and click "update weights". Too much? select a bit more and do the same.
+
+This is important because different biologists will have different uses for this data -- if this biologist is doing a large genomics experiment, they may want to allow more edges per TF, so that they get more genes per TF to test, even though those edges are less deterministic. If the biologist is going to explore these genes by hand in some way, they will want a more stringent threshold.
 
 Next, a biologist would want to either enter their favorite transcription factor, or a gene list. Please notice the space in which that entry would happen in the right side panel.
 

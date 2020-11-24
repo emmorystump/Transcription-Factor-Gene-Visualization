@@ -101,10 +101,10 @@
                             A TF (Transcription Factor) network will appear by default. The blue node is a Transcription Factor (read the tf story!), the red nodes are the genes that this Transcription Factor regulates.
                         </p>
                         <p>
-                            Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. At the top of the side panel is a section labeled weights. The values represented in this normalized distribution represent the strength of evidence that the selected Transcription Factor controls a given gene. Therefore, selecting a range within this graph will return all genes regulated by the TF where the strength of evidence is between the given range. 
+                            Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. At the top of the side panel is a section to filter the network with edge weights. The values represented in this normalized distribution represent the strength of evidence that the selected Transcription Factor controls a given gene. Therefore, selecting a range within this graph will return all genes regulated by the TF where the strength of evidence is between the given range. 
                         </p>
                         <p>
-                            Use the brush to select a portion of the curve on the far righthand side. If the network is large (lots of red nodes), select less of the distrubtion and click "Update Weights". Too many nodes still? Select even less of the curve and update.
+                            Use the brush to select a portion of the curve on the far righthand side. If the network is large (lots of red nodes), select regions further to the right side of the distribution and click "Update Weights". Too many nodes still? Select even less of the curve and update.
                         </p>
                         <p>
                             This function is important because different biologists will have different uses for this data -- if this biologist is doing a large genomics experiment, they may want to allow more edges per TF, so that they get more genes per TF to test, even though those edges are less deterministic. If the biologist is going to explore these genes by hand in some way, they will want a more stringent threshold.
@@ -113,7 +113,7 @@
                             Currently, we only support brushing within the range (mean + standard deviation) to (mean + 3 * standard deviation). This is primarily for 2 reasons. Firstly, supporting the entire normalized curve is simply too much data for our application to load. Secondly, biologists will rarely use data with a weight threshold of such a low strength of evidence that it is not contained with this range. Overall, they will primarily be looking at the top percentage of the distribution. 
                         </p>
                         <p>
-                            Next, a biologist would want to either enter their favorite transcription factor, or a gene list. Please notice the space in which that entry would happen in the right side panel. If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to decrease your threshold! 
+                            Next, a biologist would want to either enter their favorite transcription factor, or a gene list (The gene list option is currently not implemented).If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to increase your minimum threshold! 
                         </p>
                         <p>
                             At this point, imagine you've entered a TF (or maybe you really did). The graphs on your screen have populated for that TF/target network. You should play around with the nodes/edges graph at this point by dragging the nodes, hovering over them, and clicking on them. Eventually, a user will have options of spatial organizations of these nodes.

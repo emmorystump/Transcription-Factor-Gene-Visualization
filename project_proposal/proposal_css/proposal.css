@@ -32,3 +32,7 @@ h1, h4, h5 {
 #pbTitle {
     text-align: center;
 }
+
+#milestone1 img {
+  width: 1000px;
+}

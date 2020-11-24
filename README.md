@@ -45,3 +45,9 @@ https://codepen.io/bootpen/pen/jbbaRa?__cf_chl_jschl_tk__=6e74ff2d1f9ca78d7e87a8
 
 For help making the normalized graph: 
 https://bl.ocks.org/EfratVil/99462577a475bbad4be1146caca75a58
+
+Initial Structure to create a modal:
+https://www.w3schools.com/bootstrap/bootstrap_modal.asp
+
+To make instructions modal larger:
+https://stackoverflow.com/questions/25859255/trying-to-make-bootstrap-modal-wider

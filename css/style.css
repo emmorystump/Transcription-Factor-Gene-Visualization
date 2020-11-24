@@ -262,3 +262,13 @@ img {
    max-width:1200px;
   }
 }
+
+.instructions-subtext {
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.modal-body li {
+  padding-top: 5px;
+}

@@ -41,14 +41,17 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
+            console.log("Min and Max Scores: ")
+            console.log(minScore);
+            console.log(maxScore);
             if(minScore != null && maxScore != null){
                 sessionStorage.setItem("selectedTf", tfSelected);
+                console.log("Setting intial TF selection in storage");
+                console.log(sessionStorage.getItem('selectedTf'));
             }
 
         }
-        console.log(tfSelected)
-        console.log(minScore)
-        console.log(maxScore)
+       
         // TODO: If we change TF using the side panel, the max and min score boundary is carried over
         // from the previous TF selection, not sure if we want to change this. Also
 
@@ -64,10 +67,16 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
             var threshold = mean + 3 * std;
-            if (minScore < mean){
-                minScore = mean;
-            };
-
+            // if (minScore == null || maxScore == null){
+            //     minScore = threshold
+            // }
+            // if (minScore < mean){
+            //     minScore = mean;
+            // };
+            console.log(tfSelected)
+            console.log(minScore)
+            console.log(maxScore)
+            console.log(threshold)
             allNodeLinks.nodes.push(
                 {
                     "id": 0, "name": tf.id,
@@ -92,7 +101,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     }
                 }
                 else {
-                    if (curGeneScore > threshold) {
+                    if (curGeneScore > +minScore) {
                         gene_id_list[gene_id_list.length] = curGeneID;
                         allNodeLinks.nodes.push(
                             {
@@ -125,12 +134,15 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 .range([1, 10]);
             // START RUNNING THE SIMULATION
             var simulation = d3.forceSimulation(nodes)
-                .force('link', d3.forceLink(links).distance(50))
+                .force('link', d3.forceLink(links).distance(100))
                 .force("charge", d3.forceManyBody())
                 .force("center", d3.forceCenter(self.svgWidth / 2 - 50, self.svgHeight / 2))
                 .force('collision', d3.forceCollide().radius(function (d) {
-                    return 10;
+                    return 15;
                 }));
+
+            svg.selectAll("g").remove();
+            svg.selectAll(".node").remove();
 
             // DRAW THE LINKS (SVG LINE)
 
@@ -144,14 +156,14 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 .attr("stroke", "#999")
                 .attr("stroke-opacity", 0.6);
 
-
+        
             // DRAW THE NODES (SVG CIRCLE)
             var node = svg.selectAll(".node")
                 .data(nodes)
                 .enter()
                 .append("circle")
                 .attr("class", "node")
-                .attr("r", 5)
+                .attr("r", 10)
                 .attr("fill", function (d) {
                     if (d.type == "tf") {
                         return "#6778d0";

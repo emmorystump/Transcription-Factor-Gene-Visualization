@@ -1,8 +1,21 @@
-function Weights(){
+function Weights(organism){
 
     var self = this;
+    self.organism = organism;
+
+    
     self.mean = 0.00044677325327633944;
     self.std = 0.0001881886776192946;
+
+    if (self.organism==="fly") {
+        self.mean = 0.00011797133892787916;
+        self.std = 0.001943121556947353;
+    }
+    else {
+        self.mean = 0.003154787664642385;
+        self.std = 0.015589870181127048;
+    }
+
     self.weightRange = [0,0];
     self.init();
 }
@@ -13,7 +26,6 @@ Weights.prototype.init = function(){
     //Gets access to the div element created for this chart from HTML
     var divWeights = d3.select("#weight-svg").classed("content", true);
     self.svgBounds = divWeights.node().getBoundingClientRect();
-    // self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgWidth = 500;
     self.svgHeight = 200;
     self.padding = 30;
@@ -36,9 +48,14 @@ Weights.prototype.init = function(){
             return d.y;
         })]);
 
+    let minThreshold = parseFloat(self.mean) + 0.5*parseFloat(self.std);
 
-    document.getElementById("min-weight").setAttribute("value", self.mean.toExponential());
+    document.getElementById("min-weight").setAttribute("value", minThreshold.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
+
+    sessionStorage.setItem("min-weight", minThreshold);
+    sessionStorage.setItem("max-weight", d3.max(dataArray, function (d) { return d.x }));
+
 
     $('#min-weight').on('change', function() {
         // When the textbox changes, update the brush
@@ -73,14 +90,13 @@ Weights.prototype.init = function(){
 
     // Create brush component
     var brush = d3.brushX()
-        .extent([[self.xScale(self.mean), 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
+        .extent([[self.xScale(minThreshold), 0], [self.svgWidth-self.padding, self.svgHeight-self.padding]])
         .on("brush", function({selection}) {
             self.weightRange = [self.xScale.invert(selection[0]), self.xScale.invert(selection[1])];
 
             document.getElementById("min-weight").setAttribute("value", self.weightRange[0].toExponential());
             document.getElementById("max-weight").setAttribute("value", self.weightRange[1].toExponential());
 
-            console.log(self.weightRange);
         });
 
       // Append brush component

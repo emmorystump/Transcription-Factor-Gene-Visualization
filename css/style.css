@@ -248,3 +248,12 @@ img {
   text-align: left;
   vertical-align: middle;
 }
+
+#instructions-modal-button {
+  background-color:  #FAFAFA;
+  font-size: 14px;
+  width: 100%;
+}
+
+#myInstructionsModal{
+}

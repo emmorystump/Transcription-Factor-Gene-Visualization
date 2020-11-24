@@ -48,7 +48,7 @@ Weights.prototype.init = function(){
             return d.y;
         })]);
 
-    let minThreshold = parseFloat(self.mean) + 0.5*parseFloat(self.std);
+    let minThreshold = parseFloat(self.mean) + parseFloat(self.std);
 
     document.getElementById("min-weight").setAttribute("value", minThreshold.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());

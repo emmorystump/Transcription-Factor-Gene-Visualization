@@ -27,8 +27,6 @@ Network.prototype.init = function () {
 Network.prototype.update = function (data, organism, tfSelected, minScore, maxScore) {
     var self = this;
     var svg = self.svg;
-    // this is the data passed in the constructor on main.js organism/data/gene_info.json. I (chase) have another function with gene_info as an argument -- needs refractoring for clarity
-    self.gene_info_json = data;
     if (organism == "fly") {
         var dataDir = "data/fruitfly/"
         var regID_to_regName = "ff_regulatorID_to_regulatorName.csv"
@@ -40,8 +38,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
     }
 
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
-      var test = "YHL025W";
-      console.log(self.gene_info_json[test].name)
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
@@ -81,10 +77,14 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             console.log(minScore)
             console.log(maxScore)
             console.log(threshold)
-            // store transcription factor info (if someone else sees this -- please take this paren out if this is correct)
+            var tf_geneName = data[tf.id].name;
+            var tf_description = data[tf.id].description;
+            var tf_go = data[tf.id].go;
+            var tf_link = data[tf.id].link;
             allNodeLinks.nodes.push(
                 {
-                    "id": 0, "name": tf.id,
+                    "id": 0, "name": tf.id, "gene_name": tf_geneName,
+                    "description": tf_description, "go": tf_go, "link": tf_link,
                     "type": "tf", "score": 0,
                     "x": self.svgWidth / 2, "y": self.svgHeight / 2
                 });
@@ -93,14 +93,22 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
                 var curGeneScore = tf.scores[i];
-                // why this?
+                // THIS IS WHERE ID LIKE THIS, BUT IT DOESN'T WORK.
+                // var geneName = data[curGeneID].name;
+                // var description = data[curGeneID].description;
+                // var go = data[curGeneID].go;
+                // var link = data[curGeneID].link;
                 if (minScore != null && maxScore != null) {
                     if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
-                        // gene_id_list[gene_id_list.length] = curGeneID;
-                        // var gene_name = self.gene_info_json[curGeneID].name;
+                      gene_id_list[i] = curGeneID;
+                      var geneName = data[curGeneID].name;
+                      var description = data[curGeneID].description;
+                      var go = data[curGeneID].go;
+                      var link = data[curGeneID].link;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID,
+                                "id": i, "name": curGeneID, "gene_name": geneName,
+                                "description": description, "go": go, "link": link,
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })
@@ -110,11 +118,15 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 }
                 else {
                     if (curGeneScore > +minScore) {
-                        // gene_id_list[gene_id_list.length] = curGeneID;
-                        // var gene_name = self.gene_info_json[curGeneID].name;
+                      gene_id_list[i] = curGeneID;
+                      var geneName = data[curGeneID].name;
+                      var description = data[curGeneID].description;
+                      var go = data[curGeneID].go;
+                      var link = data[curGeneID].link;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID,
+                                "id": i, "name": curGeneID, "gene_name": gene_name,
+                                "description": description, "go": go, "link": link,
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })
@@ -123,7 +135,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     }
                 }
             } // allNodeLinks filling complete
-            console.log(allNodeLinks.nodes)
 
             // generate GO map from tf network cluster
             self.goNetwork.update(gene_id_list);
@@ -220,12 +231,56 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     event.subject.fy = null;
                 }));
 
+            // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
+            var tooltip = d3.select("#network-vis")
+              .append("div")
+              .style("opacity", 0)
+              .attr("class", "tooltip")
+              .style("background-color", "white")
+              .style("border", "solid")
+              .style("border-width", "1px")
+              .style("border-radius", "5px")
+              .style("padding", "10px");
+
+              // A function that change this tooltip when the user hover a point.
+              // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+              var mouseover = function(d) {
+                tooltip
+                  .style("opacity", 1)
+              };
+
+              var mousemove = function(d, i) {
+                var x_pos = i.x+50 + "px";
+                if(i.x < self.svgWidth / 2){
+                  x_pos = i.x-150 + "px"
+                }
+                // var y_pos = i.y+50 + "px";
+                // if(i.x < self.svgWidth / 2){
+                //   y_pos = i.y-150 + "px"
+                // }
+                tooltip
+                  //.html("Gene ID: " + i.name)
+                  .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
+                  .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+                  .style("top", i.y + "px")
+              };
+
+              // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+              var mouseleave = function(d) {
+                tooltip
+                  .transition()
+                  .duration(200)
+                  .style("opacity", 0)
+              };
+
             node.on("click", function (node_info, gene_info) {
-                self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+                self.geneDetail.update(gene_info, {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link})
             })
                 .on("mouseover", function (node_info, gene_info) {
-                    d3.select(this).attr("fill", "green")
+                    tooltip.style("opacity", 1)
+                    d3.select(this).attr("fill", "green");
                 })
+                .on("mousemove", mousemove)
                 .on("mouseout", function (node_info, gene_info) {
                     d3.select(this).attr("fill", function (d, i) {
                         if (gene_info.type == "tf") {
@@ -233,8 +288,9 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                         } else {
                             return "#ba495b"
                         }
-                    }) // end d3.select
+                    })
                 })
+              .on("mouseleave", mouseleave)
         }); // end d3.json
     }) // end d3.csv
 

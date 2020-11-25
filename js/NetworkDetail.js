@@ -90,7 +90,7 @@ NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
 
   this.url = url_prefix + self.gene_array.join("%");
 
-  console.log(this.url);
+  return(this.url);
 
 }; // end goUrlMaker()
 

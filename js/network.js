@@ -27,6 +27,8 @@ Network.prototype.init = function () {
 Network.prototype.update = function (data, organism, tfSelected, minScore, maxScore) {
     var self = this;
     var svg = self.svg;
+    // this is the data passed in the constructor on main.js organism/data/gene_info.json. I (chase) have another function with gene_info as an argument -- needs refractoring for clarity
+    self.gene_info_json = data;
     if (organism == "fly") {
         var dataDir = "data/fruitfly/"
         var regID_to_regName = "ff_regulatorID_to_regulatorName.csv"
@@ -38,6 +40,8 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
     }
 
     d3.csv(dataDir + regID_to_regName).then(function (allTFs) {
+      var test = "YHL025W";
+      console.log(self.gene_info_json[test].name)
         if (tfSelected == "" || tfSelected == null) {
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tfSelected = allTFs[random].input;
@@ -77,20 +81,23 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             console.log(minScore)
             console.log(maxScore)
             console.log(threshold)
+            // store transcription factor info (if someone else sees this -- please take this paren out if this is correct)
             allNodeLinks.nodes.push(
                 {
                     "id": 0, "name": tf.id,
                     "type": "tf", "score": 0,
                     "x": self.svgWidth / 2, "y": self.svgHeight / 2
                 });
-
+            // fill allNodeLinks
             var linkCounter = 1;
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
-                var curGeneScore = tf.scores[i]
+                var curGeneScore = tf.scores[i];
+                // why this?
                 if (minScore != null && maxScore != null) {
                     if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
-                        gene_id_list[gene_id_list.length] = curGeneID;
+                        // gene_id_list[gene_id_list.length] = curGeneID;
+                        // var gene_name = self.gene_info_json[curGeneID].name;
                         allNodeLinks.nodes.push(
                             {
                                 "id": i, "name": curGeneID,
@@ -103,7 +110,8 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 }
                 else {
                     if (curGeneScore > +minScore) {
-                        gene_id_list[gene_id_list.length] = curGeneID;
+                        // gene_id_list[gene_id_list.length] = curGeneID;
+                        // var gene_name = self.gene_info_json[curGeneID].name;
                         allNodeLinks.nodes.push(
                             {
                                 "id": i, "name": curGeneID,
@@ -115,6 +123,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     }
                 }
             } // allNodeLinks filling complete
+            console.log(allNodeLinks.nodes)
 
             // generate GO map from tf network cluster
             self.goNetwork.update(gene_id_list);

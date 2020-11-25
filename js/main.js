@@ -92,7 +92,7 @@
 
             sessionStorage.setItem("min-weight",$("#min-weight").val());
             sessionStorage.setItem("max-weight",$("#max-weight").val());
-            
+
             network.update(
               data,
               organism,

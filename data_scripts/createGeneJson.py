@@ -17,19 +17,19 @@
     Where the FB... are geneIDs (these are for the fruit fly)
 
     usage example 1:
-    data_scripts/createGeneJson.py -g data/gene \
+    data_scripts/createGeneJson.py -g data/yeast/genes \
     -gid2gn data/yeast/y_geneID_to_geneName.csv \
     -gid2go data/yeast/y_geneID_to_go.csv \
     -l uswest.ensembl.org/Saccharomyces_cerevisiae/Gene/Summary?g= \
-    -fn yeast_gene_info \
-    -o data/yeast
+    -fn gene_info \
+    -o data/yeast/
 
     usage example 2:
     createGeneJson.py -g /home/chase/class/intro_to_vis/vis_final/data/fruitfly/genes \
     -gid2gn /home/chase/class/intro_to_vis/vis_final/data/fruitfly/ff_geneID_to_geneName.csv \
     -gid2go /home/chase/class/intro_to_vis/vis_final/data/fruitfly/ff_geneID_to_go.csv \
     -l https://flybase.org/reports/ \
-    -fn ff_gene_info \
+    -fn gene_info \
     -o /home/chase/class/intro_to_vis/vis_final/data/fruitfly/
 
 """

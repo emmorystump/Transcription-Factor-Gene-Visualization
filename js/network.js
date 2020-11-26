@@ -1,8 +1,7 @@
 
-function Network(networkDetail, geneDetail, goNetwork) {
+function Network(geneDetail, goNetwork) {
 
     var self = this;
-    self.networkDetail = networkDetail;
     self.geneDetail = geneDetail;
     self.goNetwork = goNetwork;
     self.init();
@@ -67,7 +66,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
             var threshold = mean + 3 * std;
-    
+
             var tf_geneName = data[tf.id].name;
             var tf_description = data[tf.id].description;
             var tf_go = data[tf.id].go;
@@ -84,7 +83,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
                 var curGeneScore = tf.scores[i];
-           
+
                 // console.log("curGeneID: ")
                 // console.log(curGeneID)
                 // console.log("data[curGeneID]: ")

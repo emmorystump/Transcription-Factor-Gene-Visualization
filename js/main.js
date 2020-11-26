@@ -55,11 +55,10 @@
           }) // end jquery
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
       var goNetwork = new GoNetwork();
-      var networkDetail = new NetworkDetail(goNetwork);
       var weights = new Weights(organism);
 
-      var geneDetail = new GeneDetail(networkDetail)
-      var network = new Network(networkDetail, geneDetail, goNetwork)
+      var geneDetail = new GeneDetail()
+      var network = new Network(geneDetail, goNetwork)
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =

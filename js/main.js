@@ -53,12 +53,12 @@
 
             });
           }) // end jquery
+          
       // instantiate classes that depend on, or are independent of, network (network instantiated below)
-      var goNetwork = new GoNetwork();
       var weights = new Weights(organism);
-
       var geneDetail = new GeneDetail()
-      var network = new Network(geneDetail, goNetwork)
+      var goNetwork = new GoNetwork(geneDetail);
+      var network = new Network(geneDetail, goNetwork);
       //load the data TODO: BASED ON ORGANISM SELECTION
 
       var files =

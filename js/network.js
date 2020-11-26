@@ -20,8 +20,48 @@ Network.prototype.init = function () {
     //creates svg element within the div
     self.svg = divNetwork.append("svg")
         .attr("width", self.svgWidth)
-        .attr("height", self.svgHeight)
-};
+        .attr("height", self.svgHeight);
+
+    // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
+    // consider this a cite for all tooltip related code
+    self.tooltip = d3.select("#network-vis")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .attr("id", "network-vis-tooltip")
+      .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "10px");
+
+    // A function that change this tooltip when the user hover a point.
+    // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+    self.mouseover = function(d) {
+      self.tooltip
+        .style("opacity", 1)
+    };
+
+    self.mousemove = function(d, i) {
+      var x_pos = i.x+50 + "px";
+      if(i.x < self.svgWidth / 2){
+        x_pos = i.x-150 + "px"
+      }
+      self.tooltip
+        .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
+        .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+        .style("top", i.y + "px")
+    };
+
+    // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+    self.mouseleave = function(d) {
+      self.tooltip
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+    };
+
+} // end init()
 
 Network.prototype.update = function (data, organism, tfSelected, minScore, maxScore) {
     var self = this;
@@ -87,7 +127,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 // console.log("curGeneID: ")
                 // console.log(curGeneID)
                 // console.log("data[curGeneID]: ")
-                console.log(data[curGeneID])
                 if (curGeneID == "undefined"){
                     continue;
                 }
@@ -135,7 +174,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             d3.select("#edge-chart-heading-text")
                 .text(tfSelected)
 
-            console.log(allNodeLinks.links.length)
             var links = allNodeLinks.links;
             var nodes = allNodeLinks.nodes;
 
@@ -224,56 +262,15 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     event.subject.fy = null;
                 }));
 
-            // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
-            var tooltip = d3.select("#network-vis")
-              .append("div")
-              .style("opacity", 0)
-              .attr("class", "tooltip")
-              .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
-              .style("border", "solid")
-              .style("border-width", "1px")
-              .style("border-radius", "5px")
-              .style("padding", "10px");
-
-              // A function that change this tooltip when the user hover a point.
-              // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
-              var mouseover = function(d) {
-                tooltip
-                  .style("opacity", 1)
-              };
-
-              var mousemove = function(d, i) {
-                var x_pos = i.x+50 + "px";
-                if(i.x < self.svgWidth / 2){
-                  x_pos = i.x-150 + "px"
-                }
-                // var y_pos = i.y+50 + "px";
-                // if(i.x < self.svgWidth / 2){
-                //   y_pos = i.y-150 + "px"
-                // }
-                tooltip
-                  //.html("Gene ID: " + i.name)
-                  .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
-                  .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-                  .style("top", i.y + "px")
-              };
-
-              // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-              var mouseleave = function(d) {
-                tooltip
-                  .transition()
-                  .duration(200)
-                  .style("opacity", 0)
-              };
 
             node.on("click", function (node_info, gene_info) {
                 self.geneDetail.update(gene_info, {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link})
             })
                 .on("mouseover", function (node_info, gene_info) {
-                    tooltip.style("opacity", 1)
+                    self.tooltip.style("opacity", 1)
                     d3.select(this).attr("fill", "green");
                 })
-                .on("mousemove", mousemove)
+                .on("mousemove", self.mousemove)
                 .on("mouseout", function (node_info, gene_info) {
                     d3.select(this).attr("fill", function (d, i) {
                         if (gene_info.type == "tf") {
@@ -283,7 +280,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                         }
                     })
                 })
-              .on("mouseleave", mouseleave)
+              .on("mouseleave", self.mouseleave)
         }); // end d3.json
     }) // end d3.csv
 

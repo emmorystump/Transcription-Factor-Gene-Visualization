@@ -4,14 +4,16 @@
  *
  * replace all "VisTemplate" with name of object
  */
-function GoNetwork(){
+function GoNetwork(geneDetail){
 
     var self = this;
+    self.geneDetail = geneDetail;
     self.init();
 };
 
 /**
  * Initializes the svg elements required for this chart
+ * TODO: put tooltip infrastructure somewhere w/common access -- less redundancy
  */
 GoNetwork.prototype.init = function(){
     var self = this;
@@ -39,10 +41,53 @@ GoNetwork.prototype.init = function(){
     self.y = d3.scaleLinear()
       .range([ self.svgHeight, 0 ]);
 
-      // Build color scale
-      self.goClassColor = d3.scaleOrdinal()
-        .domain(["GO:BP", "GO:CC","GO:MF","KEGG"])
-        .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
+    // Build color scale
+    self.goClassColor = d3.scaleOrdinal()
+      .domain(["GO:BP", "GO:CC","GO:MF","KEGG"])
+      .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
+
+    // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
+    // consider this a cite for all tooltip related code
+    self.tooltip = d3.select(".go-network")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .attr("id", "go-network-tooltip")
+      .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "10px");
+
+      // A function that change this tooltip when the user hover a point.
+      // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+      self.mouseover = function(d) {
+        self.tooltip
+          .style("opacity", 1)
+      };
+
+      self.mousemove = function(d, i) {
+        console.log(d)
+        var x_pos = i.x+50 + "px";
+        if(i.x < self.svgWidth / 2){
+          x_pos = i.x-150 + "px"
+        }
+        self.tooltip
+          .html("<p>Description: " + i.description + "<br>"+
+                 "GO_term: " + i.native + "<br>"+
+                 "<p> -log10(p-value): " + i.p_value + "<\p>"+
+                 '<a class="nav-link" href="'+self.geneDetail.goUrlMaker(i.parents, sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>')
+          .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+          .style("top", i.y + "px")
+      };
+
+      // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+      self.mouseleave = function(d) {
+        self.tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 0)
+      };
 
 };
 /**
@@ -77,7 +122,6 @@ GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
 GoNetwork.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
-  console.log(self.goClassColor("KEGG"))
 
   var min_negLog10_pval = 1.3;
   var max_negLog10_pval = 6;
@@ -106,9 +150,15 @@ GoNetwork.prototype.visualize = function(go_object){
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
     .attr("fill", function(d,i) {return self.goClassColor(d.source)})
     .attr("class", "my-circles")
-    .call(log, "dataset")
+    .on("click", function(node_info, data){
+      self.tooltip.style("opacity", 1);
+      self.mousemove(node_info, data);
+    })
+    .on("mouseover", function(node_info, data){
+      self.tooltip.style("opacity", 1);
+      // put a halo around the selected node
+    });
 
-    function log(sel,msg) {
-    console.log(msg,sel);
-  }
+    self.svg.on("mouseleave", self.mouseleave);
+
 } // end visualize

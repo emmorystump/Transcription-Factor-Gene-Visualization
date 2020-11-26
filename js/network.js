@@ -236,7 +236,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
               .append("div")
               .style("opacity", 0)
               .attr("class", "tooltip")
-              .style("background-color", "white")
+              .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
               .style("border", "solid")
               .style("border-width", "1px")
               .style("border-radius", "5px")

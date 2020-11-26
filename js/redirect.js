@@ -9,8 +9,8 @@ if (typeof(Storage) !== "undefined") {
                 organism_code = "dmelanogaster"
                 gene_name_database = "FLYBASENAME_GENE"
                 sessionStorage.setItem("organism", organism)
-                localStorage.setItem("organism_code", organism_code)
-                localStorage.setItem("gene_name_database", gene_name_database)
+                sessionStorage.setItem("organism_code", organism_code)
+                sessionStorage.setItem("gene_name_database", gene_name_database)
                 window.location.href='main.html';
             }
             else if(e.target.id == "yeast-img"){
@@ -18,8 +18,8 @@ if (typeof(Storage) !== "undefined") {
                 organism_code = "scerevisiae"
                 gene_name_database = "ENSG"
                 sessionStorage.setItem("organism", organism)
-                localStorage.setItem("organism_code", organism_code)
-                localStorage.setItem("gene_name_database", gene_name_database)
+                sessionStorage.setItem("organism_code", organism_code)
+                sessionStorage.setItem("gene_name_database", gene_name_database)
                 window.location.href='main.html';
             }
             

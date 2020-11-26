@@ -86,9 +86,6 @@
 
           // When user updates weight thresholds
           d3.select("#weights-submitted").on('click', function(event){
-            console.log("Weights in main.js");
-            console.log($("#min-weight").val());
-            console.log($("#max-weight").val());
 
             sessionStorage.setItem("min-weight",$("#min-weight").val());
             sessionStorage.setItem("max-weight",$("#max-weight").val());

@@ -55,7 +55,7 @@ GoNetwork.prototype.update = function(gene_id_list){
   var self = this;
   //console.log(gene_name_list)
 
-  self.gProfilerGO(localStorage.getItem("organism_code"), gene_id_list);
+  self.gProfilerGO(sessionStorage.getItem("organism_code"), gene_id_list);
 
 }; // end update()
 

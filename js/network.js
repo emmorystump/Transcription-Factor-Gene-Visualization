@@ -53,7 +53,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         }
 
         // TODO: If we change TF using the side panel, the max and min score boundary is carried over
-        // from the previous TF selection, not sure if we want to change this. Also
+        // from the previous TF selection, not sure if we want to change this.
 
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // chase todo: update TF png_url
@@ -67,16 +67,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
             var threshold = mean + 3 * std;
-            // if (minScore == null || maxScore == null){
-            //     minScore = threshold
-            // }
-            // if (minScore < mean){
-            //     minScore = mean;
-            // };
-            console.log(tfSelected)
-            console.log(minScore)
-            console.log(maxScore)
-            console.log(threshold)
+    
             var tf_geneName = data[tf.id].name;
             var tf_description = data[tf.id].description;
             var tf_go = data[tf.id].go;
@@ -93,11 +84,14 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
                 var curGeneScore = tf.scores[i];
-                // THIS IS WHERE ID LIKE THIS, BUT IT DOESN'T WORK.
-                // var geneName = data[curGeneID].name;
-                // var description = data[curGeneID].description;
-                // var go = data[curGeneID].go;
-                // var link = data[curGeneID].link;
+           
+                // console.log("curGeneID: ")
+                // console.log(curGeneID)
+                // console.log("data[curGeneID]: ")
+                console.log(data[curGeneID])
+                if (curGeneID == "undefined"){
+                    continue;
+                }
                 if (minScore != null && maxScore != null) {
                     if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
                       gene_id_list[i] = curGeneID;
@@ -206,8 +200,8 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
 
             simulation.on("tick", () => {
                 node
-                    .attr("cx", d => d.x = Math.max(5, Math.min(self.svgWidth - 5, d.x)))
-                    .attr("cy", d => d.y = Math.max(5, Math.min(self.svgHeight - 5, d.y)));
+                    .attr("cx", d => d.x = Math.max(5, Math.min(self.svgWidth - 10, d.x)))
+                    .attr("cy", d => d.y = Math.max(5, Math.min(self.svgHeight - 10, d.y)));
                 link
                     .attr("x1", d => d.source.x)
                     .attr("y1", d => d.source.y)

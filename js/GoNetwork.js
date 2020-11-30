@@ -4,10 +4,11 @@
  *
  * replace all "VisTemplate" with name of object
  */
-function GoNetwork(geneDetail){
+function GoNetwork(geneDetail, goHeatmap){
 
     var self = this;
     self.geneDetail = geneDetail;
+    self.goHeatmap = goHeatmap;
     self.init();
 };
 
@@ -42,8 +43,9 @@ GoNetwork.prototype.init = function(){
       .range([ self.svgHeight, 0 ]);
 
     // Build color scale
+    self.functionalCategories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
     self.goClassColor = d3.scaleOrdinal()
-      .domain(["GO:BP", "GO:CC","GO:MF","KEGG"])
+      .domain(self.functionalCategories)
       .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
 
     // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
@@ -67,7 +69,6 @@ GoNetwork.prototype.init = function(){
       };
 
       self.mousemove = function(d, i) {
-        console.log(d)
         var x_pos = i.x+50 + "px";
         if(i.x < self.svgWidth / 2){
           x_pos = i.x-150 + "px"
@@ -75,7 +76,7 @@ GoNetwork.prototype.init = function(){
         self.tooltip
           .html("<p>Description: " + i.description + "<br>"+
                  "GO_term: " + i.native + "<br>"+
-                 "<p> -log10(p-value): " + i.p_value + "<\p>"+
+                 "<p> p-value: " + i.p_value + "<\p>"+
                  '<a class="nav-link" href="'+self.geneDetail.goUrlMaker(i.parents, sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>')
           .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
           .style("top", i.y + "px")
@@ -114,7 +115,9 @@ GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
       data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "no_evidences": true, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
       success: function( data ) {
-        self.visualize(JSON.parse(data).result);
+        parsed_data = JSON.parse(data).result;
+        self.visualize(parsed_data);
+        self.goHeatmap.receiveData(gene_array, parsed_data)
       }
     });
 } // end gProfilerGO()
@@ -130,7 +133,15 @@ GoNetwork.prototype.visualize = function(go_object){
   self.svg.append("g")
     .attr("transform", "translate(0," + 280 + ")")
     .attr("class", "x-axis")
-    .call(d3.axisBottom(self.x));
+    .call(d3.axisBottom(self.x))
+    .on("click", function(d,i){
+      //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
+      var axis_selection = d.explicitOriginalTarget.__data__;
+      //only pass if recognized functional group (see init())
+      if(self.functionalCategories.includes(axis_selection)){
+        self.goHeatmap.update(axis_selection);
+      } // end if
+    });
 
   self.y.domain([min_negLog10_pval, max_negLog10_pval]);
 
@@ -145,11 +156,12 @@ GoNetwork.prototype.visualize = function(go_object){
     .data(go_object)
     .enter()
     .append("circle")
-    .attr("cx", function(d,i) { return self.x((d.source))+180 })
+    .attr("cx", function(d,i) { return self.x((d.source))+95 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
     .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
     .attr("fill", function(d,i) {return self.goClassColor(d.source)})
     .attr("class", "my-circles")
+    .attr("class", function(d,i) {return d.source})
     .on("click", function(node_info, data){
       self.tooltip.style("opacity", 1);
       self.mousemove(node_info, data);

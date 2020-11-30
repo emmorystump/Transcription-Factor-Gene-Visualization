@@ -74,16 +74,6 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
     $("#gene-detail").append('<br>');
     self.createInput("Download_Supplementary_Data")
 
-    // extract gene names as tf_array
-    // gene_cluster_array = [];
-    // gene_cluster_object.forEach((item, i) => {
-    //   gene_cluster_array[[i]] = item.name
-    // });
-
-    //self.gProfilerConvert(localStorage.getItem("organism_code"), node_detail_array[[0]], localStorage.getItem("gene_name_database"), node_detail_array)
-    //console.log(gene_name_json)
-
-
 };
 
 GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
@@ -107,22 +97,6 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
   return(this.url);
 
 }; // end goUrlMaker()
-
-GeneDetail.prototype.gProfilerConvert = function(organism, gene_id, target, node_detail_array){
-  var self = this;
-
-    $.ajax({
-      type: "POST",
-      url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
-      data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+gene_id+'"]}',
-      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
-    }).done(function( data ) {
-      self.visualize(node_detail_array, JSON.parse(data).result);
-
-    });
-
-} // end gProfilerConvert()
-
 
 //cite: https://stackoverflow.com/a/18226615
 GeneDetail.prototype.createInput = function(button_text){

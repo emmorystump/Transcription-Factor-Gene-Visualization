@@ -136,7 +136,7 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
  * @param go_category is passed in GoNetwork. it is passed when a label on the x-axis is clicked
  */
 
-GoHeatmap.prototype.update = function(go_category){
+GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING
     var self = this;
 
     self.y.domain(self.go_by_gene_data[go_category]["gene_list"].flat());

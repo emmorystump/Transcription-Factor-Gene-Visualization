@@ -272,3 +272,10 @@ img {
 .modal-body li {
   padding-top: 5px;
 }
+
+.organism-selector-sidebar {
+  width: auto;
+  height: auto;
+  max-width: 150px;
+  max-height: 150px;
+}

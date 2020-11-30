@@ -5,11 +5,10 @@
  * replace all "VisTemplate" with name of object
  */
 
-function GeneDetail(networkDetail){
+function GeneDetail(){
 
     var self = this;
     //var window.gene_name_list = [];
-    self.networkDetail = networkDetail;
     self.init();
 };
 
@@ -23,7 +22,7 @@ GeneDetail.prototype.init = function(){
     self.gene_detail_view = $("#gene-detail")
 
     // =============== Experimental D3 code to line things up =====================
-    
+
     // //Gets access to the div element created for this chart from HTML
     // var divNetwork = d3.select("#gene-detail").classed("content", true);
     // self.svgBounds = divNetwork.node().getBoundingClientRect();
@@ -35,9 +34,9 @@ GeneDetail.prototype.init = function(){
     //     .attr("id", "gene-detail-svg")
     //     .attr("width", self.svgWidth)
     //     .attr("height", self.svgHeight)
-   
+
     // ===============================================================================
-    
+
 };
 
 
@@ -49,70 +48,55 @@ GeneDetail.prototype.init = function(){
  * @param colorScale global quantile scale based on the winning margin between republicans and democrats
  */
 
-GeneDetail.prototype.update = function(node_detail_array, gene_cluster_object){
+GeneDetail.prototype.update = function(node_object_array, tf_object){
     // gene_array is a array of [gene_name, score] from clicking on network node
     // gene_cluster_list is the nodes array from cluster
+    // tf_object is structure: {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link}
+
     var self = this;
-    $("#gene-detail").empty(); // remove previous details
+    // remove previous details
+    $("#gene-detail").empty();
 
-    // extract gene names as tf_array
-    gene_cluster_array = [];
-    gene_cluster_object.forEach((item, i) => {
-      gene_cluster_array[[i]] = item.name
-    });
+    var chart_url = self.goUrlMaker(node_object_array.go, sessionStorage.getItem("go_chart_url_prefix"));
 
-    self.gProfilerConvert(localStorage.getItem("organism_code"), node_detail_array[[0]], localStorage.getItem("gene_name_database"), node_detail_array)
-    //console.log(gene_name_json)
+    var gene_id = '<p class="gene-detail-text">Gene ID: '+node_object_array.name+ '</p>';
+    var gene_name = '<p class="gene-detail-text">Gene Name: '+node_object_array.gene_name+ '</p>';
+    var gene_score = '<p class="gene-detail-text">Score: '+node_object_array.score+ '</p>';
+    var gene_link = '<a href="'+node_object_array.link + '" target="_blank">Gene Info</a><br>';
+    var gene_cluster_png_link = '<a href="'+chart_url + '" target="_blank">Gene Go Chart</a><br>';
 
+    $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
+    $("#gene-detail").append(gene_id);
+    $("#gene-detail").append(gene_name);
+    $("#gene-detail").append(gene_score);
+    $("#gene-detail").append(gene_link);
+    $("#gene-detail").append(gene_cluster_png_link);
+    $("#gene-detail").append('<br>');
+    self.createInput("Download_Supplementary_Data")
 
 };
 
-GeneDetail.prototype.visualize = function(node_detail_array, gene_id_to_name_array){
-   var self = this;
-
-  // create data links
-  var chart_url = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165"//self.networkDetail.goUrlMaker(gene_cluster_array, self.networkDetail.chart_url_prefix);
-  var gene_url = "https://flybase.org/reports/"+node_detail_array[[0]]
-
-  var gene_id = '<p class="gene-detail-text">Gene ID: '+node_detail_array[[0]]+ '</p>'
-  var gene_name = '<p class="gene-detail-text">Gene Name: '+gene_id_to_name_array[[0]].converted+ '</p>'
-  var gene_score = '<p class="gene-detail-text">Score: '+node_detail_array[[1]]+ '</p>'
-  var gene_link = '<a href="'+gene_url + '" target="_blank">Gene Info</a><br>'
-  var gene_cluster_png_link = '<a href="'+chart_url + '" target="_blank">Gene Cluster GO map</a>'
-
-
-  $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
-  $("#gene-detail").append(gene_id);
-  $("#gene-detail").append(gene_name);
-  $("#gene-detail").append(gene_score);
-  $("#gene-detail").append(gene_link);
-  $("#gene-detail").append(gene_cluster_png_link);
-  $("#gene-detail").append('<br>');
-  self.createInput("Download_Supplementary_Data")
-
-
-  //Handle Button click
- $(':button').on('click', function(e){ //NOTE SINGLE GENE IS PASSED -- THAT SINGLE GENE CAN BE VISUALIZED AS THE PNG
-   //self.gProfilerConvert(localStorage.getItem("organism_code"), gene_id, localStorage.getItem("gene_name_database"));
- }); // end on click
-
-} // end visualize
-
-GeneDetail.prototype.gProfilerConvert = function(organism, gene_id, target, node_detail_array){
+GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
+  // gene_array must be a go_term_arry in the case of the chart
+  // input must be iterable array
+  //gene_array = [GO:0003700,GO:0005515,GO:0007403,GO:0035165]; // testing -- being passed in contructor now for testing purposes
   var self = this;
+  self.gene_array = gene_array;
+  //GO%3A0003700%2CGO%3A0005515%2CGO%3A0007403%2CGO%3A0035165" // this is what the string needs to look like to be appended to prefix
 
-    $.ajax({
-      type: "POST",
-      url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
-      data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+gene_id+'"]}',
-      headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
-    }).done(function( data ) {
-      self.visualize(node_detail_array, JSON.parse(data).result);
+  self.gene_array.forEach((item, i) => {
+    if (i == 0){
+      self.gene_array[[i]] = item.replace(":", "%3A");
+    }else {
+      self.gene_array[[i]] = item.replace("GO:", "2CGO%3A");
+    }
+  }); // end if statement
 
-    });
+  this.url = url_prefix + self.gene_array.join("%");
 
-} // end gProfilerConvert()
+  return(this.url);
 
+}; // end goUrlMaker()
 
 //cite: https://stackoverflow.com/a/18226615
 GeneDetail.prototype.createInput = function(button_text){

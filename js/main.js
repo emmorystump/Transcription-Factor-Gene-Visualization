@@ -53,14 +53,13 @@
 
             });
           }) // end jquery
-      // instantiate classes that depend on, or are independent of, network (network instantiated below)
-      var goNetwork = new GoNetwork();
-      var networkDetail = new NetworkDetail(goNetwork);
-      var weights = new Weights(organism);
 
-      var geneDetail = new GeneDetail(networkDetail)
-      var network = new Network(networkDetail, geneDetail, goNetwork)
-      //load the data TODO: BASED ON ORGANISM SELECTION
+      // instantiate classes that depend on, or are independent of, network (network instantiated below)
+      var weights = new Weights(organism);
+      var geneDetail = new GeneDetail()
+      var goHeatmap = new GoHeatmap();
+      var goNetwork = new GoNetwork(geneDetail, goHeatmap);
+      var network = new Network(geneDetail, goNetwork);
 
       var files =
       [
@@ -86,13 +85,10 @@
 
           // When user updates weight thresholds
           d3.select("#weights-submitted").on('click', function(event){
-            console.log("Weights in main.js");
-            console.log($("#min-weight").val());
-            console.log($("#max-weight").val());
 
             sessionStorage.setItem("min-weight",$("#min-weight").val());
             sessionStorage.setItem("max-weight",$("#max-weight").val());
-            
+
             network.update(
               data,
               organism,

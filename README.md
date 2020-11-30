@@ -12,15 +12,15 @@ First choose if you are a Fly biologist or a Yeast biologist. Click your creatur
 
 A TF (Transcription Factor) network will appear by default. The blue node is a Transcription Factor (read the tf story!), the red nodes are the genes that this Transcription Factor regulates.
 
-Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. At the top of the side panel is a section labeled weights. The values represented in this normalized distribution represent the strength of evidence that the selected Transcription Factor controls a given gene. Therefore, selecting a range within this graph will return all genes regulated by the TF where the strength of evidence is between the given range. 
+Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. At the top of the side panel is a section labeled weights. The values represented in this normalized distribution represent the strength of evidence that the selected Transcription Factor controls a given gene. Therefore, selecting a range within this graph will return all genes regulated by the TF where the strength of evidence is between the given range.
 
 Use the brush to select a portion of the curve on the far righthand side. If the network is large (lots of red nodes), select less of the distrubtion and click "Update Weights". Too many nodes still? Select even less of the curve and update.
 
 This function is important because different biologists will have different uses for this data -- if this biologist is doing a large genomics experiment, they may want to allow more edges per TF, so that they get more genes per TF to test, even though those edges are less deterministic. If the biologist is going to explore these genes by hand in some way, they will want a more stringent threshold.
 
-Currently, we only support brushing within the range (mean + standard deviation) to (mean + 3 * standard deviation). This is primarily for 2 reasons. Firstly, supporting the entire normalized curve is simply too much data for our application to load. Secondly, biologists will rarely use data with a weight threshold of such a low strength of evidence that it is not contained with this range. Overall, they will primarily be looking at the top percentage of the distribution. 
+Currently, we only support brushing within the range (mean + standard deviation) to (mean + 3 * standard deviation). This is primarily for 2 reasons. Firstly, supporting the entire normalized curve is simply too much data for our application to load. Secondly, biologists will rarely use data with a weight threshold of such a low strength of evidence that it is not contained with this range. Overall, they will primarily be looking at the top percentage of the distribution.
 
-Next, a biologist would want to either enter their favorite transcription factor, or a gene list. Please notice the space in which that entry would happen in the right side panel. If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to decrease your threshold! 
+Next, a biologist would want to either enter their favorite transcription factor, or a gene list. Please notice the space in which that entry would happen in the right side panel. If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to decrease your threshold!
 
 At this point, imagine you've entered a TF (or maybe you really did). The graphs on your screen have populated for that TF/target network. You should play around with the nodes/edges graph at this point by dragging the nodes, hovering over them, and clicking on them. Eventually, a user will have options of spatial organizations of these nodes.
 
@@ -35,7 +35,7 @@ This graph does not have its interactivity yet. Please see the process book for 
 Eventually, there will be functionality to allow the user to group the genes in various different ways (eg, by whether or not there is experimental support for the TF/target edge, or by the gene function).
 
 #### DATA STRUCTURES
-Data structures are in place in the data director. Data is also queried from external databases on-demand and parsed in the scripts themselves. 
+Data structures are in place in the data director. Data is also queried from external databases on-demand and parsed in the scripts themselves.
 
 # Citation (also in line in code):
 
@@ -43,7 +43,7 @@ Data structures are in place in the data director. Data is also queried from ext
 For help making a toggleable modal:
 https://codepen.io/bootpen/pen/jbbaRa?__cf_chl_jschl_tk__=6e74ff2d1f9ca78d7e87a8204e4d3768d418c612-1605908965-0-Acrf5bXH7tDZp4CB_2uWBDWiOruxlGeKriECOOB5G7ERkanHAhXgGDtjQcCMyHbaPs9qsABCWbIWPw-P4smJ1VyRFLUt-9VQMa9N8dD46Tpbg4PnOk7VEXDbsjJvGv8ernjxrrB8uyRceH-NdN4G5kbnm-252EOY-Gp6MYoxNBJKg7VkNMtk-d_-nDXVCCwCgsVIAxRs3x2O3MAnGk9LsuAmtvZlnFajT3i2KRG8n0JA-6dD2vjoib6J6O8E78jJ-qeM6VVLbv0mP_eEkfMwX7O2K9J9myyz9L5yyMZAH2qU731zKflYK7lkMmuMXuL06lnzshkYNZoTW--_1st7tN1XQ0omOQRohPPV6qdUYRkEpTKcfdmY8ckDZ1RP0a1Ikbu7tfEWkr_769b9NOvIoO8
 
-For help making the normalized graph: 
+For help making the normalized graph:
 https://bl.ocks.org/EfratVil/99462577a475bbad4be1146caca75a58
 
 Initial Structure to create a modal:
@@ -51,3 +51,9 @@ https://www.w3schools.com/bootstrap/bootstrap_modal.asp
 
 To make instructions modal larger:
 https://stackoverflow.com/questions/25859255/trying-to-make-bootstrap-modal-wider
+
+tooltip
+cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
+
+GO manhatten plot idea:
+https://biit.cs.ut.ee/gprofiler/gost

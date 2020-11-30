@@ -1,8 +1,7 @@
 
-function Network(networkDetail, geneDetail, goNetwork) {
+function Network(geneDetail, goNetwork) {
 
     var self = this;
-    self.networkDetail = networkDetail;
     self.geneDetail = geneDetail;
     self.goNetwork = goNetwork;
     self.init();
@@ -21,8 +20,48 @@ Network.prototype.init = function () {
     //creates svg element within the div
     self.svg = divNetwork.append("svg")
         .attr("width", self.svgWidth)
-        .attr("height", self.svgHeight)
-};
+        .attr("height", self.svgHeight);
+
+    // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
+    // consider this a cite for all tooltip related code
+    self.tooltip = d3.select("#network-vis")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .attr("id", "network-vis-tooltip")
+      .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "10px");
+
+    // A function that change this tooltip when the user hover a point.
+    // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+    self.mouseover = function(d) {
+      self.tooltip
+        .style("opacity", 1)
+    };
+
+    self.mousemove = function(d, i) {
+      var x_pos = i.x+50 + "px";
+      if(i.x < self.svgWidth / 2){
+        x_pos = i.x-150 + "px"
+      }
+      self.tooltip
+        .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
+        .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+        .style("top", i.y + "px")
+    };
+
+    // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+    self.mouseleave = function(d) {
+      self.tooltip
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+    };
+
+} // end init()
 
 Network.prototype.update = function (data, organism, tfSelected, minScore, maxScore) {
     var self = this;
@@ -53,7 +92,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         }
 
         // TODO: If we change TF using the side panel, the max and min score boundary is carried over
-        // from the previous TF selection, not sure if we want to change this. Also
+        // from the previous TF selection, not sure if we want to change this.
 
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
             // chase todo: update TF png_url
@@ -67,33 +106,41 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             var std = d3.deviation(tf.scores);
             var mean = d3.mean(tf.scores);
             var threshold = mean + 3 * std;
-            // if (minScore == null || maxScore == null){
-            //     minScore = threshold
-            // }
-            // if (minScore < mean){
-            //     minScore = mean;
-            // };
-            console.log(tfSelected)
-            console.log(minScore)
-            console.log(maxScore)
-            console.log(threshold)
+
+            var tf_geneName = data[tf.id].name;
+            var tf_description = data[tf.id].description;
+            var tf_go = data[tf.id].go;
+            var tf_link = data[tf.id].link;
             allNodeLinks.nodes.push(
                 {
-                    "id": 0, "name": tf.id,
+                    "id": 0, "name": tf.id, "gene_name": tf_geneName,
+                    "description": tf_description, "go": tf_go, "link": tf_link,
                     "type": "tf", "score": 0,
                     "x": self.svgWidth / 2, "y": self.svgHeight / 2
                 });
-
+            // fill allNodeLinks
             var linkCounter = 1;
             for (var i = 1; i <= tf.linked.length; i++) {
                 var curGeneID = tf.linked[i];
-                var curGeneScore = tf.scores[i]
+                var curGeneScore = tf.scores[i];
+
+                // console.log("curGeneID: ")
+                // console.log(curGeneID)
+                // console.log("data[curGeneID]: ")
+                if (curGeneID == "undefined"){
+                    continue;
+                }
                 if (minScore != null && maxScore != null) {
                     if (curGeneScore >= +minScore && curGeneScore <= +maxScore) {
-                        gene_id_list[gene_id_list.length] = curGeneID;
+                      gene_id_list[i] = curGeneID;
+                      var geneName = data[curGeneID].name;
+                      var description = data[curGeneID].description;
+                      var go = data[curGeneID].go;
+                      var link = data[curGeneID].link;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID,
+                                "id": i, "name": curGeneID, "gene_name": geneName,
+                                "description": description, "go": go, "link": link,
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })
@@ -103,10 +150,15 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 }
                 else {
                     if (curGeneScore > +minScore) {
-                        gene_id_list[gene_id_list.length] = curGeneID;
+                      gene_id_list[i] = curGeneID;
+                      var geneName = data[curGeneID].name;
+                      var description = data[curGeneID].description;
+                      var go = data[curGeneID].go;
+                      var link = data[curGeneID].link;
                         allNodeLinks.nodes.push(
                             {
-                                "id": i, "name": curGeneID,
+                                "id": i, "name": curGeneID, "gene_name": gene_name,
+                                "description": description, "go": go, "link": link,
                                 "type": "gene", "score": curGeneScore,
                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
                             })
@@ -122,7 +174,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             d3.select("#edge-chart-heading-text")
                 .text(tfSelected)
 
-            console.log(allNodeLinks.links.length)
             var links = allNodeLinks.links;
             var nodes = allNodeLinks.nodes;
 
@@ -186,8 +237,8 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
 
             simulation.on("tick", () => {
                 node
-                    .attr("cx", d => d.x = Math.max(5, Math.min(self.svgWidth - 5, d.x)))
-                    .attr("cy", d => d.y = Math.max(5, Math.min(self.svgHeight - 5, d.y)));
+                    .attr("cx", d => d.x = Math.max(5, Math.min(self.svgWidth - 10, d.x)))
+                    .attr("cy", d => d.y = Math.max(5, Math.min(self.svgHeight - 10, d.y)));
                 link
                     .attr("x1", d => d.source.x)
                     .attr("y1", d => d.source.y)
@@ -211,12 +262,15 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     event.subject.fy = null;
                 }));
 
+
             node.on("click", function (node_info, gene_info) {
-                self.geneDetail.update([gene_info.name, gene_info.score], nodes)
+                self.geneDetail.update(gene_info, {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link})
             })
                 .on("mouseover", function (node_info, gene_info) {
-                    d3.select(this).attr("fill", "green")
+                    self.tooltip.style("opacity", 1)
+                    d3.select(this).attr("fill", "green");
                 })
+                .on("mousemove", self.mousemove)
                 .on("mouseout", function (node_info, gene_info) {
                     d3.select(this).attr("fill", function (d, i) {
                         if (gene_info.type == "tf") {
@@ -224,8 +278,9 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                         } else {
                             return "#ba495b"
                         }
-                    }) // end d3.select
+                    })
                 })
+              .on("mouseleave", self.mouseleave)
         }); // end d3.json
     }) // end d3.csv
 

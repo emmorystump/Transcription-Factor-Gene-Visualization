@@ -92,7 +92,7 @@
                 <!-- Instructions Modal: https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
                 <div class="modal fade" id="myInstructionsModal" role="dialog">
                     <div class="modal-dialog modal-xl">
-                    
+
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -115,7 +115,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                   The Left Side Bar: 
+                                   The Left Side Bar:
                                    <div class="instructions-subtext">
                                      This side bar contains links to our organism selection via the "organisms" link, to the instructions via the "Instructions" link, to the Process Book via the "Process Book" link, and will eventually allow for a user to export their visualization results via the "Export Results" link. This sidebar also contains notable reference materials and contact information to the Brent Lab.
                                     </div>
@@ -152,7 +152,7 @@
                                         GO is one of computational biology's methods of beginning to figure out what genes do and how they relate to one another. The graph is created by sending the target gene list to an external database, which returns GO annotation and a significance score, among other things. The x-axis are different categories that the genes fall into -- for example, GO:BP is a "biological process" while GO:MF is a "molecular function". The dots are (size and height) ranked by their significance. Only annotations that have an adjusted p-value greater than .05 are displayed, and the scale is -log10, so the higher the better.
                                     </div>
                                     <div class="instructions-subtext">
-                                        This graph does not have its interactivity yet. Please see the process book for a drawing of what it will do. 
+                                        This graph does not have its interactivity yet. Please see the process book for a drawing of what it will do.
 Eventually, there will be functionality to allow the user to group the genes in various different ways (eg, by whether or not there is experimental support for the TF/target edge, or by the gene function).
                                     </div>
                                  </li>
@@ -162,7 +162,7 @@ Eventually, there will be functionality to allow the user to group the genes in 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
-                    
+
                     </div>
                 </div>
 
@@ -184,8 +184,11 @@ Eventually, there will be functionality to allow the user to group the genes in 
                             </div>
                         </div>
                         <div class="row">
-                            <div class="go-network col-md-12">
-                                <h1>Go Network</h1>
+                            <div class="go-network col-md-6">
+                                <h1>Go Manhatten Plot</h1>
+                            </div>
+                            <div class="go-heatmap col-md-4">
+                                <h1>Go Heatmap</h1>
                             </div>
                         </div>
                     </div>
@@ -309,8 +312,8 @@ Eventually, there will be functionality to allow the user to group the genes in 
     <script type="application/javascript" src="js/network.js"></script>
     <script type="application/javascript" src="js/weight_threshold.js"></script>
     <script type="application/javascript" src="js/GeneDetail.js"></script>
+    <script type="application/javascript" src="js/GoHeatmap.js"></script>
     <script type="application/javascript" src="js/GoNetwork.js"></script>
-    <script type="application/javascript" src="js/NetworkDetail.js"></script>
     <script type="application/javascript" src="js/redirect.js"></script>
     <script type="application/javascript" src="js/main.js"></script>
 

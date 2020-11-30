@@ -50,7 +50,7 @@ Network.prototype.init = function () {
       self.tooltip
         .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
         .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-        .style("top", i.y + "px")
+        .style("top", (i.y+10) + "px")
     };
 
     // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again

@@ -65,7 +65,7 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
     var gene_link = '<a href="'+node_object_array.link + '" target="_blank">Gene Info</a><br>';
     var gene_cluster_png_link = '<a href="'+chart_url + '" target="_blank">Gene Go Chart</a><br>';
 
-    $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
+    // $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
     $("#gene-detail").append(gene_id);
     $("#gene-detail").append(gene_name);
     $("#gene-detail").append(gene_score);

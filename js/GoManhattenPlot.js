@@ -37,8 +37,7 @@ GoManhattenPlot.prototype.init = function(){
     // Build X scales and axis:
     self.x = d3.scaleBand()
       .domain(go_categories)
-      .range([ 0, self.svgWidth ]);
-      //.padding(0.01);
+      .range([0, self.svgWidth]);
 
     // Build X scales and axis:
     self.y = d3.scaleLinear()
@@ -159,7 +158,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     .data(go_object)
     .enter()
     .append("circle")
-    .attr("cx", function(d,i) { return self.x((d.source))+95 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
+    .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
     .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
     .attr("fill", function(d,i) {return self.goClassColor(d.source)})

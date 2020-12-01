@@ -310,8 +310,7 @@ img {
 .organism-selector-sidebar {
   width: auto;
   height: auto;
-  max-width: 150px;
-  max-height: 150px;
+  max-height: 120px;
 }
 
 #particles-js canvas{
@@ -323,5 +322,23 @@ img {
   background-size: cover;
   background-position: 50% 50%;
   z-index: -1;
+}
+
+#redirect_fly {
+  border: 3px solid transparent;
+
+}
+
+#redirect_fly:hover {
+  border: 3px solid #343a40;
+}
+
+#redirect_yeast {
+  border: 3px solid transparent;
+
+}
+
+#redirect_yeast:hover {
+  border: 3px solid #343a40;
 }
 

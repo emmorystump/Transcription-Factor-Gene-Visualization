@@ -80,7 +80,45 @@
           }
 
           d3.select("#selectedSubmit").on('click', function(){
-            sessionStorage.setItem("selectedTf", $('#selectTfFile').val())
+            var form_type = $('#selectUploadType').val();
+
+            if (form_type === "tf-form") {
+              sessionStorage.setItem("selectedTf", $('#selectTfFile').val());
+            
+              network.update(
+                data,
+                organism,
+                sessionStorage.getItem("selectedTf"),
+                sessionStorage.getItem("min-weight"),
+                sessionStorage.getItem("max-weight"));
+            }
+            else {
+              uploaded_genes = [];
+              var uploadedFiles = document.getElementById("selectGeneFile");
+
+              if(uploadedFiles.files[0] != undefined) {
+                var file = uploadedFiles.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                  var data = e.target.result;
+                  var workbook = XLSX.read(data, {
+                    type: 'binary'
+                  });
+
+                  workbook.Strings.forEach(function(s) {
+                    uploaded_genes.push(s.t);
+                  });
+
+                  uploaded_genes.sort();
+                  sessionStorage.setItem("selectedGenes", uploaded_genes);
+                };
+
+                reader.readAsBinaryString(file);
+              }
+
+            }
+
           })
 
           // When user updates weight thresholds
@@ -96,7 +134,8 @@
               sessionStorage.getItem("min-weight"),
               sessionStorage.getItem("max-weight"));
 
-          })
+          });
+
 
           console.log("First Update: ");
           console.log(sessionStorage.getItem("min-weight"));

@@ -88,8 +88,6 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
         go_dict[item.converted] = [item.incoming]
       }
     }); // end forEach
-    console.log(go_dict)
-
 
     self.go_by_gene_data = {"GO:BP": {gene_list:[], go_term_list:[], edge_list:[]},
                             "GO:CC":{gene_list:[], go_term_list:[], edge_list:[]},
@@ -173,4 +171,4 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("height", self.y.bandwidth() )
             .style("fill", function(d) { return self.myColor(d.score)} );
 
-};
+}; // end update

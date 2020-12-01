@@ -101,7 +101,6 @@ GoManhattenPlot.prototype.init = function(){
 GoManhattenPlot.prototype.update = function(gene_id_list){
 
   var self = this;
-  //console.log(gene_name_list)
 
   self.gProfilerGO(sessionStorage.getItem("organism_code"), gene_id_list);
 
@@ -119,6 +118,7 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
       success: function( data ) {
         parsed_data = JSON.parse(data).result;
         self.visualize(parsed_data);
+        // this sends the data to GoManhattenPlot for processing -- see the update set for goHeatMap in self.visualize
         self.goHeatmap.receiveData(gene_array, parsed_data)
       }
     });
@@ -128,6 +128,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
 
+  //TODO: needs to be replaced with min/max of data
   var min_negLog10_pval = 0;
   var max_negLog10_pval = 10;
 
@@ -141,7 +142,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       var axis_selection = d.explicitOriginalTarget.__data__;
       //only pass if recognized functional group (see init())
       if(self.functionalCategories.includes(axis_selection)){
-        self.goHeatmap.update(axis_selection);
+        self.goHeatmap.update(axis_selection); // note: see goHeatMap.receive data above
       } // end if
     });
 

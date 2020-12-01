@@ -19,9 +19,8 @@ GoHeatmap.prototype.init = function(){
     //Gets access to the div element created for this chart from HTML
     var divGoHeatmap = d3.select(".go-heatmap").classed("content", true);
     self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
-    console.log(self.svgBounds)
     self.svgWidth = self.svgBounds.width;
-    self.svgHeight = 350;
+    self.svgHeight = 300;
 
     //creates svg element within the div
     self.svg = divGoHeatmap.append("svg")

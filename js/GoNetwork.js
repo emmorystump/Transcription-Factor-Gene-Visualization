@@ -29,7 +29,9 @@ GoNetwork.prototype.init = function(){
     //creates svg element within the div
     self.svg = divGoNetwork.append("svg")
         .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight);
+        .attr("height",self.svgHeight+self.svgBounds.top)
+        .append("g")
+        .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
     var go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
     // Build X scales and axis:
@@ -40,7 +42,7 @@ GoNetwork.prototype.init = function(){
 
     // Build X scales and axis:
     self.y = d3.scaleLinear()
-      .range([ self.svgHeight, 0 ]);
+      .range([ self.svgHeight-self.margin.top-self.margin.bottom, 0 ]);
 
     // Build color scale
     self.functionalCategories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
@@ -126,12 +128,12 @@ GoNetwork.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
 
-  var min_negLog10_pval = 1.3;
-  var max_negLog10_pval = 6;
+  var min_negLog10_pval = 0;
+  var max_negLog10_pval = 10;
 
   // append axis to svg object
   self.svg.append("g")
-    .attr("transform", "translate(0," + 280 + ")")
+    .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
     .attr("class", "x-axis")
     .call(d3.axisBottom(self.x))
     .on("click", function(d,i){

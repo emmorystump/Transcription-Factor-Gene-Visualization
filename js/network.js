@@ -1,9 +1,9 @@
 
-function Network(geneDetail, goNetwork) {
+function Network(geneDetail, goManhattenPlot) {
 
     var self = this;
     self.geneDetail = geneDetail;
-    self.goNetwork = goNetwork;
+    self.goManhattenPlot = goManhattenPlot;
     self.init();
 };
 
@@ -166,7 +166,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
             } // allNodeLinks filling complete
 
             // generate GO map from tf network cluster
-            self.goNetwork.update(gene_id_list);
+            self.goManhattenPlot.update(gene_id_list);
 
             d3.select("#edge-chart-heading-text")
                 .text(tfSelected)

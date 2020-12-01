@@ -58,8 +58,8 @@
       var weights = new Weights(organism);
       var geneDetail = new GeneDetail()
       var goHeatmap = new GoHeatmap();
-      var goNetwork = new GoNetwork(geneDetail, goHeatmap);
-      var network = new Network(geneDetail, goNetwork);
+      var goManhattenPlot = new GoManhattenPlot(geneDetail, goHeatmap);
+      var network = new Network(geneDetail, goManhattenPlot);
 
       var files =
       [
@@ -84,7 +84,7 @@
 
             if (form_type === "tf-form") {
               sessionStorage.setItem("selectedTf", $('#selectTfFile').val());
-            
+
               network.update(
                 data,
                 organism,

@@ -132,7 +132,7 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
 /**
  * Creates the stacked bar chart, text content and tool tips for electoral vote chart
  *
- * @param go_category is passed in GoNetwork. it is passed when a label on the x-axis is clicked
+ * @param go_category is passed in GoManhattenPlot. it is passed when a label on the x-axis is clicked
  */
 
 GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING

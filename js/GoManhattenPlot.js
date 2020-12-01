@@ -4,7 +4,7 @@
  *
  * replace all "VisTemplate" with name of object
  */
-function GoNetwork(geneDetail, goHeatmap){
+function GoManhattenPlot(geneDetail, goHeatmap){
 
     var self = this;
     self.geneDetail = geneDetail;
@@ -16,18 +16,18 @@ function GoNetwork(geneDetail, goHeatmap){
  * Initializes the svg elements required for this chart
  * TODO: put tooltip infrastructure somewhere w/common access -- less redundancy
  */
-GoNetwork.prototype.init = function(){
+GoManhattenPlot.prototype.init = function(){
     var self = this;
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     //Gets access to the div element created for this chart from HTML
-    var divGoNetwork = d3.select(".go-network").classed("content", true);
-    self.svgBounds = divGoNetwork.node().getBoundingClientRect();
+    var divGoManhattenPlot = d3.select(".go-network").classed("content", true);
+    self.svgBounds = divGoManhattenPlot.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgHeight = 300;
 
     //creates svg element within the div
-    self.svg = divGoNetwork.append("svg")
+    self.svg = divGoManhattenPlot.append("svg")
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight+self.svgBounds.top)
         .append("g")
@@ -98,7 +98,7 @@ GoNetwork.prototype.init = function(){
  * @params gene_name_list a list of gene_id
  */
 
-GoNetwork.prototype.update = function(gene_id_list){
+GoManhattenPlot.prototype.update = function(gene_id_list){
 
   var self = this;
   //console.log(gene_name_list)
@@ -107,7 +107,7 @@ GoNetwork.prototype.update = function(gene_id_list){
 
 }; // end update()
 
-GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
+GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
 
     var self = this;
 
@@ -124,7 +124,7 @@ GoNetwork.prototype.gProfilerGO = function(organism, gene_array){
     });
 } // end gProfilerGO()
 
-GoNetwork.prototype.visualize = function(go_object){
+GoManhattenPlot.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
 

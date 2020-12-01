@@ -14,30 +14,30 @@ function GoHeatmap(){
  */
 GoHeatmap.prototype.init = function(){
     var self = this;
-    self.margin = {top: 30, right: 20, bottom: 30, left: 50};
+    self.margin = {top: 100, right: 100, bottom: 30, left: 100};
 
     //Gets access to the div element created for this chart from HTML
     var divGoHeatmap = d3.select(".go-heatmap").classed("content", true);
     self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
     console.log(self.svgBounds)
-    self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
-    self.svgHeight = 250;
+    self.svgWidth = self.svgBounds.width;
+    self.svgHeight = 350;
 
     //creates svg element within the div
     self.svg = divGoHeatmap.append("svg")
         .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight)
+        .attr("height",self.svgHeight+self.svgBounds.top)
         .append("g")
         .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
         // Build X scales and axis:
     self.x = d3.scaleBand()
-      .range([ 0, self.svgWidth ])
+      .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
       .padding(0.01);
 
     // Build X scales and axis:
     self.y = d3.scaleBand()
-      .range([ self.svgHeight, 0 ])
+      .range([ self.svgHeight-self.svgBounds.top, 0 ])
       .padding(0.01);
 
     // Build color scale
@@ -139,24 +139,39 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
 GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING
     var self = this;
 
+    // remove all items from previous graph (everything added to graph below is classed with heatmap-update)
+    $(".heatmap-update").remove()
+
+    // update the y domain with the gene list
     self.y.domain(self.go_by_gene_data[go_category]["gene_list"].flat());
-
-    self.svg.append("g").call(d3.axisLeft(self.y));
-
-    self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat())
-
+    // append the y axis to the svg element
     self.svg.append("g")
-      .attr("transform", "translate(0," + self.svgHeight + ")")
-      .call(d3.axisBottom(self.x))
+            .call(d3.axisLeft(self.y))
+            .attr("class", "heatmap-update");
+    // update the x axis with the go terms
+    self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat());
+    // add the x axis to the svg element
+    self.svg.append("g")
+            //.attr("transform", "translate(0," + self.svgHeight + ")")
+            .call(d3.axisTop(self.x))
+            .attr("class", "heatmap-update")
+            .selectAll("text")
+            .attr("y", 0)
+            .attr("x", -70)
+            .attr("dy", "-.35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
-    self.svg.selectAll()
+    // add blocks to heatmap
+    self.svg.selectAll("rect")
             .data(self.go_by_gene_data[go_category]["edge_list"], function(d) {return d.gene+':'+d.go;})
             .enter()
             .append("rect")
+            .attr("class", "heatmap-update")
             .attr("x", function(d) { return self.x(d.gene) })
             .attr("y", function(d) { return self.y(d.go) })
             .attr("width", self.x.bandwidth() )
             .attr("height", self.y.bandwidth() )
-            .style("fill", function(d) { return self.myColor(d.score)} )
+            .style("fill", function(d) { return self.myColor(d.score)} );
 
 };

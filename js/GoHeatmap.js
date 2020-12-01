@@ -79,7 +79,7 @@ GoHeatmap.prototype.gProfilerConvert = function(organism, gene_list, target, go_
 
 GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
     var self = this;
-
+    console.log(go_data)
     var go_dict = {};
     gene_to_go_json.forEach((item, i) => {
       if(item.converted in go_dict){
@@ -145,6 +145,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
     self.svg.append("g")
             .call(d3.axisLeft(self.y))
             .attr("class", "heatmap-update");
+
     // update the x axis with the go terms
     self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat());
     // add the x axis to the svg element
@@ -165,8 +166,8 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .enter()
             .append("rect")
             .attr("class", "heatmap-update")
-            .attr("x", function(d) { return self.x(d.gene) })
-            .attr("y", function(d) { return self.y(d.go) })
+            .attr("x", function(d) { return self.x(d.go) })
+            .attr("y", function(d) { return self.y(d.gene) })
             .attr("width", self.x.bandwidth() )
             .attr("height", self.y.bandwidth() )
             .style("fill", function(d) { return self.myColor(d.score)} );

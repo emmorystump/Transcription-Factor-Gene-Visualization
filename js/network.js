@@ -124,10 +124,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 var curGeneID = tf.linked[i];
                 var curGeneScore = tf.scores[i];
 
-                // console.log("curGeneID: ")
-                // console.log(curGeneID)
-                // console.log("data[curGeneID]: ")
-                if (curGeneID == "undefined"){
+                if (curGeneID == "undefined" || data[curGeneID] == "undefined"){
                     continue;
                 }
                 if (minScore != null && maxScore != null) {

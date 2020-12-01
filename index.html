@@ -12,13 +12,19 @@
 </head>
 
 <body>
+ 
 
-  <div id="homepage" class="container">
+  <div id="homepage" class="container-fluid">
+    <div id="particles-js"></div>
     <div id="brentlab-logo" class="row justify-content-md-center">
       <a href="https://mblab.wustl.edu/" target="_blank">
-        <img src="images/BrentLabLogo.png" alt="BrentLab">
+      <img src="images/BrentLabLogo.png" alt="BrentLab">
       </a>
     </div>
+
+    
+      
+    
     <div id="home-reference" class="row justify-content-md-center">
       <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/28968736/" target="_blank">
         NetProphet2.0 Interactive
@@ -37,8 +43,9 @@
     </div>
     <div id="organism-images" class="row justify-content-md-center">
       <div class="col align-self-center" id="fly-div">
-        <button id="redirect_fly" class="index_button">
-          <img id="fly-img" class="organism-selector" src="images/fly.png" alt="Fly Network">
+        <button id="redirect_fly" class="index_button">      
+            <img id="fly-img" class="organism-selector" src="images/fly.png" alt="Fly Network">  
+            <div id="fly-overlay"></div>
         </button>
       </div>
       <div class="col align-self-end" id="yeast-div">
@@ -55,6 +62,8 @@
 
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/particlesjs/particles.js"></script>
+
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -66,6 +75,8 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
   <script src="js/redirect.js"></script>
+  <script src="js/landingParticles.js"></script>
+
 </body>
 
 </html>

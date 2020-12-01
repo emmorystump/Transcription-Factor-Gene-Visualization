@@ -100,7 +100,7 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
 
 //cite: https://stackoverflow.com/a/18226615
 GeneDetail.prototype.createInput = function(button_text){
-  var $input = $('<input type="button" value='+button_text+' />');
+  var $input = $('<input type="button" value='+button_text+' class="btn btn-dark mb-2"/>');
   $input.appendTo($("#gene-detail"));
 } // end createInput
 

@@ -81,6 +81,7 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
     var self = this;
     console.log(go_data)
     var go_dict = {};
+    console.log(gene_to_go_json)
     gene_to_go_json.forEach((item, i) => {
       if(item.converted in go_dict){
         go_dict[item.converted].push(item.incoming)
@@ -102,6 +103,31 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
       if(!(item.native in self.go_by_gene_data[item.source].go_term_list)){
           self.go_by_gene_data[item.source].go_term_list.push(item.native);
       }
+      item.parents.forEach((parent_go_term, i) => {
+        if(!(parent_go_term in self.go_by_gene_data[item.source].go_term_list)){
+            self.go_by_gene_data[item.source].go_term_list.push(parent_go_term);
+        } //NOTE: ADDING THIS TO ADD PARENT GO TERMS -- MAY WANT TO REMOVE
+        if(parent_go_term in go_dict){
+          // append genes associated with this go term to gene_list (if they don't already exist in the list)
+          // cite: https://stackoverflow.com/a/34902391
+          var filtered_genes = go_dict[parent_go_term].filter(
+                function(e) {
+                  return this.indexOf(e) < 0;
+                },
+                self.go_by_gene_data[item.source].gene_list
+              );
+          if(filtered_genes.length > 0){
+                self.go_by_gene_data[item.source].gene_list.push(filtered_genes);
+          }
+          // fill edge_list
+            go_dict[parent_go_term].forEach((gene_id, index) => {
+              self.go_by_gene_data[item.source].edge_list.push({gene: gene_id, go: parent_go_term, score:100})
+            });
+
+        } // end if(item.native in go_dict)
+
+      });
+
 
       if(item.native in go_dict){
         // append genes associated with this go term to gene_list (if they don't already exist in the list)
@@ -123,6 +149,7 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
       } // end if(item.native in go_dict)
 
     }); // end go_data.forEach
+    console.log(self.go_by_gene_data)
 
 }; // end setData()
 
@@ -149,6 +176,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
     // update the x axis with the go terms
     self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat());
     // add the x axis to the svg element
+
     self.svg.append("g")
             //.attr("transform", "translate(0," + self.svgHeight + ")")
             .call(d3.axisTop(self.x))
@@ -160,6 +188,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("transform", "rotate(45)")
             .style("text-anchor", "start");
 
+    console.log(self.go_by_gene_data[go_category]["edge_list"])
     // add blocks to heatmap
     self.svg.selectAll("rect")
             .data(self.go_by_gene_data[go_category]["edge_list"], function(d) {return d.gene+':'+d.go;})

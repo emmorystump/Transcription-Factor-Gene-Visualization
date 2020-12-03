@@ -88,11 +88,6 @@ GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
       });
 
     });
-    console.log(go_data)
-    console.log(self.go_by_gene_data)
-
-
-
 
 }; // end setData()
 

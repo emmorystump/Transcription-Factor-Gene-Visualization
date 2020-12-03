@@ -259,7 +259,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                     event.subject.fy = null;
                 }));
 
-
+            // TODO: KEEP HIGHLIGHTING WHEN GENE IS CLICKED UNTIL NEXT GENE IS CLICKED
             node.on("click", function (node_info, gene_info) {
                 self.geneDetail.update(gene_info, {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link})
             })

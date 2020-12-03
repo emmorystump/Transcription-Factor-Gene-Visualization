@@ -79,9 +79,7 @@ GoHeatmap.prototype.gProfilerConvert = function(organism, gene_list, target, go_
 
 GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
     var self = this;
-    console.log(go_data)
     var go_dict = {};
-    console.log(gene_to_go_json)
     gene_to_go_json.forEach((item, i) => {
       if(item.converted in go_dict){
         go_dict[item.converted].push(item.incoming)
@@ -149,7 +147,6 @@ GoHeatmap.prototype.setData = function(gene_to_go_json, go_data){
       } // end if(item.native in go_dict)
 
     }); // end go_data.forEach
-    console.log(self.go_by_gene_data)
 
 }; // end setData()
 
@@ -188,7 +185,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("transform", "rotate(45)")
             .style("text-anchor", "start");
 
-    console.log(self.go_by_gene_data[go_category]["edge_list"])
     // add blocks to heatmap
     self.svg.selectAll("rect")
             .data(self.go_by_gene_data[go_category]["edge_list"], function(d) {return d.gene+':'+d.go;})

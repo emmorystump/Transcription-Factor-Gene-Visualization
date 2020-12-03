@@ -112,10 +112,11 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
     var x = $.ajax({
       type: "POST",
       url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
-      data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "no_evidences": true, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
+      data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
       success: function( data ) {
         parsed_data = JSON.parse(data).result;
+        console.log(JSON.parse(data))
         self.visualize(parsed_data);
         // this sends the data to GoManhattenPlot for processing -- see the update set for goHeatMap in self.visualize
         self.goHeatmap.receiveData(gene_array, parsed_data)
@@ -126,6 +127,7 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
 GoManhattenPlot.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
+  console.log(go_object)
 
   //TODO: needs to be replaced with min/max of data
   var min_negLog10_pval = 0;

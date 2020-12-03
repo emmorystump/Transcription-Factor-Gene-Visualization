@@ -95,7 +95,6 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
         // from the previous TF selection, not sure if we want to change this.
 
         d3.json(dataDir + "tf_to_target/" + tfSelected + ".json").then(function (tf) {
-            // chase todo: update TF png_url
 
             // DEFINE 'NODES' AND 'EDGES'
             for (var i = 0; i < tf.linked.length; i++) {
@@ -165,7 +164,9 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 }
             } // allNodeLinks filling complete
 
-            // generate GO map from tf network cluster
+            console.log(gene_id_list)
+
+            // generate GO manhantten plot from tf network cluster
             self.goManhattenPlot.update(gene_id_list);
 
             d3.select("#edge-chart-heading-text")
@@ -212,6 +213,7 @@ Network.prototype.update = function (data, organism, tfSelected, minScore, maxSc
                 .enter()
                 .append("circle")
                 .attr("class", "node")
+                .attr("id", function(d) {return d.name})
                 .attr("r", 10)
                 .attr("fill", function (d) {
                     if (d.type == "tf") {

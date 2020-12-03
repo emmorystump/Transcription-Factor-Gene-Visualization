@@ -20,7 +20,13 @@ GoHeatmap.prototype.init = function(){
     var divGoHeatmap = d3.select(".go-heatmap").classed("content", true);
     self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width;
-    self.svgHeight = 300;
+    self.svgHeight = 500; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
+
+    // Build color scale
+    self.functionalCategories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
+    self.goClassColor = d3.scaleOrdinal()
+      .domain(self.functionalCategories)
+      .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
 
     //creates svg element within the div
     self.svg = divGoHeatmap.append("svg")
@@ -54,14 +60,14 @@ GoHeatmap.prototype.init = function(){
 
 GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
     var self = this;
-    var go_dict = {};
 
     var query_gene_list = go_data.meta.genes_metadata.query.query_1.ensgs
 
-    self.go_by_gene_data = {"GO:BP": {gene_list:[], go_term_list:[], edge_list:[]},
-                            "GO:CC":{gene_list:[], go_term_list:[], edge_list:[]},
-                            "GO:MF":{gene_list:[], go_term_list:[], edge_list:[]},
-                            "KEGG":{gene_list:[], go_term_list:[], edge_list:[]}};
+    self.go_by_gene_data = {"GO:BP": {gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
+                            "GO:CC":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
+                            "GO:MF":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
+                            "KEGG":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}}
+                           };
 
     go_data.result.forEach((go_result, i) => {
       var go_term = go_result.native;
@@ -85,6 +91,12 @@ GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
         }
         // fill edge_list
         self.go_by_gene_data[functional_category].edge_list.push({gene: gene_id, go: go_term, score:100});
+        // fill go_dict (it may be better to only store this, and create edge_list in visualize)
+        if (!(go_term in self.go_by_gene_data[functional_category].go_dict)){
+          self.go_by_gene_data[functional_category].go_dict[go_term] = [gene_id]
+        } else {
+            self.go_by_gene_data[functional_category].go_dict[go_term].push(gene_id)
+        }
       });
 
     });
@@ -124,7 +136,18 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("x", -70)
             .attr("dy", "-.35em")
             .attr("transform", "rotate(45)")
-            .style("text-anchor", "start");
+            .style("text-anchor", "start")
+            .on("click", function(d,i){
+              //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
+              var axis_selection = d.explicitOriginalTarget.__data__;
+              //color nodes by GO category
+              $("#network-vis").find(".node").each((index,node) => {
+                  console.log($("#"+node.__data__.name))
+                  if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
+                      d3.selectAll("#"+node.__data__.name).attr("fill", self.goClassColor(go_category));
+                  }
+              });
+            });
 
     // add blocks to heatmap
     self.svg.selectAll("rect")

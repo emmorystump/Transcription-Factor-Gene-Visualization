@@ -152,6 +152,9 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   var min_negLog10_pval = 0;
   var max_negLog10_pval = 10;
 
+  // remove all circles, if they exist, to clear graph for new data
+  $(".manhatten-circles").remove()
+
   // append axis to svg object
   self.svg.append("g")
     .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
@@ -162,9 +165,19 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       var axis_selection = d.explicitOriginalTarget.__data__;
       //only pass if recognized functional group (see init())
       if(self.functionalCategories.includes(axis_selection)){
-        self.goHeatmap.update(axis_selection); // note: see goHeatMap.receive data above
+        d3.select("#network-vis")
+          .selectAll(".node")
+          .attr("fill", function (d) {
+              if (d.type == "tf") {
+                  return "#6778d0";
+              }
+              else {
+                  return "#ba495b";
+              }
+            });
+        self.goHeatmap.update(axis_selection);
       } // end if
-    });
+    }); // end onclick
 
   self.y.domain([min_negLog10_pval, max_negLog10_pval]);
 
@@ -183,7 +196,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
     .attr("fill", function(d,i) {return self.goClassColor(d.source)})
-    .attr("class", "my-circles")
+    .attr("class", "manhatten-circles")
     .attr("class", function(d,i) {return d.source})
     .on("click", function(node_info, data){
       self.tooltip.style("opacity", 1);

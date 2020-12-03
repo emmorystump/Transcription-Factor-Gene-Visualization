@@ -3,6 +3,23 @@
 
 // ######################chase scratch#############################//
 
+// GoHeatmap.prototype.gProfilerConvert = function(organism, gene_list, target, go_data){
+//   var self = this;
+//   // remove null items from list (this occurs when the genes are filtered on score threshold -- maybe do this in network instead?)
+//   // cite: https://stackoverflow.com/a/281335
+//   var cleanArray = gene_list.filter(function () { return true });
+//
+//     $.ajax({
+//       type: "POST",
+//       url: "https://biit.cs.ut.ee/gprofiler/api/convert/convert/",
+//       data: '{"organism": "'+organism+'", "target": "'+target+'", "query": '+'["'+cleanArray.join('","')+'"]}',
+//       headers: { 'content-type': 'application/json', 'Accept': 'application/json' }
+//     }).done(function( data ) {
+//       self.setData(JSON.parse(data).result, go_data);
+//     });
+//
+// }; // end gProfilerConvert()
+
 // a heatmap rough rough draft
 // d3.json(path_to_json).then(function(data) {
 //   var gene_list = Object.keys(self.test_gene_info);

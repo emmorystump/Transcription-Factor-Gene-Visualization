@@ -1,8 +1,6 @@
 
 /**
- * Constructor for the a visualization
- *
- * replace all "VisTemplate" with name of object
+ * Constructor
  */
 function GoManhattenPlot(geneDetail, goHeatmap){
 
@@ -10,7 +8,7 @@ function GoManhattenPlot(geneDetail, goHeatmap){
     self.geneDetail = geneDetail;
     self.goHeatmap = goHeatmap;
     self.init();
-};
+}; // end constructor
 
 /**
  * Initializes the svg elements required for this chart
@@ -91,12 +89,12 @@ GoManhattenPlot.prototype.init = function(){
           .style("opacity", 0)
       };
 
-};
+}; // end init()
+
 /**
- * accepts gene_id_list, passes to gProfilerGO
+ * accepts gene_id_list, passes to goProfilerGO to create API request from gprofiler
  * @params gene_name_list a list of gene_id
  */
-
 GoManhattenPlot.prototype.update = function(gene_id_list){
 
   var self = this;
@@ -105,6 +103,12 @@ GoManhattenPlot.prototype.update = function(gene_id_list){
 
 }; // end update()
 
+
+/**
+ * sends API request to gprofiler, returns data to self.distributeGOdata
+ * @params the organism code, eg dmelanogaster, stored in sessionStorage when an organism is selected
+ * @params gene_array is the list of genes displayed in network.js
+ */
 GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
 
     var self = this;
@@ -115,19 +119,34 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
       data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
       success: function( data ) {
-        parsed_data = JSON.parse(data).result;
-        console.log(JSON.parse(data))
-        self.visualize(parsed_data);
-        // this sends the data to GoManhattenPlot for processing -- see the update set for goHeatMap in self.visualize
-        self.goHeatmap.receiveData(gene_array, parsed_data)
+        self.distributeGOdata(JSON.parse(data));
       }
     });
-} // end gProfilerGO()
+}; // end gProfilerGO()
 
+/**
+ * receives the return from gProfilerGO and distributes the data
+ * @params go_data_object has two parts: result and meta
+ */
+GoManhattenPlot.prototype.distributeGOdata = function(go_data_object){
+
+  var self = this;
+
+  // update the manhatten plot
+  self.visualize(go_data_object.result);
+
+  // send data to the heatmap to parse into gene/go array
+  self.goHeatmap.createGeneGoEdgeObject(go_data_object);
+
+}; // end wrangleAndDistributeGOdata()
+
+/**
+ * visualize the GO data
+ * @params the 'results' object of the returned data from the gProfilerGO
+ */
 GoManhattenPlot.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
-  console.log(go_object)
 
   //TODO: needs to be replaced with min/max of data
   var min_negLog10_pval = 0;
@@ -177,4 +196,4 @@ GoManhattenPlot.prototype.visualize = function(go_object){
 
     self.svg.on("mouseleave", self.mouseleave);
 
-} // end visualize
+}; // end visualize()

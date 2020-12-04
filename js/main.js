@@ -88,6 +88,9 @@
 
             if (form_type === "tf-form") {
               console.log($('#selectTfFile').val())
+              if($('#selectTfFile').val() === "") {
+                window.alert("You must enter a valid Transcription Factor.");
+              } else {
               sessionStorage.setItem("selectedTf", $('#selectTfFile').val());
 
               network.update(
@@ -96,10 +99,15 @@
                 sessionStorage.getItem("selectedTf"),
                 sessionStorage.getItem("min-weight"),
                 sessionStorage.getItem("max-weight"));
+              }
             }
             else {
               console.log($('#selectGeneFile').val());
-              sessionStorage.setItem("selectedGenes", $('#selectGeneFile').val());
+              if($('#selectGeneFile').val() === "") {
+                window.alert("You must enter a valid Gene.");
+              } else {
+                sessionStorage.setItem("selectedGenes", $('#selectGeneFile').val());
+              }
             }
 
 

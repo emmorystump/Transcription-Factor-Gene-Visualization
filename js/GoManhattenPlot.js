@@ -2,11 +2,12 @@
 /**
  * Constructor
  */
-function GoManhattenPlot(geneDetail, goHeatmap){
+function GoManhattenPlot(goHeatmap, functional_categories, goColorScheme){
 
     var self = this;
-    self.geneDetail = geneDetail;
     self.goHeatmap = goHeatmap;
+    self.functional_categories = functional_categories;
+    self.goColorScheme = goColorScheme;
     self.init();
 }; // end constructor
 
@@ -19,7 +20,7 @@ GoManhattenPlot.prototype.init = function(){
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
     //Gets access to the div element created for this chart from HTML
-    var divGoManhattenPlot = d3.select(".go-network").classed("content", true);
+    var divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
     self.svgBounds = divGoManhattenPlot.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgHeight = 300;
@@ -41,15 +42,9 @@ GoManhattenPlot.prototype.init = function(){
     self.y = d3.scaleLinear()
       .range([ self.svgHeight-self.margin.top-self.margin.bottom, 0 ]);
 
-    // Build color scale
-    self.functionalCategories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
-    self.goClassColor = d3.scaleOrdinal()
-      .domain(self.functionalCategories)
-      .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
-
     // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
     // consider this a cite for all tooltip related code
-    self.tooltip = d3.select(".go-network")
+    self.tooltip = d3.select("#go-manhatten-plot")
       .append("div")
       .style("opacity", 0)
       .attr("class", "tooltip")
@@ -164,7 +159,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
       var axis_selection = d.explicitOriginalTarget.__data__;
       //only pass if recognized functional group (see init())
-      if(self.functionalCategories.includes(axis_selection)){
+      if(self.functional_categories.includes(axis_selection)){
         d3.select("#network-vis")
           .selectAll(".node")
           .attr("fill", function (d) {
@@ -195,7 +190,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
     .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
-    .attr("fill", function(d,i) {return self.goClassColor(d.source)})
+    .attr("fill", function(d,i) {return self.goColorScheme(d.source)})
     .attr("class", "manhatten-circles")
     .attr("class", function(d,i) {return d.source})
     .on("click", function(node_info, data){

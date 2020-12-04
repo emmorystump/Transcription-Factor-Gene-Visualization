@@ -12,6 +12,12 @@
   function init() {
       var self = this;
 
+      // Build color scale for go categories input to manhatten plot and GoHeatMap
+      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
+      self.goColorScheme = d3.scaleOrdinal()
+        .domain(self.functional_categories)
+        .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
+
       var organism = sessionStorage.getItem("organism")
       switch (organism){
         case "fly":
@@ -54,18 +60,16 @@
             });
           }) // end jquery
 
-      // instantiate classes that depend on, or are independent of, network (network instantiated below)
+      // instantiate weights
       var weights = new Weights(organism);
+      // instantiate classes which depend on network ()
       var geneDetail = new GeneDetail()
-      var goHeatmap = new GoHeatmap();
-      var goManhattenPlot = new GoManhattenPlot(geneDetail, goHeatmap);
+      var goHeatmap = new GoHeatmap(self.goColorScheme);
+      var goManhattenPlot = new GoManhattenPlot(goHeatmap, self.functional_categories, self.goColorScheme);
       var network = new Network(geneDetail, goManhattenPlot);
 
-      var files =
-      [
-          "data/fruitfly/gene_info.json",
-          "data/yeast/gene_info.json"
-      ];
+
+      var files =["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];
       var promises = [];
       files.forEach(function(url) {
         promises.push(d3.json(url));

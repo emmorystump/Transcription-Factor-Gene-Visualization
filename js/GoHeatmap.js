@@ -1,11 +1,12 @@
 
 /**
  * Constructor for the a GoHeatmap
- *
+ * @params goColorScheme: a d3.scaleOrdinal object with the go functional category color scheme
  */
-function GoHeatmap(){
+function GoHeatmap(goColorScheme){
 
     var self = this;
+    self.goColorScheme = goColorScheme;
     self.init();
 }; // end constructor
 
@@ -21,12 +22,6 @@ GoHeatmap.prototype.init = function(){
     self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width;
     self.svgHeight = 500; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
-
-    // Build color scale
-    self.functionalCategories = ["GO:BP", "GO:CC","GO:MF","KEGG"]
-    self.goClassColor = d3.scaleOrdinal()
-      .domain(self.functionalCategories)
-      .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
 
     //creates svg element within the div
     self.svg = divGoHeatmap.append("svg")
@@ -143,7 +138,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
               //color nodes by GO category
               $("#network-vis").find(".node").each((index,node) => {
                   if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
-                      d3.selectAll("#"+node.__data__.name).attr("fill", self.goClassColor(go_category));
+                      d3.selectAll("#"+node.__data__.name).attr("fill", self.goColorScheme(go_category));
                   }
               });
             });
@@ -158,6 +153,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("y", function(d) { return self.y(d.gene) })
             .attr("width", self.x.bandwidth() )
             .attr("height", self.y.bandwidth() )
-            .style("fill", function(d) { return self.myColor(d.score)} );
+            .style("fill", self.goColorScheme(go_category) );
 
 }; // end update()

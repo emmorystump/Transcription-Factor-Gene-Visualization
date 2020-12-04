@@ -45,7 +45,7 @@ Network.prototype.init = function () {
       .style("border-radius", "5px")
       .style("padding", "10px");
 
-    // A function that change this tooltip when the user hover a point.
+    // A function that change this tooltip when the user hovers a point.
     // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
     self.mouseover = function(d) {
       self.tooltip
@@ -98,14 +98,10 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
       var regID_to_regName_csv_path = self.data_dir+"y_regulatorID_to_regulatorName.csv"
   }
 
-  console.log("here: " + tf_selected == "null")
-
   try{
     d3.csv(regID_to_regName_csv_path).then(function (allTFs) {
         // if no tf is passed, selected a random one
-        console.log("here")
         if (tf_selected == "" || tf_selected == null) {
-            console.log("HERE DUMMY")
             var random = Math.floor(Math.random() * allTFs.length) + 1;
             tf_selected = allTFs[random].input; // make list of
             console.log("Min and Max Scores: ")
@@ -229,8 +225,10 @@ Network.prototype.wrangleData = function(data, tf_selected){
 
       // attach data to Export Results on main page
       var export_results_button = $("#export-network-button");
+      console.log("export info: ")
       console.log(self.allNodeLinks)
-      var csv_data = self.allNodeLinks + $.map(self.allNodeLinks, function(d){return d}).join();
+      var csv_string = $.map(self.allNodeLinks.nodes, function(d){return [d.name, d.gene_name, d.score].join(",")}).join("\n");
+      var csv_data = encodeURI(csv_string)
       export_results_button.attr("href", csv_data);
       export_results_button.attr("download", self.tf_dict.id +"_network.csv");
       export_results_button.click();
@@ -251,8 +249,6 @@ Network.prototype.wrangleData = function(data, tf_selected){
 Network.prototype.visualize = function () {
     var self = this;
     var svg = self.svg;
-
-    console.log(self.gene_id_list)
 
     // generate GO manhantten plot from tf network cluster
     self.goManhattenPlot.update(self.gene_id_list);

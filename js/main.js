@@ -83,6 +83,7 @@
             var form_type = $('#selectUploadType').val();
 
             if (form_type === "tf-form") {
+              console.log($('#selectTfFile').val())
               sessionStorage.setItem("selectedTf", $('#selectTfFile').val());
 
               network.update(

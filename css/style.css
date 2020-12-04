@@ -13,6 +13,7 @@
   overflow: hidden;
 
 }
+
 img {
     width: auto;
     height: auto;
@@ -20,13 +21,18 @@ img {
     max-height: 100%;
 
   }
- 
+
+node-highlight {
+  stroke: black;
+  stroke-width="5";
+}
+
 
   #gene-detail {
     margin-top:100px;
   }
 
-  
+
 
   #brentlab-logo {
    padding-top: 3%;
@@ -58,7 +64,7 @@ img {
     padding-bottom: 20px;
   }
 
-/*   
+/*
  #overlay {
     position: absolute;
     top: 0;
@@ -71,9 +77,9 @@ img {
     transition: .5s ease;
     background-color: #008CBA;
   }
-  
+
   #fly-img:hover{
-    
+
     #overlay{
       opacity: 1;
 
@@ -341,4 +347,3 @@ img {
 #redirect_yeast:hover {
   border: 3px solid #343a40;
 }
-

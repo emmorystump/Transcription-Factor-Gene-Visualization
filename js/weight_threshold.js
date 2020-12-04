@@ -49,11 +49,11 @@ Weights.prototype.init = function(){
         })]);
 
     let minThreshold = parseFloat(self.mean) + parseFloat(0.5 * self.std);
-    // let minThreshold = parseFloat(self.mean) + parseFloat(self.std);
 
 
     document.getElementById("min-weight").setAttribute("value", minThreshold.toExponential());
     document.getElementById("max-weight").setAttribute("value", d3.max(dataArray, function (d) { return d.x }).toExponential());
+
 
     sessionStorage.setItem("min-weight", minThreshold);
     sessionStorage.setItem("max-weight", d3.max(dataArray, function (d) { return d.x }));
@@ -99,12 +99,16 @@ Weights.prototype.init = function(){
             document.getElementById("min-weight").setAttribute("value", self.weightRange[0].toExponential());
             document.getElementById("max-weight").setAttribute("value", self.weightRange[1].toExponential());
 
+            sessionStorage.setItem("min-weight", self.weightRange[0]);
+            sessionStorage.setItem("max-weight", self.weightRange[1]);
+
         });
 
       // Append brush component
     self.svg.append("g")
         .attr("class", "brush")
         .call(brush)
+        .call(brush.move, [3*self.svgWidth/4, self.svgWidth-self.padding])
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", self.svgHeight + 7);

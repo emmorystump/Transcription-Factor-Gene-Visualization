@@ -98,7 +98,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
       var regID_to_regName_csv_path = self.data_dir+"y_regulatorID_to_regulatorName.csv"
   }
 
-  try{
+  try {
     d3.csv(regID_to_regName_csv_path).then(function (allTFs) {
         // if no tf is passed, selected a random one
         if (tf_selected == "" || tf_selected == null) {
@@ -132,7 +132,7 @@ Network.prototype.wrangleData = function(data, tf_selected){
   var self = this;
 
   // Define nodes and edges
-  try{
+  try {
     d3.json(self.data_dir + "tf_to_target/" + tf_selected + ".json").then(function (tf) { // change tf to tf_file?
 
       // store TF info

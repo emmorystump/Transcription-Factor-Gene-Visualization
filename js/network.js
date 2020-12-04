@@ -79,42 +79,50 @@ Network.prototype.init = function () {
  * @param data
  * @param organism
  * @param data
- * @param tfSelected
+ * @param tf_selected
  * @param minScore
  * @param maxScore
  */
-Network.prototype.update = function(data, organism, tfSelected, minScore, maxScore){
+Network.prototype.update = function(data, organism, tf_selected, minScore, maxScore){
   var self = this;
   self.minScore = minScore;
   self.maxScore = maxScore;
-  self.tfSelected = tfSelected;
 
+  // TODO: put datadir in organism dict in redirect.js
   if (organism == "fly") {
       self.data_dir = "data/fruitfly/"
-      var regID_to_regName = "ff_regulatorID_to_regulatorName.csv"
+      var regID_to_regName_csv_path = self.data_dir+"ff_regulatorID_to_regulatorName.csv"
   }
   else if (organism == "yeast") {
       self.data_dir = "data/yeast/"
-      var regID_to_regName = "y_regulatorID_to_regulatorName.csv"
+      var regID_to_regName_csv_path = self.data_dir+"y_regulatorID_to_regulatorName.csv"
   }
 
-  d3.csv(self.data_dir + regID_to_regName).then(function (allTFs) {
-      if (self.tfSelected == "" || self.tfSelected == null) {
-          var random = Math.floor(Math.random() * allTFs.length) + 1;
-          self.tfSelected = allTFs[random].input;
-          console.log("Min and Max Scores: ")
-          console.log(minScore);
-          console.log(self.maxScore);
-          if(minScore != null && self.maxScore != null){
-              sessionStorage.setItem("selectedTf", self.tfSelected);
-              console.log("Setting intial TF selection in storage");
-              console.log(sessionStorage.getItem('selectedTf'));
-          } // end inner if
-      } // end outer if
-   }); // end d3.csv()
+  console.log("here: " + tf_selected == "null")
 
-   // wrangleData creates the json and calls visualize
-   self.wrangleData(data);
+  try{
+    d3.csv(regID_to_regName_csv_path).then(function (allTFs) {
+        // if no tf is passed, selected a random one
+        console.log("here")
+        if (tf_selected == "" || tf_selected == null) {
+            console.log("HERE DUMMY")
+            var random = Math.floor(Math.random() * allTFs.length) + 1;
+            tf_selected = allTFs[random].input; // make list of
+            console.log("Min and Max Scores: ")
+            console.log(minScore);
+            console.log(self.maxScore);
+            if(minScore != null && self.maxScore != null){
+                sessionStorage.setItem("selectedTf", tf_selected);
+                console.log("Setting intial TF selection in storage");
+                console.log(sessionStorage.getItem('selectedTf'));
+            } // end inner if
+        } // end outer if
+        // wrangleData creates the json and calls visualize
+        self.wrangleData(data, tf_selected);
+     }); // end d3.csv()
+  } catch(err){
+    console.log("ERROR: Network.update d3.csv. regID_to_regName: " + regID_to_regName + "; tf_selected: " + tf_selected)
+  }
 
 }; // end update()
 
@@ -122,87 +130,117 @@ Network.prototype.update = function(data, organism, tfSelected, minScore, maxSco
  * parse network data based on organism/thresholds.
  * Calls Network.visualize()
  *
- * @param tfSelected
+ * @param tf_selected
  */
-Network.prototype.wrangleData = function(data){
+Network.prototype.wrangleData = function(data, tf_selected){
   var self = this;
 
-  d3.json(self.data_dir + "tf_to_target/" + self.tfSelected + ".json").then(function (tf) {
-    // DEFINE 'NODES' AND 'EDGES'
-    for (var i = 0; i < tf.linked.length; i++) {
-        tf.scores[i] = +tf.scores[i]
-    } // end for
+  // Define nodes and edges
+  try{
+    d3.json(self.data_dir + "tf_to_target/" + tf_selected + ".json").then(function (tf) { // change tf to tf_file?
 
-    // store just the gene_id
-    self.gene_id_list = [];
-    self.allNodeLinks = { "nodes": [], "links": [] };
+      // store TF info
+      self.tf_dict = {id: tf.id,
+                      name: data[tf.id].name,
+                      go: data[tf.id].go,
+                      description: data[tf.id].description,
+                      link: data[tf.id].link
+                    } // end tf_dict
 
-    var std = d3.deviation(tf.scores);
-    var mean = d3.mean(tf.scores);
-    var threshold = mean + 3 * std;
+      // scores --> nums 1 - length(scores)?
+      for (var i = 0; i < tf.linked.length; i++) {
+          tf.scores[i] = +tf.scores[i]
+      } // end for
 
-    var tf_geneName = data[tf.id].name;
-    var tf_description = data[tf.id].description;
-    var tf_go = data[tf.id].go;
-    var tf_link = data[tf.id].link;
-    self.allNodeLinks.nodes.push(
-        {
-            "id": 0, "name": tf.id, "gene_name": tf_geneName,
-            "description": tf_description, "go": tf_go, "link": tf_link,
-            "type": "tf", "score": 0,
-            "x": self.svgWidth / 2, "y": self.svgHeight / 2
-        }); // end tf info push
+      // store just the gene_id
+      self.gene_id_list = [];
+      self.allNodeLinks = { "nodes": [], "links": [] };
 
-    // fill allNodeLinks
-    var linkCounter = 1;
+      // store distribution statistics
+      var std = d3.deviation(tf.scores);
+      var mean = d3.mean(tf.scores);
+      var threshold = mean + 3 * std;
 
-    for (var i = 1; i <= tf.linked.length; i++) {
-        var curGeneID = tf.linked[i];
-        var curGeneScore = tf.scores[i];
+      self.allNodeLinks.nodes.push(
+          {
+          // TODO: with time, change 'name' to id to index, name to id and gene_name to name
+              "id": 0, "name": self.tf_dict.id, "gene_name": self.tf_dict.name,
+              "description": self.tf_dict.description, "go": self.tf_dict.go, "link": self.tf_dict.link,
+              "type": "tf", "score": 0,
+              "x": self.svgWidth / 2, "y": self.svgHeight / 2
+          }); // end tf info push
 
-        if (curGeneID == "undefined" || data[curGeneID] == "undefined"){
+      // fill allNodeLinks
+      var linkCounter = 1;
+
+      // begin filling allNodeLinks with target genes
+      for (var i = 1; i <= tf.linked.length; i++) {
+
+
+          try{ // fill the dict as long as tf.linked[i] (a transcription factor) is defined.
+            var gene_dict = {id: tf.linked[i],
+                             name: data[tf.linked[i]].name,
+                             score: tf.scores[i],
+                             description: data[tf.linked[i]].description,
+                             go: data[tf.linked[i]].go,
+                             link: data[tf.linked[i]].link
+                           } // end gene_dict
+          // skip to next iteration if not (TODO: Is there a way in javascript to catch specific errors as opposed to any error?)
+          } catch (err) {
             continue;
-        } // end if
+          }
 
-        if (self.minScore != null && self.maxScore != null) {
-            if (curGeneScore >= +self.minScore && curGeneScore <= +self.maxScore) {
-              self.gene_id_list[i] = curGeneID;
-              var geneName = data[curGeneID].name;
-              var description = data[curGeneID].description;
-              var go = data[curGeneID].go;
-              var link = data[curGeneID].link;
-                self.allNodeLinks.nodes.push(
-                    {
-                        "id": i, "name": curGeneID, "gene_name": geneName,
-                        "description": description, "go": go, "link": link,
-                        "type": "gene", "score": curGeneScore,
-                        "x": self.svgWidth / 2, "y": self.svgHeight / 2
-                    })
-                self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
-                linkCounter += 1;
-            } // end inner if
-        } else {
-            if (curGeneScore > +self.minScore) {
-              self.gene_id_list[i] = curGeneID;
-              var geneName = data[curGeneID].name;
-              var description = data[curGeneID].description;
-              var go = data[curGeneID].go;
-              var link = data[curGeneID].link;
-                self.allNodeLinks.nodes.push(
-                    {
-                        "id": i, "name": curGeneID, "gene_name": gene_name,
-                        "description": description, "go": go, "link": link,
-                        "type": "gene", "score": curGeneScore,
-                        "x": self.svgWidth / 2, "y": self.svgHeight / 2
-                    })
-                self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
-                linkCounter += 1;
-            } // end inner if
-        } //end else
+          if (self.minScore != null && self.maxScore != null) {
+              if (gene_dict.score >= +self.minScore && gene_dict.score <= +self.maxScore) {
+                // push gene id into gene id list when is the best place to do this?
+                self.gene_id_list[i] = gene_dict.id;
+                  // push the next node
+                  self.allNodeLinks.nodes.push(
+                      {
+                        // TODO: with time, change 'name' to id to index, name to id and gene_name to name
+                          "id": i, "name": gene_dict.id, "gene_name": gene_dict.name,
+                          "description": gene_dict.description, "go": gene_dict.go, "link": gene_dict.link,
+                          "type": "gene", "score": gene_dict.score,
+                          "x": self.svgWidth / 2, "y": self.svgHeight / 2
+                      })
+                  // push the associated link
+                  self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
+                  linkCounter += 1;
+              } // end inner if
+          } else {
+              if (gene_dict.score > +self.minScore) {
+                // when is the best place to do this? (duplicated a few lines up)
+                self.gene_id_list[i] = gene_dict.id;
+                  // push the next node
+                  self.allNodeLinks.nodes.push(
+                      {
+                          "id": i, "name": gene_dict.id, "gene_name": gene_dict.name,
+                          "description": gene_dict.description, "go": go, "link": gene_dict.link,
+                          "type": "gene", "score": gene_dict.score,
+                          "x": self.svgWidth / 2, "y": self.svgHeight / 2
+                      })
+                  // push the associated link
+                  self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
+                  linkCounter += 1;
+              } // end inner if
+          } //end else
 
-    } // end for
-    self.visualize();
-  }); // end d3.json
+      } // end for
+
+      // attach data to Export Results on main page
+      var export_results_button = $("#export-network-button");
+      console.log(self.allNodeLinks)
+      var csv_data = self.allNodeLinks + $.map(self.allNodeLinks, function(d){return d}).join();
+      export_results_button.attr("href", csv_data);
+      export_results_button.attr("download", self.tf_dict.id +"_network.csv");
+      export_results_button.click();
+
+      // visualize the data
+      self.visualize();
+     }); // end d3.json
+  } catch(error){
+    console.log("ERROR: network.wrangleData()")
+  }
 }; // end wrangleData()
 
 
@@ -220,7 +258,7 @@ Network.prototype.visualize = function () {
     self.goManhattenPlot.update(self.gene_id_list);
 
     d3.select("#edge-chart-heading-text")
-        .text(self.tfSelected)
+        .text(self.tf_dict.id)
 
     var links = self.allNodeLinks.links;
     var nodes = self.allNodeLinks.nodes;
@@ -316,7 +354,7 @@ Network.prototype.visualize = function () {
       // select all nodes, removed click-highlight class
       d3.selectAll(".node")
       // add click-hightlight class to this node
-        self.geneDetail.update(gene_info, {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link})
+        self.geneDetail.update(gene_info, self.tf_dict) // take this as input -- may need to fix in geneDetail
     })
         .on("mouseover", function (node_info, gene_info) {
             self.tooltip.style("opacity", 1)

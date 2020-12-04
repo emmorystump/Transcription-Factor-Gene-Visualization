@@ -142,7 +142,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
               var axis_selection = d.explicitOriginalTarget.__data__;
               //color nodes by GO category
               $("#network-vis").find(".node").each((index,node) => {
-                  console.log($("#"+node.__data__.name))
                   if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
                       d3.selectAll("#"+node.__data__.name).attr("fill", self.goClassColor(go_category));
                   }

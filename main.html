@@ -174,23 +174,35 @@ Eventually, there will be functionality to allow the user to group the genes in 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-6 mt-4 w-50" id="edge-chart-heading">
+                            <div class="col-md-6 mt-4 w-50" id="edge-chart-heading" class="content-heading">
                                 <h2 id="edge-chart-heading-text"></h2>
                             </div>
-                            <div class="col mt-4 w-50">
+                            <div id="gene-detail-heading" class="content-heading" class="col mt-4 w-50">
                                 <h2>Gene Detail</h2>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 m-0 w-50" id="network-vis" width="450" height="380"></div>
-                            <div id="gene-detail" class="col-md-4 m-0 gene-detail">
-                                <p>Click on a gene to view additional information.</p>
+                            <div class="col-md-6 m-0 w-50" id="network-vis"></div> <!--  width="450" height="380" -->
+                              <div class="col-md-6 m-0 w-50">
+                                <div class="row">
+                                  <div id="gene-detail" class="col-md-4 m-0 gene-detail">
+                                    <p>Click on a gene to view additional information.</p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 m-0 w-50" id="go-manhatten-plot">
+                                    <h1 class="content-heading">Go Manhatten Plot</h1>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="go-network col-md-6">
-                                <h1>Go Manhatten Plot</h1>
+                        <!-- <div class="row">
+                            <div class="col-md-6 m-0 w-50" id="go-manhatten-plot">
+                              <h1 class="content-heading">Go Manhatten Plot</h1>
                             </div>
+                        </div> -->
+                        <div class="row">
                             <div class="go-heatmap col-md-6">
                                 <h1>Go Heatmap</h1>
                             </div>

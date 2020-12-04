@@ -279,14 +279,88 @@ node-highlight {
   width: 75px;
 }
 
+#yeast-div {
+  text-align: left;
+  vertical-align: middle;
+}
+
+#yeast-div:hover #redirect_yeast{
+  opacity: 0.8;
+}
+
+.yeast-text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#yeast-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#redirect_yeast{
+  position: absolute;
+  text-align: right;
+  vertical-align: middle;
+  top: 0%;
+  bottom: 0%;
+  left: 0;
+  right: 50%;
+  height: 100%;
+  width: 320px;
+  opacity: 0;
+  transition: .5s ease;
+  background-color:black;
+}
+
 #fly-div {
   text-align: right;
   vertical-align: middle;
 }
 
-#yeast-div {
-  text-align: left;
+#fly-div:hover #redirect_fly{
+  opacity: 0.8;
+}
+
+.fly-text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#fly-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#redirect_fly {
+  position: absolute;
+  text-align: right;
   vertical-align: middle;
+  top: 0%;
+  bottom: 0%;
+  left: 50%;
+  right: 0;
+  height: 100%;
+  width: 320px;
+  opacity: 0;
+  transition: .5s ease;
+  background-color:black;
 }
 
 #instructions-modal-button {
@@ -316,7 +390,7 @@ node-highlight {
 .organism-selector-sidebar {
   width: auto;
   height: auto;
-  max-height: 120px;
+  max-height: 200px;
 }
 
 #particles-js canvas{
@@ -330,20 +404,20 @@ node-highlight {
   z-index: -1;
 }
 
-#redirect_fly {
+#fly-button {
   border: 3px solid transparent;
 
 }
 
-#redirect_fly:hover {
+#fly-button:hover {
   border: 3px solid #343a40;
 }
 
-#redirect_yeast {
+#yeast-button {
   border: 3px solid transparent;
 
 }
 
-#redirect_yeast:hover {
+#yeast-button:hover {
   border: 3px solid #343a40;
 }

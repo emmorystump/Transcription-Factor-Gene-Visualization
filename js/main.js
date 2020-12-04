@@ -98,31 +98,38 @@
                 sessionStorage.getItem("max-weight"));
             }
             else {
-              uploaded_genes = [];
-              var uploadedFiles = document.getElementById("selectGeneFile");
-
-              if(uploadedFiles.files[0] != undefined) {
-                var file = uploadedFiles.files[0];
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                  var data = e.target.result;
-                  var workbook = XLSX.read(data, {
-                    type: 'binary'
-                  });
-
-                  workbook.Strings.forEach(function(s) {
-                    uploaded_genes.push(s.t);
-                  });
-
-                  uploaded_genes.sort();
-                  sessionStorage.setItem("selectedGenes", uploaded_genes);
-                };
-
-                reader.readAsBinaryString(file);
-              }
-
+              console.log($('#selectGeneFile').val());
+              sessionStorage.setItem("selectedGenes", $('#selectGeneFile').val());
             }
+
+
+            // Commenting this out for now - PLs dont delete
+            // else {
+            //   uploaded_genes = [];
+            //   var uploadedFiles = document.getElementById("selectGeneFile");
+
+            //   if(uploadedFiles.files[0] != undefined) {
+            //     var file = uploadedFiles.files[0];
+            //     var reader = new FileReader();
+
+            //     reader.onload = function(e) {
+            //       var data = e.target.result;
+            //       var workbook = XLSX.read(data, {
+            //         type: 'binary'
+            //       });
+
+            //       workbook.Strings.forEach(function(s) {
+            //         uploaded_genes.push(s.t);
+            //       });
+
+            //       uploaded_genes.sort();
+            //       sessionStorage.setItem("selectedGenes", uploaded_genes);
+            //     };
+
+            //     reader.readAsBinaryString(file);
+            //   }
+
+            // }
 
           })
 

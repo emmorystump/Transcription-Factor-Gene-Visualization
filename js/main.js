@@ -157,9 +157,9 @@
           });
 
 
-          console.log("First Update: ");
-          console.log(sessionStorage.getItem("min-weight"));
-          console.log(sessionStorage.getItem("max-weight"));
+          // console.log("First Update: ");
+          // console.log(sessionStorage.getItem("min-weight"));
+          // console.log(sessionStorage.getItem("max-weight"));
 
           network.update(
             data,

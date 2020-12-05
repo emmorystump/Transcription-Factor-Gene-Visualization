@@ -92,8 +92,24 @@ h2 {
   border-radius: 15px;
 }
 
+#clicker-left-m2 {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+#clicker-right-m2 {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
 .mySlides1 {
   padding: 10px;
+}
+
+#milestone2 img {
+  height: 700px;
 }
 
 

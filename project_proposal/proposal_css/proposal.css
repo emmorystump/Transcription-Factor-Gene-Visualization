@@ -1,15 +1,33 @@
+html {
+  height: 100%;
+}
+
 body {
     margin: 60px !important;
+    height: 100%;
+    width: auto;
     font-family: Abril Fatface,Times New Roman,Times,serif;
     font-size: 1.25rem;
+}
+
+.subsection {
+  padding-top: 70px;
+  margin-left: 70px;
+  margin-right: 170px;
+  height: auto;
+  width: auto;
 }
 
 .basicInfo {
     margin: 4px;
 }
 
-h1, h4, h5 {
+h1, h2, h4, h5 {
     font-family: Abril Fatface,Times New Roman,Times,serif;
+}
+
+h2 {
+  font-weight: 500;
 }
 
 .indent {
@@ -24,15 +42,58 @@ h1, h4, h5 {
   background-color: #F5F5F5;
 }
 
-.diagram {
+/* .diagram {
   width:500px;
   height:600px;
-}
+} */
 
 #pbTitle {
-    text-align: center;
+    height: 100%;
+    width: auto;
+}
+
+#pbTitle h1 {
+  text-align: center;
+  font-weight: bold;
 }
 
 #milestone1 img {
-  width: 1000px;
+  height: 700px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.mySlides p {
+  text-align: center;
+}
+
+#clicker-left {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+#clicker-right {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+#clicker-left-initial {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+#clicker-right-initial {
+  position: static !important;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+.mySlides1 {
+  padding: 10px;
+}
+
+

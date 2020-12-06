@@ -62,7 +62,7 @@
           }) // end jquery
 
       // instantiate weights
-      var weights = new Weights(organism);
+      var weights = new Weights(self.colorScheme, organism);
       // instantiate classes which depend on network ()
       var geneDetail = new GeneDetail(self.colorScheme)
       var goHeatmap = new GoHeatmap(self.colorScheme); //note the inherentence from other objects, particularly the colorScheme

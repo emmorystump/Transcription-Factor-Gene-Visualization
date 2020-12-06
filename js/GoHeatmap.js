@@ -20,7 +20,7 @@ GoHeatmap.prototype.init = function(){
     var divGoHeatmap = d3.select(".go-heatmap").classed("content", true);
     self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width;
-    self.svgHeight = 500; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
+    self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
 
     //creates svg element within the div
     self.svg = divGoHeatmap.append("svg")

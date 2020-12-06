@@ -24,13 +24,13 @@ function GoManhattenPlot(colorScheme, geneDetail, goHeatmap, functional_categori
  */
 GoManhattenPlot.prototype.init = function(){
     var self = this;
-    self.margin = {top: 30, right: 20, bottom: 30, left: 50};
+    self.margin = {top: 100, right: 100, bottom: 0, left: 50};
 
     //Gets access to the div element created for this chart from HTML
     var divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
     self.svgBounds = divGoManhattenPlot.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
-    self.svgHeight = 300;
+    self.svgHeight = 400;
 
     //creates svg element within the div
     self.svg = divGoManhattenPlot.append("svg")
@@ -46,8 +46,8 @@ GoManhattenPlot.prototype.init = function(){
       .range([0, self.svgWidth]);
 
     // Build X scales and axis:
-    self.y = d3.scaleLinear()
-      .range([ self.svgHeight-self.margin.top-self.margin.bottom, 0 ]);
+    self.y = d3.scaleLog()
+      .range([ 0, self.svgHeight-self.margin.top-self.margin.bottom ]);
 
 }; // end init()
 
@@ -107,10 +107,41 @@ GoManhattenPlot.prototype.distributeGOdata = function(go_data_object){
 GoManhattenPlot.prototype.visualize = function(go_object){
   // need to fix margin around svg, axis, etc
   var self = this;
+  var pval = [];
 
   //TODO: needs to be replaced with min/max of data
-  var min_negLog10_pval = 0;
-  var max_negLog10_pval = 10;
+  console.log(go_object)
+  // these are turned negative after finding min/max -- see next block
+  var min_Log10_pval = [1*10**6];
+  var min_index = [];
+  var max_Log10_pval = [-1];
+  var max_index = [];
+  go_object.forEach((item, i) => {
+    pval[0] = -1*Math.log(item.p_value);
+    if (pval[0] < min_Log10_pval[0]){
+      min_Log10_pval[0] = pval[0];
+      max_index = i;
+    }else if(pval[0] > max_Log10_pval[0]){
+      max_Log10_pval[0] = pval[0];
+      min_index = i;
+    }
+  });
+
+  try{
+    if(max_Log10_pval == -1) throw "Error: no max pvalue found in GoManhattenPlot.visualize"
+  } catch(err){
+    console.log(err)
+  }
+
+    self.y.domain([go_object[min_index].p_value, go_object[max_index].p_value])
+          .clamp(true);
+
+    var pointScale = d3.scaleLog()
+                       .domain([go_object[min_index].p_value, go_object[max_index].p_value])
+                       .range([8, 4])
+                       .clamp(true)
+
+  console.log(go_object[min_index].p_value+" , "+go_object[max_index].p_value)
 
   // remove all circles, if they exist, to clear graph for new data
   $(".manhatten-circles").remove()
@@ -139,22 +170,17 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       } // end if
     }); // end onclick
 
-  self.y.domain([min_negLog10_pval, max_negLog10_pval]);
-
   self.svg.append("g")
     .call(d3.axisLeft(self.y));
-
-  var pointScale = d3.scaleLinear()
-                     .domain([min_negLog10_pval, max_negLog10_pval])
-                     .range([1,10])
 
   self.svg.selectAll("circle")
     .data(go_object)
     .enter()
     .append("circle")
     .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
-    .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
-    .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
+    .attr("cy", function(d,i) { return self.y(d.p_value) })
+    .attr("r", function(d,i) {return pointScale(d.p_value)} )
+    .style("opacity", .4)
     .attr("fill", function(d,i) {return self.colorScheme(d.source)})
     .attr("class", "manhatten-circles")
     .attr("class", function(d,i) {return d.source})

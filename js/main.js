@@ -28,8 +28,7 @@
         case "yeast":
           this.organism = "Saccharomyces cerevisiae"
           break;
-
-      } // end switch
+      }; // end switch
 
 
       $(document).ready(function(){
@@ -59,8 +58,8 @@
                 $('#gene-input-form').addClass("hide");
               }
 
-            });
-          }) // end jquery
+            }); // end on change
+          }); // end jquery
 
       // instantiate weights
       var weights = new Weights(self.colorScheme, organism);
@@ -90,46 +89,8 @@
       var promises = [];
       files.forEach(function(url) {
         promises.push(d3.json(url));
-      });
+      });// end jquery
 
-    }); // end jquery
-
-    // When tf/gene list select input is changed, get which option it is
-    $(document).ready(function () {
-      $('#selectUploadType').on('change', function () {
-        // based on this value, which is equal to the option id, choose whether to hide or show an input box for tf and a file upload for gene list
-        if (this.value === "gene-input-form") {
-          $('#gene-input-form').removeClass("hide");
-          $('#gene-input-form').addClass("show");
-
-          $('#tf-form').removeClass("show");
-          $('#tf-form').addClass("hide");
-        }
-        else {
-          $('#tf-form').removeClass("hide");
-          $('#tf-form').addClass("show");
-
-          $('#gene-input-form').removeClass("show");
-          $('#gene-input-form').addClass("hide");
-        }
-
-      });
-    }) // end jquery
-
-    // instantiate weights
-    var weights = new Weights(organism);
-    // instantiate classes which depend on network ()
-    var geneDetail = new GeneDetail()
-    var goHeatmap = new GoHeatmap(self.goColorScheme);
-    var goManhattenPlot = new GoManhattenPlot(goHeatmap, self.functional_categories, self.goColorScheme);
-    var network = new Network(geneDetail, goManhattenPlot);
-
-
-    var files = ["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];
-    var promises = [];
-    files.forEach(function (url) {
-      promises.push(d3.json(url));
-    });
 
     Promise.all(promises).then(function (values) {
       if (organism == "fly") {
@@ -141,7 +102,7 @@
       if(sessionStorage.getItem("selectedType") == null){
         sessionStorage.setItem("selectedType", "tf");
       }
-  
+
       d3.select("#selectedSubmit").on('click', function () {
         var form_type = $('#selectUploadType').val();
 

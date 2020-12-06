@@ -19,7 +19,7 @@ function Weights(colorScheme, organism){
 
     self.weightRange = [0,0];
     self.init();
-}
+} // end constructor
 
 Weights.prototype.init = function(){
     var self = this;

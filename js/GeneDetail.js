@@ -95,7 +95,7 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
   $(".go-detail-text").empty();
 
   // determine if KEGG or GO annotations
-  console.log(manhatten_plot_node_data.native)
+
   if (manhatten_plot_node_data.native.startsWith("KEGG")){
     kegg_or_go = "kegg"
     kegg_or_go_path_prefix = self.kegg_path_prefix;
@@ -103,7 +103,6 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
     kegg_or_go = "go"
     kegg_or_go_path_prefix = self.go_chart_url_prefix;
   }
-  console.log(manhatten_plot_node_data)
 
 
   self.go_detail_text = ("<p>Description: " + manhatten_plot_node_data.description + "<br>"+
@@ -128,7 +127,7 @@ GeneDetail.prototype.appendText = function(detail_text, which_div){
   try{
     if (!["gene","go"].includes(which_div)) throw 'GeneDetail.appendText must get second argument either "gene" or "go"'
   } catch(err){
-    console.log(err)
+    console.error(err)
   }
 
   if(which_div == "go"){
@@ -138,17 +137,14 @@ GeneDetail.prototype.appendText = function(detail_text, which_div){
       text = self.go_detail_text;
     }
   } else{ // which_div must be gene
-     console.log("HERE")
      if(detail_text == "" & self.gene_detail_text == ""){
          text = self.gene_instructions;
      } else{
-         console.log("here")
          text = self.gene_detail_text;
      }
   }
 
   // append to DOM
-  console.log(text)
   $(".gene-detail-text").empty();
   $(".go-detail-text").empty();
   $(".go-detail-text").append(text);
@@ -162,12 +158,11 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
   var self = this;
   var url = url_prefix;
   var gene_array = gene_array;
-  console.log(gene_array)
 
   try{
     if(!["go", "kegg"].includes(go_or_kegg)) throw 'Error: GeneDetail.goUrlMaker takes three arguments, the third of which is either "go" or "kegg"'
   } catch(err){
-    console.log(err)
+    console.error(err)
   }
 
   if (go_or_kegg == "go"){
@@ -187,9 +182,8 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
   try{
     if(url == "") throw 'Error: var url in GeneDetail.goUrlMaker is empty'
   } catch(err){
-    console.log(err)
+    console.error(err)
   }
-  console.log(url)
 
   return(url);
 

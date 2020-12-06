@@ -27,13 +27,13 @@ GoManhattenPlot.prototype.init = function(){
     self.margin = {top: 100, right: 100, bottom: 0, left: 50};
 
     //Gets access to the div element created for this chart from HTML
-    var divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
-    self.svgBounds = divGoManhattenPlot.node().getBoundingClientRect();
+    self.divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
+    self.svgBounds = self.divGoManhattenPlot.node().getBoundingClientRect();
     self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
     self.svgHeight = 400;
 
     //creates svg element within the div
-    self.svg = divGoManhattenPlot.append("svg")
+    self.svg = self.divGoManhattenPlot.append("svg")
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight+self.svgBounds.top)
         .append("g")
@@ -109,93 +109,98 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   var self = this;
   var pval = [];
 
-  //TODO: needs to be replaced with min/max of data
-  console.log(go_object)
   // these are turned negative after finding min/max -- see next block
   // actually neg log10 -- the names of these variables got screwed up as i debugged. If this message isn't here, read VERY carefully and ignore the variable names
   var min_Log10_pval = [1*10**6];
-  var min_index = [];
+  var min_index = [0];
   var max_Log10_pval = [-1];
-  var max_index = [];
-  go_object.forEach((item, i) => {
-    pval[0] = -1*Math.log(item.p_value);
-    console.log(pval[0])
-    if (pval[0] < min_Log10_pval[0]){
-      min_Log10_pval[0] = pval[0];
-      max_index[0] = i;
-    }
-    if(pval[0] > max_Log10_pval[0]){
-      console.log("HERE")
-      max_Log10_pval[0] = pval[0];
-      min_index[0] = i;
-    }
-  });
+  var max_index = [0];
+
   try{
-    if(max_Log10_pval == -1) throw "Error: no max pvalue found in GoManhattenPlot.visualize"
+    if(go_object.length < 1){
+      throw 'No significant GO terms. Try a less stringent threshold on the edge weights to increase the number of target genes.';
+    } else{
+      $("#go-network-error").remove()
+      go_object.forEach((item, i) => {
+        pval[0] = -1*Math.log(item.p_value);
+        if (pval[0] < min_Log10_pval[0]){
+          min_Log10_pval[0] = pval[0];
+          max_index[0] = i;
+        }
+        if(pval[0] > max_Log10_pval[0]){
+          max_Log10_pval[0] = pval[0];
+          min_index[0] = i;
+        }
+      });
+      try{
+        if(max_Log10_pval == -1) throw "Error: no max pvalue found in GoManhattenPlot.visualize"
+      } catch(err){
+        console.error(err)
+      }
+
+        self.y.domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
+              .clamp(true);
+
+        var pointScale = d3.scaleLog()
+                           .domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
+                           .range([8, 4])
+                           .clamp(true)
+
+      // remove all circles, if they exist, to clear graph for new data
+      $(".manhatten-circles").remove()
+
+      // append axis to svg object
+      self.svg.append("g")
+        .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
+        .attr("class", "x-axis")
+        .call(d3.axisBottom(self.x))
+        .on("click", function(d,i){
+          //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
+          var axis_selection = d.explicitOriginalTarget.__data__;
+          //only pass if recognized functional group (see init())
+          if(self.functional_categories.includes(axis_selection)){
+            d3.select("#network-vis")
+              .selectAll(".node")
+              .attr("fill", function (d) {
+                  if (d.type == "tf") {
+                      return self.colorScheme("tf");
+                  }
+                  else {
+                      return self.colorScheme("gene");
+                  }
+                });
+            self.goHeatmap.update(axis_selection);
+          } // end if
+        }); // end onclick
+
+      self.svg.append("g")
+        .call(d3.axisLeft(self.y));
+
+      self.svg.selectAll("circle")
+        .data(go_object)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
+        .attr("cy", function(d,i) { return self.y(d.p_value) })
+        .attr("r", function(d,i) {return pointScale(d.p_value)} )
+        .style("opacity", .4)
+        .attr("fill", function(d,i) {return self.colorScheme(d.source)})
+        .attr("class", "manhatten-circles")
+        .attr("class", function(d,i) {return d.source})
+        .on("click", function(node_info, data){
+          self.geneDetail.updateGoDetail(data)
+        })
+        .on("mouseover", function(node_info, data){
+          // highlight the term circle
+          // put a halo around the selected node
+        })
+        .on("mouseleave", function(node_info, data){
+          // return color to prev
+        });
+    }
   } catch(err){
-    console.log(err)
-  }
-
-    self.y.domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
-          .clamp(true);
-
-    var pointScale = d3.scaleLog()
-                       .domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
-                       .range([8, 4])
-                       .clamp(true)
-
-  console.log(go_object[min_index[0]].p_value+" , "+go_object[max_index[0]].p_value)
-
-  // remove all circles, if they exist, to clear graph for new data
-  $(".manhatten-circles").remove()
-
-  // append axis to svg object
-  self.svg.append("g")
-    .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
-    .attr("class", "x-axis")
-    .call(d3.axisBottom(self.x))
-    .on("click", function(d,i){
-      //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-      var axis_selection = d.explicitOriginalTarget.__data__;
-      //only pass if recognized functional group (see init())
-      if(self.functional_categories.includes(axis_selection)){
-        d3.select("#network-vis")
-          .selectAll(".node")
-          .attr("fill", function (d) {
-              if (d.type == "tf") {
-                  return self.colorScheme("tf");
-              }
-              else {
-                  return self.colorScheme("gene");
-              }
-            });
-        self.goHeatmap.update(axis_selection);
-      } // end if
-    }); // end onclick
-
-  self.svg.append("g")
-    .call(d3.axisLeft(self.y));
-
-  self.svg.selectAll("circle")
-    .data(go_object)
-    .enter()
-    .append("circle")
-    .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
-    .attr("cy", function(d,i) { return self.y(d.p_value) })
-    .attr("r", function(d,i) {return pointScale(d.p_value)} )
-    .style("opacity", .4)
-    .attr("fill", function(d,i) {return self.colorScheme(d.source)})
-    .attr("class", "manhatten-circles")
-    .attr("class", function(d,i) {return d.source})
-    .on("click", function(node_info, data){
-      self.geneDetail.updateGoDetail(data)
-    })
-    .on("mouseover", function(node_info, data){
-      // highlight the term circle
-      // put a halo around the selected node
-    })
-    .on("mouseleave", function(node_info, data){
-      // return color to prev
-    });
+    console.error("here: " + go_object.length)
+    $("#go-manhatten-plot").append('<p id="go-network-error">'+err+'</p>');
+  } // end try .. catch
 
 }; // end visualize()

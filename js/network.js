@@ -45,7 +45,7 @@ Network.prototype.init = function () {
         .style("border-width", "1px")
         .style("border-radius", "5px")
         .style("padding", "10px");
- 
+
     // A function that change this tooltip when the user hovers a point.
     // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
     self.mouseover = function (d) {
@@ -119,7 +119,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
         self.wrangleData(data, tf_selected);
      }); // end d3.csv()
   } catch(err){
-    console.log("ERROR: Network.update d3.csv. regID_to_regName: " + regID_to_regName + "; tf_selected: " + tf_selected)
+    console.error("ERROR: Network.update d3.csv. regID_to_regName: " + regID_to_regName + "; tf_selected: " + tf_selected)
   }
 
 }; // end update()
@@ -228,8 +228,8 @@ Network.prototype.wrangleData = function(data, tf_selected){
 
       // attach data to Export Results on main page
       var export_results_button = $("#export-network-button");
-      console.log("export info: ")
-      console.log(self.allNodeLinks)
+      // console.log("export info: ")
+      // console.log(self.allNodeLinks)
       var csv_string = $.map(self.allNodeLinks.nodes, function(d){return [d.name, d.gene_name, d.score].join(",")}).join("\n");
       var csv_data = encodeURI(csv_string)
       export_results_button.attr("href", "./images/BrentLabLogo.png");
@@ -240,7 +240,7 @@ Network.prototype.wrangleData = function(data, tf_selected){
       self.visualize();
      }); // end d3.json
   } catch(error){
-    console.log("ERROR: network.wrangleData()")
+    console.error("ERROR: network.wrangleData()")
   }
 
 }; // end wrangleData()
@@ -299,8 +299,6 @@ Network.prototype.visualize = function () {
         })
         .attr("stroke", "#999")
         .attr("stroke-opacity", 0.6);
-    console.log("nodes")
-    console.log(nodes)
     // DRAW THE NODES (SVG CIRCLE)
     var node = svg.selectAll(".node")
         .data(nodes)

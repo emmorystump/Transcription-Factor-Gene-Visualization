@@ -177,16 +177,25 @@ Eventually, there will be functionality to allow the user to group the genes in 
                             <div class="col-md-6 mt-4 w-50" id="edge-chart-heading" class="content-heading">
                                 <h2 id="edge-chart-heading-text"></h2>
                             </div>
-                            <div id="gene-detail-heading" class="content-heading" class="col mt-4 w-50">
-                                <h2>Gene Detail</h2>
+                            <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
+                            <div class=tab-container>
+                              <ul class="tabs clearfix" >
+                                <li id="go-detail-tab">
+                                  <a href=# >GO Detail</a>
+                                </li>
+                                <li id="gene-detail-tab" class=active >
+                                  <a href=# >Gene Detail</a>
+                                </li>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 m-0 w-50" id="network-vis"></div> <!--  width="450" height="380" -->
                               <div class="col-md-6 m-0 w-50">
                                 <div class="row">
-                                  <div id="gene-detail" class="col-md-4 m-0 gene-detail">
-                                    <p>Click on a gene to view additional information.</p>
+                                  <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
+                                    <div class="gene-detail-text"></div>
+                                    <div class="go-detail-text"></div>
+                                    <p class="go-gene-instructions">Click a gene in the network visualization for more information</p>
                                   </div>
                                 </div>
                                 <div class="row">

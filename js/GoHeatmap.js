@@ -1,12 +1,11 @@
 
 /**
  * Constructor for the a GoHeatmap
- * @params goColorScheme: a d3.scaleOrdinal object with the go functional category color scheme
  */
-function GoHeatmap(goColorScheme){
+function GoHeatmap(colorScheme){
 
     var self = this;
-    self.goColorScheme = goColorScheme;
+    self.colorScheme = colorScheme;
     self.init();
 }; // end constructor
 
@@ -138,7 +137,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
               //color nodes by GO category
               $("#network-vis").find(".node").each((index,node) => {
                   if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
-                      d3.selectAll("#"+node.__data__.name).attr("fill", self.goColorScheme(go_category));
+                      d3.selectAll("#"+node.__data__.name).attr("fill", self.colorScheme(go_category));
                   }
               });
             });
@@ -153,6 +152,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
             .attr("y", function(d) { return self.y(d.gene) })
             .attr("width", self.x.bandwidth() )
             .attr("height", self.y.bandwidth() )
-            .style("fill", self.goColorScheme(go_category) );
+            .style("fill", self.colorScheme(go_category) );
 
 }; // end update()

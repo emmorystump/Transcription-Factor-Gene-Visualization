@@ -5,9 +5,10 @@
  * replace all "VisTemplate" with name of object
  */
 
-function GeneDetail(){
+function GeneDetail(colorScheme){
 
     var self = this;
+    self.colorScheme = colorScheme;
     //var window.gene_name_list = [];
     self.init();
 };
@@ -17,25 +18,12 @@ function GeneDetail(){
  */
 GeneDetail.prototype.init = function(){
     var self = this;
-    self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
-    self.gene_detail_view = $("#gene-detail")
+    self.gene_instructions = "Click a gene in the network visualization for more information";
+    self.go_instructions = "Click one of the significant GO terms on the manhatten plot for more information";
 
-    // =============== Experimental D3 code to line things up =====================
-
-    // //Gets access to the div element created for this chart from HTML
-    // var divNetwork = d3.select("#gene-detail").classed("content", true);
-    // self.svgBounds = divNetwork.node().getBoundingClientRect();
-    // self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
-    // self.svgHeight = 500;
-
-    // //creates svg element within the div
-    // self.svg = divNetwork.append("svg")
-    //     .attr("id", "gene-detail-svg")
-    //     .attr("width", self.svgWidth)
-    //     .attr("height", self.svgHeight)
-
-    // ===============================================================================
+    self.gene_detail_text = "";
+    self.go_detail_text = "";
 
 };
 
@@ -54,27 +42,90 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
     // tf_object is structure: {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link}
 
     var self = this;
+    // hide go details if they exist
+    $(".go-detail-text").removeClass('active');
+    // remove instructions text
+    $(".go-gene-instructions").empty();
     // remove previous details
-    $("#gene-detail").empty();
+    $(".gene-detail-text").empty();
 
     var chart_url = self.goUrlMaker(node_object_array.go, sessionStorage.getItem("go_chart_url_prefix"));
 
-    var gene_id = '<p class="gene-detail-text">Gene ID: '+node_object_array.name+ '</p>';
-    var gene_name = '<p class="gene-detail-text">Gene Name: '+node_object_array.gene_name+ '</p>';
-    var gene_score = '<p class="gene-detail-text">Score: '+node_object_array.score+ '</p>';
-    var gene_link = '<a href="'+node_object_array.link + '" target="_blank">Gene Info</a><br>';
-    var gene_cluster_png_link = '<a href="'+chart_url + '" target="_blank">Gene Go Chart</a><br>';
+    self.gene_detail_text = '<p>Gene ID: '+node_object_array.name+
+    '</p><p>Gene Name: '+node_object_array.gene_name+
+    '</p><p>Score: '+node_object_array.score+
+    '</p><a href="'+node_object_array.link +
+    '" target="_blank">Gene Info</a><br><a href="'+chart_url +
+    '" target="_blank">Gene Go Chart</a><br>';
+    console.log(self.gene_data_text)
 
-    // $("#gene-detail").append('<h2 class="gene-detail-heading">Gene Detail</h2>');
-    $("#gene-detail").append(gene_id);
-    $("#gene-detail").append(gene_name);
-    $("#gene-detail").append(gene_score);
-    $("#gene-detail").append(gene_link);
-    $("#gene-detail").append(gene_cluster_png_link);
-    $("#gene-detail").append('<br>');
-    self.createInput("Download_Supplementary_Data")
+    // // append to DOM
+    // $(".gene-detail-text").append(self.gene_detail_text);
+    // // make visible
+    // $(".gene-detail-text").addClass('active');
+    self.appendText(self.gene_deta_text, "gene")
 
 };
+
+GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
+  var self = this;
+  // hide go details if they exist
+  $(".gene-detail-text").removeClass('active');
+  // remove instructions text
+  $(".go-gene-instructions").empty();
+  // remove previous details
+  $(".go-detail-text").empty();
+
+
+  self.go_detail_text = ("<p>Description: " + manhatten_plot_node_data.description + "<br>"+
+                     "GO_term: " + manhatten_plot_node_data.native + "<br>"+
+                     "<p> p-value: " + manhatten_plot_node_data.p_value + "<\p>"+
+                     '<a class="nav-link" href="'+self.goUrlMaker(manhatten_plot_node_data.parents,
+                     sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>');
+
+ // append to DOM
+ $(".go-detail-text").append(go_detail_text);
+ // make visible
+ $(".go-detail-text").addClass('active');
+}; // end updateGoDetail()
+
+/**
+*
+* @params detail_text:
+* @params which_div: either 'go' or 'gene'
+**/
+GeneDetail.prototype.appendText = function(detail_text, which_div){
+  var self = this;
+
+  try{
+    if (!["gene","go"].includes(which_div)) throw 'GeneDetail.appendText must get second argument either "gene" or "go"'
+  } catch(err){
+    console.log(err)
+  }
+
+  if(which_div == "go"){
+    if(detail_text == ""){
+      if(self.go_detail_text == ""){
+        var text = self.go_instructions;
+      } else{
+        text = self.go_detail_text
+      }
+    }
+  } else{ // which_div must be gene
+    if(detail_text == ""){
+      if(self.gene_detail_text == ""){
+        var text = self.gene_instructions;
+      } else{
+        text = self.gene_detail_text
+      }
+    }
+  }
+
+  // append to DOM
+  console.log(text)
+  $(".go-detail-text").append(text);
+
+} // end appendText
 
 GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix){
   // gene_array must be a go_term_arry in the case of the chart

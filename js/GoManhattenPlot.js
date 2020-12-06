@@ -1,13 +1,20 @@
 
+
+// ("<p>Description: " + i.description + "<br>"+
+//        "GO_term: " + i.native + "<br>"+
+//        "<p> p-value: " + i.p_value + "<\p>"+
+//        '<a class="nav-link" href="'+self.geneDetail.goUrlMaker(i.parents, sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>')
+
 /**
  * Constructor
  */
-function GoManhattenPlot(goHeatmap, functional_categories, goColorScheme){
+function GoManhattenPlot(colorScheme, geneDetail, goHeatmap, functional_categories){
 
     var self = this;
+    self.colorScheme = colorScheme;
+    self.geneDetail = geneDetail;
     self.goHeatmap = goHeatmap;
     self.functional_categories = functional_categories;
-    self.goColorScheme = goColorScheme;
     self.init();
 }; // end constructor
 
@@ -54,35 +61,6 @@ GoManhattenPlot.prototype.init = function(){
       .style("border-width", "1px")
       .style("border-radius", "5px")
       .style("padding", "10px");
-
-      // A function that change this tooltip when the user hover a point.
-      // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
-      self.mouseover = function(d) {
-        self.tooltip
-          .style("opacity", 1)
-      };
-
-      self.mousemove = function(d, i) {
-        var x_pos = i.x+50 + "px";
-        if(i.x < self.svgWidth / 2){
-          x_pos = i.x-150 + "px"
-        }
-        self.tooltip
-          .html("<p>Description: " + i.description + "<br>"+
-                 "GO_term: " + i.native + "<br>"+
-                 "<p> p-value: " + i.p_value + "<\p>"+
-                 '<a class="nav-link" href="'+self.geneDetail.goUrlMaker(i.parents, sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>')
-          .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-          .style("top", i.y + "px")
-      };
-
-      // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-      self.mouseleave = function(d) {
-        self.tooltip
-          .transition()
-          .duration(200)
-          .style("opacity", 0)
-      };
 
 }; // end init()
 
@@ -164,10 +142,10 @@ GoManhattenPlot.prototype.visualize = function(go_object){
           .selectAll(".node")
           .attr("fill", function (d) {
               if (d.type == "tf") {
-                  return "#6778d0";
+                  return self.colorScheme("tf");
               }
               else {
-                  return "#ba495b";
+                  return self.colorScheme("gene");
               }
             });
         self.goHeatmap.update(axis_selection);
@@ -190,18 +168,19 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
     .attr("cy", function(d,i) { return self.y(-Math.log(d.p_value)) })
     .attr("r", function(d,i) {return pointScale(-Math.log(d.p_value))} )
-    .attr("fill", function(d,i) {return self.goColorScheme(d.source)})
+    .attr("fill", function(d,i) {return self.colorScheme(d.source)})
     .attr("class", "manhatten-circles")
     .attr("class", function(d,i) {return d.source})
     .on("click", function(node_info, data){
       self.tooltip.style("opacity", 1);
-      self.mousemove(node_info, data);
+      self.geneDetail.updateGoDetail(data)
     })
     .on("mouseover", function(node_info, data){
-      self.tooltip.style("opacity", 1);
+      // highlight the term circle
       // put a halo around the selected node
+    })
+    .on("mouseleave", function(node_info, data){
+      // return color to prev
     });
-
-    self.svg.on("mouseleave", self.mouseleave);
 
 }; // end visualize()

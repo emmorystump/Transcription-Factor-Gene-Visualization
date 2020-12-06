@@ -12,11 +12,12 @@
   function init() {
       var self = this;
 
-      // Build color scale for go categories input to manhatten plot and GoHeatMap
-      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
-      self.goColorScheme = d3.scaleOrdinal()
+      // Colors associated with major components of page -- passed as argument to each object below
+      // Changing the color here will change the color for each element in each vis (eg, if you don't like the GO:BP color, change the first item)
+      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene"];
+      self.colorScheme = d3.scaleOrdinal()
         .domain(self.functional_categories)
-        .range(["#d95f02","#f0027f","#6a3d9a","#33a02c"]);
+        .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693"]);
 
       var organism = sessionStorage.getItem("organism")
       switch (organism){
@@ -63,10 +64,30 @@
       // instantiate weights
       var weights = new Weights(organism);
       // instantiate classes which depend on network ()
-      var geneDetail = new GeneDetail()
-      var goHeatmap = new GoHeatmap(self.goColorScheme);
-      var goManhattenPlot = new GoManhattenPlot(goHeatmap, self.functional_categories, self.goColorScheme);
-      var network = new Network(geneDetail, goManhattenPlot);
+      var geneDetail = new GeneDetail(self.colorScheme)
+      var goHeatmap = new GoHeatmap(self.colorScheme); //note the inherentence from other objects, particularly the colorScheme
+      var goManhattenPlot = new GoManhattenPlot(self.colorScheme, geneDetail, goHeatmap, self.functional_categories); //note the inherentence from other objects, particularly the colorScheme
+      var network = new Network(self.colorScheme, geneDetail, goManhattenPlot);
+
+      // tab functionality for gene/go detail
+      // cite: https://codepen.io/jcblw/pen/DxAJF
+      var tabs = $('.tabs > li');
+      tabs.on("click", function(d,i){
+        console.log(this.attributes.id)
+        tabs.removeClass('active');
+        $(this).addClass('active');
+        if (this.attributes.id.nodeValue == "go-detail-tab"){
+          geneDetail.appendText("", "go")
+          // test if there is gene-detail/go-detail text already
+            // $(".go-gene-instructions").empty()
+            // $(".go-gene-instructions").append('<p class="go-gene-instructions">Click one of the significant GO terms on the manhatten plot for more information</p>')
+        } else{
+          geneDetail.appendText("", "gene")
+          // test if there is gene-detail/go-detail text already
+            // $(".go-gene-instructions").empty()
+            // $(".go-gene-instructions").append('<p class="go-gene-instructions">Click a gene in the network visualization for more information</p>')
+        }
+      });
 
 
       var files =["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];

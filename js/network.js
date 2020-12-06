@@ -5,9 +5,10 @@
  * @param geneDetail vis object, see ./js/GeneDetail.js
  * @param goManhattenPlot vis object, see ./js/GoManhattenPlot.js
  */
-function Network(geneDetail, goManhattenPlot) {
+function Network(colorScheme, geneDetail, goManhattenPlot) {
 
     var self = this;
+    self.colorScheme = colorScheme;
     self.geneDetail = geneDetail;
     self.goManhattenPlot = goManhattenPlot;
     self.init();
@@ -301,10 +302,10 @@ Network.prototype.visualize = function () {
         .attr("r", 10)
         .attr("fill", function (d) {
             if (d.type == "tf") {
-                return "#6778d0";
+                return self.colorScheme("tf");
             }
             else {
-                return "#ba495b";
+                return self.colorScheme("gene");
             }
         })
         .attr("stroke", "white")
@@ -360,9 +361,9 @@ Network.prototype.visualize = function () {
         .on("mouseout", function (node_info, gene_info) {
             d3.select(this).attr("fill", function (d, i) {
                 if (gene_info.type == "tf") {
-                    return "#6778d0"
+                    return self.colorScheme("tf")
                 } else {
-                    return "#ba495b"
+                    return self.colorScheme("gene")
                 }
             })
         })

@@ -120,7 +120,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       throw 'No significant GO terms. Try a less stringent threshold on the edge weights to increase the number of target genes.';
     } else{
       // if there is no error, remove the notice to the user (the error above) in preparation of appending the graph
-      $("#go-network-error").remove()
+      $("#manhatten-plot-error").empty()
       // figure out what the min/max pvalues are
       go_object.forEach((item, i) => {
         pval[0] = -1*Math.log(item.p_value);
@@ -187,7 +187,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
         .attr("cy", function(d,i) { return self.y(d.p_value) })
         .attr("r", function(d,i) {return self.pointScale(d.p_value)} )
-        .style("opacity", .4)
+        .style("opacity", .6)
         .attr("fill", function(d,i) {return self.colorScheme(d.source)})
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
@@ -206,9 +206,9 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   } catch(err){
     // clear graph and old notices
     $(".manhatten-plot-instance").remove()
-    $("#go-network-error").remove()
+    $("#manhatten-plot-error").empty()
     // print the notice
-    $("#go-manhatten-plot").append('<p id="go-network-error">'+err+'</p>');
+    $("#manhatten-plot-error").append('<h4>'+err+'</h4>');
   } // end try .. catch wrapping whole function
 
 }; // end visualize()

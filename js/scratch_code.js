@@ -3,6 +3,25 @@
 
 // ######################chase scratch#############################//
 
+// // Download a file form a url.
+// NetworkDetail.prototype.saveFile = function(url) {
+//   // Get file name from url.
+//   var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
+//   var xhr = new XMLHttpRequest();
+//   xhr.responseType = 'blob';
+//   xhr.onload = function() {
+//     var a = document.getElementById('a');
+//     a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+//     a.download = filename; // Set the file name.
+//     a.style.display = 'none';
+//     document.body.appendChild(a);
+//     a.click();
+//     delete a;
+//   };
+//   xhr.open('GET', url);
+//   xhr.send();
+// }
+
 // GoHeatmap.prototype.gProfilerConvert = function(organism, gene_list, target, go_data){
 //   var self = this;
 //   // remove null items from list (this occurs when the genes are filtered on score threshold -- maybe do this in network instead?)

@@ -107,51 +107,67 @@ GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
 GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING
     var self = this;
 
-    // remove all items from previous graph (everything added to graph below is classed with heatmap-update)
-    $(".heatmap-update").remove()
+    try{
+      if (self.go_by_gene_data[go_category]["go_term_list"].flat().length == 0){
+        throw "No significant GO terms in category: "+go_category
+      } else{
+        // remove all items from previous graph (everything added to graph below is classed with heatmap-update)
+        $(".heatmap-update").remove()
+        $("#go-heatmap-error").empty()
 
-    // update the y domain with the gene list
-    self.y.domain(self.go_by_gene_data[go_category]["gene_list"].flat());
-    // append the y axis to the svg element
-    self.svg.append("g")
-            .call(d3.axisLeft(self.y))
-            .attr("class", "heatmap-update");
+        // update the y domain with the gene list
+        self.y.domain(self.go_by_gene_data[go_category]["gene_list"].flat());
+        // append the y axis to the svg element
+        self.svg.append("g")
+                .call(d3.axisLeft(self.y))
+                .attr("class", "heatmap-update");
 
-    // update the x axis with the go terms
-    self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat());
-    // add the x axis to the svg element
+        // update the x axis with the go terms
+        self.x.domain(self.go_by_gene_data[go_category]["go_term_list"].flat());
+        // add the x axis to the svg element
 
-    self.svg.append("g")
-            //.attr("transform", "translate(0," + self.svgHeight + ")")
-            .call(d3.axisTop(self.x))
-            .attr("class", "heatmap-update")
-            .selectAll("text")
-            .attr("y", 0)
-            .attr("x", -70)
-            .attr("dy", "-.35em")
-            .attr("transform", "rotate(45)")
-            .style("text-anchor", "start")
-            .on("click", function(d,i){
-              //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-              var axis_selection = d.explicitOriginalTarget.__data__;
-              //color nodes by GO category
-              $("#network-vis").find(".node").each((index,node) => {
-                  if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
-                      d3.selectAll("#"+node.__data__.name).attr("fill", self.colorScheme(go_category));
-                  }
-              });
-            });
+        self.svg.append("g")
+                //.attr("transform", "translate(0," + self.svgHeight + ")")
+                .call(d3.axisTop(self.x))
+                .attr("class", "heatmap-update")
+                .selectAll("text")
+                .attr("y", 0)
+                .attr("x", -70)
+                .attr("dy", "-.35em")
+                .attr("transform", "rotate(45)")
+                .style("text-anchor", "start")
+                .on("click", function(d,i){
+                  //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
+                  var axis_selection = d.explicitOriginalTarget.__data__;
+                  //color nodes by GO category
+                  $("#network-vis").find(".node").each((index,node) => {
+                      if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
+                          d3.selectAll("#"+node.__data__.name).attr("fill", self.colorScheme(go_category));
+                      }
+                  });
+                });
 
-    // add blocks to heatmap
-    self.svg.selectAll("rect")
-            .data(self.go_by_gene_data[go_category]["edge_list"], function(d) {return d.gene+':'+d.go;})
-            .enter()
-            .append("rect")
-            .attr("class", "heatmap-update")
-            .attr("x", function(d) { return self.x(d.go) })
-            .attr("y", function(d) { return self.y(d.gene) })
-            .attr("width", self.x.bandwidth() )
-            .attr("height", self.y.bandwidth() )
-            .style("fill", self.colorScheme(go_category) );
+        // add blocks to heatmap
+        self.svg.selectAll("rect")
+                .data(self.go_by_gene_data[go_category]["edge_list"], function(d) {return d.gene+':'+d.go;})
+                .enter()
+                .append("rect")
+                .attr("class", "heatmap-update")
+                .attr("x", function(d) { return self.x(d.go) })
+                .attr("y", function(d) { return self.y(d.gene) })
+                .attr("width", self.x.bandwidth() )
+                .attr("height", self.y.bandwidth() )
+                .style("fill", self.colorScheme(go_category) );
+
+      } // end else statement inside of try
+    } catch(err){
+      // clear graph and old notices
+      console.log("here")
+      $(".heatmap-update").remove()
+      $("#go-heatmap-error").empty()
+      // print the notice
+      $("#go-heatmap-error").append('<h4>'+err+'</h4>');
+
+    } // end try .. catch
 
 }; // end update()

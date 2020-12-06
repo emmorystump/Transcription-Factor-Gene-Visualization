@@ -142,7 +142,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       } // end pvalue error check
 
       // remove all circles, if they exist, to clear graph for new data
-      $(".manhatten-plot-instance").remove()
+      $(".manhatten-plot-instance").empty()
       // set y scale domain
       self.y.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
       // set point size domain
@@ -205,7 +205,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)
   } catch(err){
     // clear graph and old notices
-    $(".manhatten-plot-instance").remove()
+    $(".manhatten-plot-instance").empty()
     $("#manhatten-plot-error").empty()
     // print the notice
     $("#manhatten-plot-error").append('<h4>'+err+'</h4>');

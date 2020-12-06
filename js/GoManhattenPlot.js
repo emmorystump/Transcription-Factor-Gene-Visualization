@@ -112,36 +112,39 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   //TODO: needs to be replaced with min/max of data
   console.log(go_object)
   // these are turned negative after finding min/max -- see next block
+  // actually neg log10 -- the names of these variables got screwed up as i debugged. If this message isn't here, read VERY carefully and ignore the variable names
   var min_Log10_pval = [1*10**6];
   var min_index = [];
   var max_Log10_pval = [-1];
   var max_index = [];
   go_object.forEach((item, i) => {
     pval[0] = -1*Math.log(item.p_value);
+    console.log(pval[0])
     if (pval[0] < min_Log10_pval[0]){
       min_Log10_pval[0] = pval[0];
-      max_index = i;
-    }else if(pval[0] > max_Log10_pval[0]){
+      max_index[0] = i;
+    }
+    if(pval[0] > max_Log10_pval[0]){
+      console.log("HERE")
       max_Log10_pval[0] = pval[0];
-      min_index = i;
+      min_index[0] = i;
     }
   });
-
   try{
     if(max_Log10_pval == -1) throw "Error: no max pvalue found in GoManhattenPlot.visualize"
   } catch(err){
     console.log(err)
   }
 
-    self.y.domain([go_object[min_index].p_value, go_object[max_index].p_value])
+    self.y.domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
           .clamp(true);
 
     var pointScale = d3.scaleLog()
-                       .domain([go_object[min_index].p_value, go_object[max_index].p_value])
+                       .domain([go_object[min_index[0]].p_value, go_object[max_index[0]].p_value])
                        .range([8, 4])
                        .clamp(true)
 
-  console.log(go_object[min_index].p_value+" , "+go_object[max_index].p_value)
+  console.log(go_object[min_index[0]].p_value+" , "+go_object[max_index[0]].p_value)
 
   // remove all circles, if they exist, to clear graph for new data
   $(".manhatten-circles").remove()

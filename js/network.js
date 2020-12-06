@@ -178,7 +178,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
              for (var i = 0; i < tf.linked.length; i++) {
                  tf.scores[i] = +tf.scores[i]
              } // end for            // store just the gene_id
-             self.gene_id_list = [];
+             var gene_id_list = [];
              self.allNodeLinks = { "nodes": [], "links": [] };
              self.allNodeLinks.nodes.push(
                  {
@@ -209,7 +209,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
                  if (self.minScore != null && self.maxScore != null) {
                      if (gene_dict.score >= +self.minScore && gene_dict.score <= +self.maxScore) {
                          // push gene id into gene id list when is the best place to do this?
-                         self.gene_id_list[i] = gene_dict.id;
+                         gene_id_list[i] = gene_dict.id;
                          // push the next node
                          self.allNodeLinks.nodes.push(
                              {
@@ -223,35 +223,17 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
                          self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
                          linkCounter += 1;
                      } // end inner if
-                 } else {
-                     if (gene_dict.score > +self.minScore) {
-                         // when is the best place to do this? (duplicated a few lines up)
-                         self.gene_id_list[i] = gene_dict.id;
-                         // push the next node
-                         self.allNodeLinks.nodes.push(
-                             {
-                                 "id": i, "name": gene_dict.id, "gene_name": gene_dict.name,
-                                 "description": gene_dict.description, "go": go, "link": gene_dict.link,
-                                 "type": "gene", "score": gene_dict.score,
-                                 "x": self.svgWidth / 2, "y": self.svgHeight / 2
-                             }) // end allNodeLinks dict
-                         // push the associated link
-                         self.allNodeLinks.links.push({ "source": 0, "target": linkCounter });
-                         linkCounter += 1;
-                     } // end inner if
-                 } //end else
+                 }
              } // end for
              // attach data to Export Results on main page
              var export_results_button = $("#export-network-button");
-             console.log("export info: ")
-             console.log(self.allNodeLinks)
-             var csv_string = $.map(self.allNodeLinks.nodes, function (d) { return [d.name, d.gene_name, d.score].join(",") }).join("\n");
-             var csv_data = encodeURI(csv_string)
-             export_results_button.attr("href", csv_data);
+             // var csv_string = $.map(self.allNodeLinks.nodes, function (d) { return [d.name, d.gene_name, d.score].join(",") }).join("\n");
+             // var csv_data = encodeURI(csv_string)
+             export_results_button.attr("href", "images/BrentLabLogo.png");
              export_results_button.attr("download", self.tf_dict.id + "_network.csv");
              export_results_button.click();
              // visualize the data
-             self.visualize();
+             self.visualize(gene_id_list);
          }); // end d3.json
      } catch (error) {
          console.error("ERROR: network.wrangleData() "+ error)
@@ -263,12 +245,12 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
  * Visualize network information. This is the end result of calling network.update()
  *
  */
-Network.prototype.visualize = function () {
+Network.prototype.visualize = function (gene_id_list) {
     var self = this;
     var svg = self.svg;
 
     // generate GO manhantten plot from tf network cluster
-    self.goManhattenPlot.update(self.gene_id_list);
+    self.goManhattenPlot.update(gene_id_list);
     var selectedType = "";
     if(sessionStorage.getItem("selectedType") == "tf"){
         selectedType = "TF";

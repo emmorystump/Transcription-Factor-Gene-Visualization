@@ -71,7 +71,7 @@ GoManhattenPlot.prototype.update = function(gene_id_list){
 GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
 
     var self = this;
-
+    // TODO: LOADING SPINNY WHEEL NEXT TO UPDATE
     var x = $.ajax({
       type: "POST",
       url: "https://biit.cs.ut.ee/gprofiler/api/gost/profile/",
@@ -142,7 +142,11 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       } // end pvalue error check
 
       // remove all circles, if they exist, to clear graph for new data
-      $(".manhatten-plot-instance").empty()
+       $(".manhatten-plot-instance").empty()
+       d3.selectAll(".manhatten-plot-instance").transition()
+        .duration(2000)
+        .attr('opacity', 1);
+
       // set y scale domain
       self.y.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
       // set point size domain

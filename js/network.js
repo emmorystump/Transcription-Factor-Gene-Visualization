@@ -36,40 +36,40 @@ Network.prototype.init = function () {
     // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
     // consider this a cite for all tooltip related code
     self.tooltip = d3.select("#network-vis")
-      .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip")
-      .attr("id", "network-vis-tooltip")
-      .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
-      .style("border", "solid")
-      .style("border-width", "1px")
-      .style("border-radius", "5px")
-      .style("padding", "10px");
-
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .attr("id", "network-vis-tooltip")
+        .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "10px");
+ 
     // A function that change this tooltip when the user hovers a point.
     // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
-    self.mouseover = function(d) {
-      self.tooltip
-        .style("opacity", 1)
+    self.mouseover = function (d) {
+        self.tooltip
+            .style("opacity", 1)
     };
 
-    self.mousemove = function(d, i) {
-      var x_pos = i.x+50 + "px";
-      if(i.x < self.svgWidth / 2){
-        x_pos = i.x-150 + "px"
-      }
-      self.tooltip
-        .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
-        .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-        .style("top", (i.y+10) + "px")
+    self.mousemove = function (d, i) {
+        var x_pos = i.x + 50 + "px";
+        if (i.x < self.svgWidth / 2) {
+            x_pos = i.x - 150 + "px"
+        }
+        self.tooltip
+            .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)
+            .style("left", x_pos) // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+            .style("top", (i.y + 10) + "px")
     };
 
     // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-    self.mouseleave = function(d) {
-      self.tooltip
-        .transition()
-        .duration(200)
-        .style("opacity", 0)
+    self.mouseleave = function (d) {
+        self.tooltip
+            .transition()
+            .duration(200)
+            .style("opacity", 0)
     };
 
 } // end init()
@@ -84,6 +84,7 @@ Network.prototype.init = function () {
  * @param minScore
  * @param maxScore
  */
+
 Network.prototype.update = function(data, organism, tf_selected, minScore, maxScore){
   var self = this;
   self.minScore = minScore;
@@ -129,6 +130,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
  *
  * @param tf_selected
  */
+
 Network.prototype.wrangleData = function(data, tf_selected){
   var self = this;
 
@@ -240,6 +242,7 @@ Network.prototype.wrangleData = function(data, tf_selected){
   } catch(error){
     console.log("ERROR: network.wrangleData()")
   }
+
 }; // end wrangleData()
 
 
@@ -253,9 +256,15 @@ Network.prototype.visualize = function () {
 
     // generate GO manhantten plot from tf network cluster
     self.goManhattenPlot.update(self.gene_id_list);
-
+    var selectedType = "";
+    if(sessionStorage.getItem("selectedType") == "tf"){
+        selectedType = "TF";
+    }
+    else if(sessionStorage.getItem("selectedType") == "gene"){
+        selectedType = "Gene";
+    };
     d3.select("#edge-chart-heading-text")
-        .text(self.tf_dict.id)
+        .text(selectedType + ": " + self.tf_dict.id)
 
     var links = self.allNodeLinks.links;
     var nodes = self.allNodeLinks.nodes;
@@ -290,15 +299,15 @@ Network.prototype.visualize = function () {
         })
         .attr("stroke", "#999")
         .attr("stroke-opacity", 0.6);
-
-
+    console.log("nodes")
+    console.log(nodes)
     // DRAW THE NODES (SVG CIRCLE)
     var node = svg.selectAll(".node")
         .data(nodes)
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("id", function(d) {return d.name})
+        .attr("id", function (d) { return d.name })
         .attr("r", 10)
         .attr("fill", function (d) {
             if (d.type == "tf") {
@@ -348,9 +357,9 @@ Network.prototype.visualize = function () {
 
     // TODO: KEEP HIGHLIGHTING WHEN GENE IS CLICKED UNTIL NEXT GENE IS CLICKED
     node.on("click", function (node_info, gene_info) {
-      // select all nodes, removed click-highlight class
-      d3.selectAll(".node")
-      // add click-hightlight class to this node
+        // select all nodes, removed click-highlight class
+        d3.selectAll(".node")
+        // add click-hightlight class to this node
         self.geneDetail.update(gene_info, self.tf_dict) // take this as input -- may need to fix in geneDetail
     })
         .on("mouseover", function (node_info, gene_info) {
@@ -367,7 +376,7 @@ Network.prototype.visualize = function () {
                 }
             })
         })
-      .on("mouseleave", self.mouseleave)
+        .on("mouseleave", self.mouseleave)
 
 
 }; // end network.update()

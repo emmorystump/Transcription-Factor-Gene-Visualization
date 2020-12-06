@@ -57,7 +57,7 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
     '</p><a href="'+node_object_array.link +
     '" target="_blank">Gene Info</a><br><a href="'+chart_url +
     '" target="_blank">Gene Go Chart</a><br>';
-    console.log(self.gene_data_text)
+    console.log(self.gene_detail_text)
 
     // // append to DOM
     // $(".gene-detail-text").append(self.gene_detail_text);
@@ -84,7 +84,7 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
                      sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>');
 
  // append to DOM
- $(".go-detail-text").append(go_detail_text);
+ $(".go-detail-text").append(self.go_detail_text);
  // make visible
  $(".go-detail-text").addClass('active');
 }; // end updateGoDetail()
@@ -96,6 +96,7 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
 **/
 GeneDetail.prototype.appendText = function(detail_text, which_div){
   var self = this;
+  var text = "";
 
   try{
     if (!["gene","go"].includes(which_div)) throw 'GeneDetail.appendText must get second argument either "gene" or "go"'
@@ -104,25 +105,24 @@ GeneDetail.prototype.appendText = function(detail_text, which_div){
   }
 
   if(which_div == "go"){
-    if(detail_text == ""){
-      if(self.go_detail_text == ""){
-        var text = self.go_instructions;
-      } else{
-        text = self.go_detail_text
-      }
+    if(detail_text == "" & self.go_detail_text == ""){
+        text = self.go_instructions;
+    } else{
+      text = self.go_detail_text;
     }
   } else{ // which_div must be gene
-    if(detail_text == ""){
-      if(self.gene_detail_text == ""){
-        var text = self.gene_instructions;
-      } else{
-        text = self.gene_detail_text
-      }
-    }
+     console.log("HERE")
+     if(detail_text == "" & self.gene_detail_text == ""){
+         text = self.gene_instructions;
+     } else{
+         console.log("here")
+         text = self.gene_detail_text;
+     }
   }
 
   // append to DOM
   console.log(text)
+  $(".go-detail-text").empty();
   $(".go-detail-text").append(text);
 
 } // end appendText

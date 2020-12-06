@@ -112,7 +112,7 @@ NetworkDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
   // variable for handling of instruction messages vs data message in appendText)
   self.go_detail_text = ("<p>Description: " + manhatten_plot_node_data.description + "<br>"+
                      "GO_term: " + manhatten_plot_node_data.native + "<br>"+
-                     "<p> p-value: " + manhatten_plot_node_data.p_value + "<\p>"+
+                     "<p> p-value: " + manhatten_plot_node_data.p_value.toExponential() + "<\p>"+
                      '<a class="nav-link" href="'+chart_url+'" target="_blank">GO/KEGG term chart<\a>');
 
   // send to appendText to publish to dom

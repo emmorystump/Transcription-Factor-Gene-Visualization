@@ -166,44 +166,52 @@ Eventually, there will be functionality to allow the user to group the genes in 
                     </div>
                 </div>
 
-
-
-
-
                 <!-- Main Section -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 mt-4 w-50 content-heading" id="edge-chart-heading">
-                                <h2 id="edge-chart-heading-text"></h2>
-                            </div>
-                            <div id="gene-detail-heading" class="content-heading col mt-4 w-50">
-                                <h2>Gene Detail</h2>
-                            </div>
+                  <div class="container-fluid">
+                    <!-- First row is network-vis and GO manhatten plot -->
+                    <div class="row">
+                      <!-- network-vis -->
+                      <div class="col-md-6" id="edge-chart-heading" class="content-heading">
+                          <h2 id="edge-chart-heading-text"></h2>
+                          <div class="col-md-6" id="network-vis"></div>
+                      </div><!-- end network vis -->
+                      <!-- manhatten plot -->
+                      <div class="col-md-6" id="go-manhatten-plot">
+                        <h1 class="content-heading">Go Manhatten Plot</h1>
+                      </div><!-- end manhatten plot-->
+                    </div> <!-- end first row -->
+                    <!-- row two has the heatmap and the detail tabs column (two rows in detail tabs column) -->
+                    <div class="row">
+                        <!-- heatmap -->
+                        <div class="go-heatmap col-md-6">
+                            <h1 class="content-heading">Go Heatmap</h1>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 m-0 w-50" id="network-vis"></div> <!--  width="450" height="380" -->
-                              <div class="col-md-6 m-0 w-50">
-                                <div class="row">
-                                  <div id="gene-detail" class="col m-0 gene-detail">
-                                    <p>Click on a gene to view additional information.</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                      <div class="row">
-                          <div class="go-heatmap col-md-6">
-                              <h1 class="content-heading">Go Heatmap</h1>
-                          </div>
-                          <div class="col">
-                            <div class="col m-0" id="go-manhatten-plot">
-                              <h1 class="content-heading">Go Manhatten Plot</h1>
-                            </div>
-                          </div>
-                    </div>
-                  </div>
-                </div>
-
+                        <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
+                        <!-- create two rows in this detail-tabs-column -->
+                        <div class="col-md-6" id="detail-tabs-column">
+                          <!-- detail tabs -->
+                          <div class="row">
+                            <div class="tab-container">
+                              <ul class="tabs clearfix" >
+                                <li id="go-detail-tab">
+                                  <a href=# >GO Detail</a>
+                                </li>
+                                <li id="gene-detail-tab" class=active >
+                                  <a href=# >Gene Detail</a>
+                                </li>
+                            </div><!-- end tab-container -->
+                          </div> <!-- end detail tabs row -->
+                          <!-- gene/go details -->
+                          <div class="row">
+                            <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
+                              <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
+                              <div class="go-detail-text"></div>
+                            </div><!-- end go-gene-detail -->
+                        </div> <!-- end go-gene-detail row -->
+                      </div> <!-- end detail-tabs-column -->
+                    </div><!-- end row 2 -->
+                  </div><!-- end vis container -->
               </main>
 
                 <!-- Modal -->

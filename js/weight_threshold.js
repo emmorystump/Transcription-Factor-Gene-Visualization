@@ -1,9 +1,10 @@
-function Weights(organism){
+function Weights(colorScheme, organism){
 
     var self = this;
     self.organism = organism;
+    self.colorScheme = colorScheme;
 
-    
+
     self.mean = 0.00044677325327633944;
     self.std = 0.0001881886776192946;
 
@@ -85,7 +86,7 @@ Weights.prototype.init = function(){
     self.g.append("path")
         .datum(dataArray)
         .attr("d", line)
-        .style("fill", "rgb(103, 120, 208)")
+        .style("fill", self.colorScheme("gene"))
         .style("opacity", "1");
 
     self.svg.select(".x-axis").call(d3.axisBottom(self.xScale).tickFormat(d3.format(".1e")));
@@ -127,6 +128,6 @@ Weights.prototype.createNormalDist = function(mean, std) {
             "y": Math.exp((-0.5) * Math.pow((i - mean) / std, 2))
         });
     };
-    
+
     return data;
 }

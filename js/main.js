@@ -10,30 +10,86 @@
    * the classes are defined in the respective javascript files.
    */
   function init() {
-    var self = this;
 
-    // Build color scale for go categories input to manhatten plot and GoHeatMap
-    self.functional_categories = ["GO:BP", "GO:CC", "GO:MF", "KEGG"];
-    self.goColorScheme = d3.scaleOrdinal()
-      .domain(self.functional_categories)
-      .range(["#d95f02", "#f0027f", "#6a3d9a", "#33a02c"]);
+      var self = this;
 
-    var organism = sessionStorage.getItem("organism")
-    switch (organism) {
-      case "fly":
-        this.organism = "Drosophila melanogaster"
-        break;
-      case "yeast":
-        this.organism = "Saccharomyces cerevisiae"
-        break;
+      // Colors associated with major components of page -- passed as argument to each object below
+      // Changing the color here will change the color for each element in each vis (eg, if you don't like the GO:BP color, change the first item)
+      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene"];
+      self.colorScheme = d3.scaleOrdinal()
+        .domain(self.functional_categories)
+        .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693"]);
 
-    } // end switch
+      var organism = sessionStorage.getItem("organism")
+      switch (organism){
+        case "fly":
+          this.organism = "Drosophila melanogaster"
+          break;
+        case "yeast":
+          this.organism = "Saccharomyces cerevisiae"
+          break;
+
+      } // end switch
 
 
-    $(document).ready(function () {
-      // Add jQuery event for toggleable side bar
-      $('#sidebarCollapse').on('click', function () {
-        $('#toggle-sidebar').toggleClass('active');
+      $(document).ready(function(){
+            // Add jQuery event for toggleable side bar
+            $('#sidebarCollapse').on('click', function () {
+                $('#toggle-sidebar').toggleClass('active');
+            });
+
+          }); // end jquery
+
+          // When tf/gene list select input is changed, get which option it is
+          $(document).ready(function(){
+            $('#selectUploadType').on('change', function() {
+              // based on this value, which is equal to the option id, choose whether to hide or show an input box for tf and a file upload for gene list
+              if(this.value==="gene-input-form") {
+                $('#gene-input-form').removeClass("hide");
+                $('#gene-input-form').addClass("show");
+
+                $('#tf-form').removeClass("show");
+                $('#tf-form').addClass("hide");
+              }
+              else {
+                $('#tf-form').removeClass("hide");
+                $('#tf-form').addClass("show");
+
+                $('#gene-input-form').removeClass("show");
+                $('#gene-input-form').addClass("hide");
+              }
+
+            });
+          }) // end jquery
+
+      // instantiate weights
+      var weights = new Weights(self.colorScheme, organism);
+      // instantiate classes which depend on network ()
+      var geneDetail = new GeneDetail(self.colorScheme)
+      var goHeatmap = new GoHeatmap(self.colorScheme); //note the inherentence from other objects, particularly the colorScheme
+      var goManhattenPlot = new GoManhattenPlot(self.colorScheme, geneDetail, goHeatmap, self.functional_categories); //note the inherentence from other objects, particularly the colorScheme
+      var network = new Network(self.colorScheme, geneDetail, goManhattenPlot);
+
+      // tab functionality for gene/go detail
+      // cite: https://codepen.io/jcblw/pen/DxAJF
+      var tabs = $('.tabs > li');
+      tabs.on("click", function(d,i){
+        tabs.removeClass('active');
+        $(this).addClass('active');
+        if (this.attributes.id.nodeValue == "go-detail-tab"){
+          $(".gene-detail-text").empty();
+          geneDetail.appendText("", "go")
+        } else{
+          $(".go-detail-text").empty();
+          geneDetail.appendText("", "gene")
+        }
+      });
+
+
+      var files =["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];
+      var promises = [];
+      files.forEach(function(url) {
+        promises.push(d3.json(url));
       });
 
     }); // end jquery

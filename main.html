@@ -49,7 +49,7 @@
                             </li>
                             <li class="nav-item">
                                 <a id="export-network-button" class="nav-link" href="#">
-                                    <span data-feather="file"></span>
+                                    <span data-feather="download"></span>
                                     Export Results
                                 </a>
                             </li>
@@ -178,18 +178,29 @@ Eventually, there will be functionality to allow the user to group the genes in 
                       </div><!-- end network vis -->
                       <!-- manhatten plot -->
                       <div class="col-md-6" id="go-manhatten-plot">
-                        <h1 class="content-heading">Go Manhatten Plot</h1>
-                        <!-- container for notice in the event that there are no enrichment in a given category -->
-                        <div id="manhatten-plot-error"></div>
+                        <div class="col-md-auto">
+                          <h2 class="content-heading">Functional Enrichment</h2>
+                          <h5 class="content-heading">p-value < .05</h5>
+                          <!-- container for notice in the event that there are no enrichment in a given category -->
+                          <div id="manhatten-plot-error"></div>
+                        </div>
+                        <div class="col-md-auto">
+                          <span data-feather="help-circle"></span>
+                        </div>
                       </div><!-- end manhatten plot-->
                     </div> <!-- end first row -->
                     <!-- row two has the heatmap and the detail tabs column (two rows in detail tabs column) -->
                     <div class="row">
                         <!-- heatmap -->
                         <div class="go-heatmap col-md-6">
-                            <h1 class="content-heading">Go Heatmap</h1>
+                          <div class="col-md-auto">
+                            <h2 class="content-heading">Gene By Functional Category</h2>
                             <!-- container for notice in the event that there are no enrichment in a given category -->
                             <div id="go-heatmap-error"></div>
+                          </div>
+                          <div class="col-md-auto">
+                            <span data-feather="help-circle"></span>
+                          </div>
                         </div>
                         <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
                         <!-- create two rows in this detail-tabs-column -->
@@ -246,6 +257,7 @@ Eventually, there will be functionality to allow the user to group the genes in 
                                   </div>
                                   <br />
                                 <label class="sidebar-titles">Weights:</label>
+                                <span data-feather="help-circle"></span>
                                 <div id="weights">
                                     <div id="weight-svg">
 

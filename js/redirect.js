@@ -11,6 +11,7 @@ if (typeof(Storage) !== "undefined") {
     $(document).ready(function() {
         $(document).on('click','.organism-selector',function(e){
             e.preventDefault();
+            sessionStorage.clear();
             if(e.target.classList.contains('fly')){
                 organism = "fly";
                 organism_code = "dmelanogaster"

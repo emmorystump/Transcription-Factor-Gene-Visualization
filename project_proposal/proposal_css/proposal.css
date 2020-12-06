@@ -72,36 +72,47 @@ h2 {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
+
 }
 
 #clicker-right {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
+
 }
 
 #clicker-left-initial {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
 }
 
 #clicker-right-initial {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
+
 }
 
 #clicker-left-m2 {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
+
 }
 
 #clicker-right-m2 {
   position: static !important;
   border: 2px solid black;
   border-radius: 15px;
+  width: 100px;
+
 }
 
 .mySlides1 {

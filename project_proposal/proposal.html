@@ -307,6 +307,9 @@
 
   <div id="milestone2" class="subsection">
     <h2>Milestone 2</h2>
+
+    <p>For this Milestone, we focused on implementing our visualizations and increasing user interactivity. We also addressed feedback provided in our Milestone 1. View our progress through the slideshow located below!</p>
+
     <div class="slideshow">
 
       <button id="clicker-left-m2" class="w3-button" onclick="plusDivs(-1, 2)">Previous</button>
@@ -316,6 +319,13 @@
 
       <div class="mySlides3">
         <img src="img/homepage-m2.png" alt="image not displayed: see repository project_proposal/img">
+        <br /><br />
+        <p>Beginning with the homepage, we have made mostly appearance-based changes. We have changed our background to be an interactive and moving particle display using the particles.js framework. Additionally, we have changed the placement and images for our organism selection processes.</p>
+      </div>
+      <div class="mySlides3">
+        <img src="img/m2-homepage-hover.png" alt="image not displayed: see repository project_proposal/img">
+        <br /><br />
+        <p>One additional feature we have added to the home page is displaying an organism's name when it is hovered over. This will make it more clear to users what organism they are working with.</p>
       </div>
 
     </div>
@@ -397,10 +407,11 @@
   </div>
 
   <script>
-    var slideIndex = [1,1];
+    var slideIndex = [1,1,1];
     var slideId = ["mySlides1", "mySlides2", "mySlides3"]
     showDivs(1, 0);
     showDivs(1, 1);
+    showDivs(1, 2);
 
     function plusDivs(n, no) {
       showDivs(slideIndex[no] += n, no);

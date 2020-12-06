@@ -50,7 +50,7 @@ NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object
       go_term_array = node_object_array.go
     } // end go_term_array handling
     // create go URL
-    var chart_url = self.goUrlMaker(go_term_array, sessionStorage.getItem("go_chart_url_prefix"), "go");
+    var chart_url = self.goUrlMaker(go_term_array, self.go_chart_url_prefix, "go");
 
     // switch the Gene Detail/Go Detail tab
     $("#go-detail-tab").removeClass('active');

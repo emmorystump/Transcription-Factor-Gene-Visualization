@@ -160,7 +160,8 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .call(d3.axisBottom(self.x))
         .on("click", function(d,i){
           //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-          var axis_selection = d.explicitOriginalTarget.__data__;
+          var axis_selection = e.originalEvent || e.originalTarget;
+          console.log(axis_selection)
           //only pass if recognized functional group (see init())
           if(self.functional_categories.includes(axis_selection)){
             d3.select("#network-vis")

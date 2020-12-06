@@ -73,19 +73,14 @@
       // cite: https://codepen.io/jcblw/pen/DxAJF
       var tabs = $('.tabs > li');
       tabs.on("click", function(d,i){
-        console.log(this.attributes.id)
         tabs.removeClass('active');
         $(this).addClass('active');
         if (this.attributes.id.nodeValue == "go-detail-tab"){
+          $(".gene-detail-text").empty();
           geneDetail.appendText("", "go")
-          // test if there is gene-detail/go-detail text already
-            // $(".go-gene-instructions").empty()
-            // $(".go-gene-instructions").append('<p class="go-gene-instructions">Click one of the significant GO terms on the manhatten plot for more information</p>')
         } else{
+          $(".go-detail-text").empty();
           geneDetail.appendText("", "gene")
-          // test if there is gene-detail/go-detail text already
-            // $(".go-gene-instructions").empty()
-            // $(".go-gene-instructions").append('<p class="go-gene-instructions">Click a gene in the network visualization for more information</p>')
         }
       });
 

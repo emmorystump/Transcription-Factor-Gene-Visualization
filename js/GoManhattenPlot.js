@@ -49,19 +49,6 @@ GoManhattenPlot.prototype.init = function(){
     self.y = d3.scaleLinear()
       .range([ self.svgHeight-self.margin.top-self.margin.bottom, 0 ]);
 
-    // cite: https://www.d3-graph-gallery.com/graph/scatter_tooltip.html
-    // consider this a cite for all tooltip related code
-    self.tooltip = d3.select("#go-manhatten-plot")
-      .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip")
-      .attr("id", "go-network-tooltip")
-      .style("background-color", "white") // styling should go into css -- make uniform tooltip style?
-      .style("border", "solid")
-      .style("border-width", "1px")
-      .style("border-radius", "5px")
-      .style("padding", "10px");
-
 }; // end init()
 
 /**
@@ -172,7 +159,6 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     .attr("class", "manhatten-circles")
     .attr("class", function(d,i) {return d.source})
     .on("click", function(node_info, data){
-      self.tooltip.style("opacity", 1);
       self.geneDetail.updateGoDetail(data)
     })
     .on("mouseover", function(node_info, data){

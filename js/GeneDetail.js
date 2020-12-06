@@ -32,14 +32,18 @@ GeneDetail.prototype.init = function(){
 /**
  * Creates the stacked bar chart, text content and tool tips for electoral vote chart
  *
- * @param electionResult election data for the year selected
- * @param colorScale global quantile scale based on the winning margin between republicans and democrats
+ * @param node_object_array
+ * @param tf_object
  */
 
 GeneDetail.prototype.update = function(node_object_array, tf_object){
     // gene_array is a array of [gene_name, score] from clicking on network node
     // gene_cluster_list is the nodes array from cluster
     // tf_object is structure: {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link}
+
+    // switch the tab
+    $("#go-detail-tab").removeClass('active');
+    $("#gene-detail-tab").addClass('active');
 
     var self = this;
     // hide go details if they exist
@@ -57,18 +61,18 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
     '</p><a href="'+node_object_array.link +
     '" target="_blank">Gene Info</a><br><a href="'+chart_url +
     '" target="_blank">Gene Go Chart</a><br>';
-    console.log(self.gene_detail_text)
 
-    // // append to DOM
-    // $(".gene-detail-text").append(self.gene_detail_text);
-    // // make visible
-    // $(".gene-detail-text").addClass('active');
-    self.appendText(self.gene_deta_text, "gene")
+    self.appendText(self.gene_deta_text, "gene");
 
 };
 
 GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
   var self = this;
+
+  // switch the tab
+  $("#gene-detail-tab").removeClass('active');
+  $("#go-detail-tab").addClass('active');
+
   // hide go details if they exist
   $(".gene-detail-text").removeClass('active');
   // remove instructions text
@@ -83,10 +87,8 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
                      '<a class="nav-link" href="'+self.goUrlMaker(manhatten_plot_node_data.parents,
                      sessionStorage.getItem("go_chart_url_prefix")) + '" target="_blank">GO term chart<\a>');
 
- // append to DOM
- $(".go-detail-text").append(self.go_detail_text);
- // make visible
- $(".go-detail-text").addClass('active');
+  self.appendText(self.go_detail_text, "go");
+
 }; // end updateGoDetail()
 
 /**

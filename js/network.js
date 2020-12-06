@@ -234,7 +234,7 @@ Network.prototype.wrangleData = function(data, tf_selected){
       var csv_string = $.map(self.allNodeLinks.nodes, function(d){return [d.name, d.gene_name, d.score].join(",")}).join("\n");
       var csv_data = encodeURI(csv_string)
       export_results_button.attr("href", "./images/BrentLabLogo.png");
-      export_results_button.attr("download", self.tf_dict.id +"_network.csv");
+      export_results_button.attr("download", self.tf_dict.id +"_targets.csv");
       export_results_button.click();
 
       // visualize the data

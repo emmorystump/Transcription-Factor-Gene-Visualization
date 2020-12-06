@@ -5,7 +5,7 @@
  * replace all "VisTemplate" with name of object
  */
 
-function GeneDetail(colorScheme){
+function NetworkDetail(colorScheme){
 
     var self = this;
     self.colorScheme = colorScheme;
@@ -16,7 +16,7 @@ function GeneDetail(colorScheme){
 /**
  * Initializes the svg elements required for this chart
  */
-GeneDetail.prototype.init = function(){
+NetworkDetail.prototype.init = function(){
     var self = this;
 
     self.gene_instructions = "Click a gene in the network visualization for more information";
@@ -41,7 +41,7 @@ GeneDetail.prototype.init = function(){
  * @param tf_object
  */
 
-GeneDetail.prototype.update = function(node_object_array, tf_object){
+NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object){
     // gene_array is a array of [gene_name, score] from clicking on network node
     // gene_cluster_list is the nodes array from cluster
     // tf_object is structure: {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link}
@@ -78,7 +78,7 @@ GeneDetail.prototype.update = function(node_object_array, tf_object){
 
 };
 
-GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
+NetworkDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
   var self = this;
   var keg_or_go = "";
   var keg_or_go_path_prefix = "";
@@ -120,12 +120,12 @@ GeneDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
 * @params detail_text:
 * @params which_div: either 'go' or 'gene'
 **/
-GeneDetail.prototype.appendText = function(detail_text, which_div){
+NetworkDetail.prototype.appendText = function(detail_text, which_div){
   var self = this;
   var text = "";
 
   try{
-    if (!["gene","go"].includes(which_div)) throw 'GeneDetail.appendText must get second argument either "gene" or "go"'
+    if (!["gene","go"].includes(which_div)) throw 'NetworkDetail.appendText must get second argument either "gene" or "go"'
   } catch(err){
     console.error(err)
   }
@@ -151,7 +151,7 @@ GeneDetail.prototype.appendText = function(detail_text, which_div){
 
 } // end appendText
 
-GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
+NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
   // gene_array must be a go_term_arry in the case of the chart
   // input must be iterable array
   //gene_array = [GO:0003700,GO:0005515,GO:0007403,GO:0035165]; // testing -- being passed in contructor now for testing purposes
@@ -160,7 +160,7 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
   var gene_array = gene_array;
 
   try{
-    if(!["go", "kegg"].includes(go_or_kegg)) throw 'Error: GeneDetail.goUrlMaker takes three arguments, the third of which is either "go" or "kegg"'
+    if(!["go", "kegg"].includes(go_or_kegg)) throw 'Error: NetworkDetail.goUrlMaker takes three arguments, the third of which is either "go" or "kegg"'
   } catch(err){
     console.error(err)
   }
@@ -180,7 +180,7 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
   }
 
   try{
-    if(url == "") throw 'Error: var url in GeneDetail.goUrlMaker is empty'
+    if(url == "") throw 'Error: var url in NetworkDetail.goUrlMaker is empty'
   } catch(err){
     console.error(err)
   }
@@ -190,13 +190,13 @@ GeneDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg){
 }; // end goUrlMaker()
 
 //cite: https://stackoverflow.com/a/18226615
-GeneDetail.prototype.createInput = function(button_text){
+NetworkDetail.prototype.createInput = function(button_text){
   var $input = $('<input type="button" value='+button_text+' class="btn btn-dark mb-2"/>');
   $input.appendTo($("#gene-detail"));
 } // end createInput
 
 // Download a file form a url.
-GeneDetail.prototype.saveFile = function(url) {
+NetworkDetail.prototype.saveFile = function(url) {
   // Get file name from url.
   var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
   var xhr = new XMLHttpRequest();

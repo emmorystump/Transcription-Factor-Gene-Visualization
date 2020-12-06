@@ -2,14 +2,15 @@
 /**
  * Constructor
  *
- * @param geneDetail vis object, see ./js/GeneDetail.js
- * @param goManhattenPlot vis object, see ./js/GoManhattenPlot.js
+ * @params colorScheme: color scheme instantiated in main, passed to all objects
+ * @params networkDetail: vis object, see ./js/NetworkDetail.js
+ * @params goManhattenPlot: vis object, see ./js/GoManhattenPlot.js
  */
-function Network(colorScheme, geneDetail, goManhattenPlot) {
+function Network(colorScheme, networkDetail, goManhattenPlot) {
 
     var self = this;
     self.colorScheme = colorScheme;
-    self.geneDetail = geneDetail;
+    self.networkDetail = networkDetail;
     self.goManhattenPlot = goManhattenPlot;
     self.init();
 };
@@ -358,7 +359,7 @@ Network.prototype.visualize = function () {
         // select all nodes, removed click-highlight class
         d3.selectAll(".node")
         // add click-hightlight class to this node
-        self.geneDetail.update(gene_info, self.tf_dict) // take this as input -- may need to fix in geneDetail
+        self.networkDetail.updateGeneDetail(gene_info, self.tf_dict)
     })
         .on("mouseover", function (node_info, gene_info) {
             self.tooltip.style("opacity", 1)

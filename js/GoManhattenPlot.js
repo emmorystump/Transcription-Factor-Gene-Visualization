@@ -2,11 +2,11 @@
 /**
  * Constructor
  */
-function GoManhattenPlot(colorScheme, geneDetail, goHeatmap, functional_categories){
+function GoManhattenPlot(colorScheme, networkDetail, goHeatmap, functional_categories){
 
     var self = this;
     self.colorScheme = colorScheme;
-    self.geneDetail = geneDetail;
+    self.networkDetail = networkDetail;
     self.goHeatmap = goHeatmap;
     self.functional_categories = functional_categories;
     self.init();
@@ -192,7 +192,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
         .on("click", function(node_info, data){
-          self.geneDetail.updateGoDetail(data)
+          self.networkDetail.updateGoDetail(data)
         })
         .on("mouseover", function(node_info, data){
           // highlight the term circle

@@ -18,7 +18,7 @@ function GoManhattenPlot(colorScheme, networkDetail, goHeatmap, functional_categ
 GoManhattenPlot.prototype.init = function(){
     var self = this;
     self.margin = {top: 100, right: 100, bottom: 0, left: 50};
-    var go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
+    self.go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
 
     //Gets access to the div element created for this chart from HTML
     self.divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
@@ -35,7 +35,7 @@ GoManhattenPlot.prototype.init = function(){
 
     // build x scales and axis, but do not attach to svg -- this is done in visualize()
     self.x = d3.scaleBand()
-      .domain(go_categories)
+      .domain(self.go_categories)
       .range([0, self.svgWidth])
 
     // Build X scales and axis, but do not attach to svg -- this is done in visualize()
@@ -151,17 +151,18 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       self.y.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
       // set point size domain
       self.pointScale.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
-
+      console.log("b4 manhatten plot")
       // append x axis to svg object
       self.svg.append("g")
         .classed("manhatten-plot-instance", true)
         .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
-        .attr("class", "x-axis")
-        .call(d3.axisBottom(self.x))
+        .attr("id", "x-axis")
+        .call(d3.axisBottom(self.x));
+
+        d3.select("#x-axis")
         .on("click", function(d,i){
           //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-          var axis_selection = e.originalEvent || e.originalTarget;
-          console.log(axis_selection)
+          var axis_selection = d.srcElement.innerHTML;
           //only pass if recognized functional group (see init())
           if(self.functional_categories.includes(axis_selection)){
             d3.select("#network-vis")

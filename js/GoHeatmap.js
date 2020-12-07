@@ -162,7 +162,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       } // end else statement inside of try
     } catch(err){
       // clear graph and old notices
-      console.log("here")
       $(".heatmap-update").remove()
       $("#go-heatmap-error").empty()
       // print the notice

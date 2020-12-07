@@ -107,7 +107,55 @@
                         </a>
                     </div>
                 </nav>
+                <!--Functional Enrichment Help Modal-->
 
+                <div class="modal fade" id="funtionalEnrichmentModal" role="dialog">
+                    <div class="modal-dialog modal-s">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">What is Funtional Enrichment?</h4>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Gene by Function Help Modal-->
+                <div class="modal fade" id="geneByFunctionalModal" role="dialog">
+                    <div class="modal-dialog modal-s">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">What is Gene By Functional Category?</h4>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!--weights Help Modal-->
+                 <div class="modal fade" id="weightsModal" role="dialog">
+                    <div class="modal-dialog modal-s">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">What do weights do?</h4>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Instructions Modal: https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
                 <div class="modal fade" id="myInstructionsModal" role="dialog">
@@ -200,7 +248,7 @@ Eventually, there will be functionality to allow the user to group the genes in 
                       <div class="col-md-6" id="go-manhatten-plot">
                         <div class="col-md-auto">
                           <h2 class="content-heading">Functional Enrichment
-                            <span data-feather="help-circle" class="help"></span>
+                            <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"><span data-feather="help-circle" class="help"></span></a>
                           </h2>
                           <h5 class="content-heading">p-value < .05</h5>
                           <!-- container for notice in the event that there are no enrichment in a given category -->
@@ -214,7 +262,7 @@ Eventually, there will be functionality to allow the user to group the genes in 
                         <div class="go-heatmap col-md-6">
                           <div class="col-md-auto">
                             <h2 class="content-heading">Gene By Functional Category
-                                <span data-feather="help-circle" class="help"></span>
+                                <a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal"><span data-feather="help-circle" class="help"></span></a>
                             </h2>
                             <!-- container for notice in the event that there are no enrichment in a given category -->
                             <div id="go-heatmap-error"></div>
@@ -274,8 +322,8 @@ Eventually, there will be functionality to allow the user to group the genes in 
                                     </div>
                                   </div>
                                   <br />
-                                <label class="sidebar-titles">Weights:</label>
-                                <span data-feather="help-circle"></span>
+                                <label class="sidebar-titles" data-toggle="modal" data-target="#weightsModal">Weights:<span data-feather="help-circle" ></span></label>
+                                
                                 <div id="weights">
                                     <div id="weight-svg">
 

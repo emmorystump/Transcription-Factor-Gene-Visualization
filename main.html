@@ -9,7 +9,7 @@
     <script src="https://d3js.org/d3.v6.js"></script>
 </head>
 
-<body>
+<body class="main">
 
     <div id="main-vis">
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
@@ -199,13 +199,12 @@ Eventually, there will be functionality to allow the user to group the genes in 
                       <!-- manhatten plot -->
                       <div class="col-md-6 mt-4" id="go-manhatten-plot">
                         <div class="col-md-auto">
-                          <h2 class="content-heading">Functional Enrichment</h2>
+                          <h2 class="content-heading">Functional Enrichment
+                            <span data-feather="help-circle" class="help"></span>
+                          </h2>
                           <h5 class="content-heading">p-value < .05</h5>
                           <!-- container for notice in the event that there are no enrichment in a given category -->
                           <div id="manhatten-plot-error"></div>
-                        </div>
-                        <div class="col-md-auto">
-                          <span data-feather="help-circle"></span>
                         </div>
                       </div><!-- end manhatten plot-->
                     </div> <!-- end first row -->
@@ -214,12 +213,11 @@ Eventually, there will be functionality to allow the user to group the genes in 
                         <!-- heatmap -->
                         <div class="go-heatmap col-md-6">
                           <div class="col-md-auto">
-                            <h2 class="content-heading">Gene By Functional Category</h2>
+                            <h2 class="content-heading">Gene By Functional Category
+                                <span data-feather="help-circle" class="help"></span>
+                            </h2>
                             <!-- container for notice in the event that there are no enrichment in a given category -->
                             <div id="go-heatmap-error"></div>
-                          </div>
-                          <div class="col-md-auto">
-                            <span data-feather="help-circle"></span>
                           </div>
                         </div>
                         <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->

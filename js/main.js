@@ -65,7 +65,7 @@
       var weights = new Weights(self.colorScheme, organism);
       // instantiate classes which depend on network ()
       var networkDetail = new NetworkDetail(self.colorScheme)
-      var goHeatmap = new GoHeatmap(self.colorScheme); //note the inherentence from other objects, particularly the colorScheme
+      var goHeatmap = new GoHeatmap(self.colorScheme, networkDetail); //note the inherentence from other objects, particularly the colorScheme
       var goManhattenPlot = new GoManhattenPlot(self.colorScheme, networkDetail, goHeatmap, self.functional_categories); //note the inherentence from other objects, particularly the colorScheme
       var network = new Network(self.colorScheme, networkDetail, goManhattenPlot);
 

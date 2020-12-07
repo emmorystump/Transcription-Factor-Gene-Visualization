@@ -198,7 +198,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
         .on("click", function(node_info, data){
-          self.networkDetail.updateGoDetail(data)
+          self.networkDetail.updateGoDetail({term: d.native, description: d.description, pvalue: d.p_value});
         })
         .on("mouseover", function(node_info, data){
           // highlight the term circle

@@ -88,23 +88,24 @@ NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object
 
 /*
  * update self.go_detail_text and pass the new info to self.appendText()
- * @params manhatten_plot_node_data: the d3 created object of data bound to each circle in mahnatten go plot
+ * @params go_term_info: structure: {term: "GO:001234", description: "some string", pvalue: .0001234 }
+ *
  *
  */
-NetworkDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
+NetworkDetail.prototype.updateGoDetail = function(go_term_info){
   var self = this;
   // instantiate variables to determine whether to create go or kegg url link
   var keg_or_go = "";
   var keg_or_go_path_prefix = "";
   // determine if KEGG or GO annotations
-  if (manhatten_plot_node_data.native.startsWith("KEGG")){
+  if (go_term_info.term.startsWith("KEGG")){
     kegg_or_go = "kegg"
     kegg_or_go_path_prefix = self.kegg_path_prefix;
   } else{
     kegg_or_go = "go"
     kegg_or_go_path_prefix = self.go_chart_url_prefix;
   } // end go/kegg determination
-  var chart_url = self.goUrlMaker([manhatten_plot_node_data.native], kegg_or_go_path_prefix, kegg_or_go)
+  var chart_url = self.goUrlMaker([go_term_info.term], kegg_or_go_path_prefix, kegg_or_go)
 
   // switch the Gene Detail/Go Detail tab
   $("#gene-detail-tab").removeClass('active');
@@ -119,9 +120,9 @@ NetworkDetail.prototype.updateGoDetail = function(manhatten_plot_node_data){
 
   // update self.go_detail_text (important that this be a global, to this object,
   // variable for handling of instruction messages vs data message in appendText)
-  self.go_detail_text = ("<p>Description: " + manhatten_plot_node_data.description + "<br>"+
-                     "GO_term: " + manhatten_plot_node_data.native + "<br>"+
-                     "<p> p-value: " + manhatten_plot_node_data.p_value.toExponential() + "<\p>"+
+  self.go_detail_text = ("<p>Description: " + go_term_info.description + "<br>"+
+                     "GO_term: " + go_term_info.term + "<br>"+
+                     "<p> p-value: " + go_term_info.pvalue.toExponential() + "<\p>"+
                      '<a class="nav-link" href="'+chart_url+'" target="_blank">GO/KEGG term chart<\a>');
 
   // send to appendText to publish to dom

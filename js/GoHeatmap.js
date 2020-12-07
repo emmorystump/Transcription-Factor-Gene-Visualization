@@ -2,10 +2,11 @@
 /**
  * Constructor for the a GoHeatmap
  */
-function GoHeatmap(colorScheme){
+function GoHeatmap(colorScheme, networkDetail){
 
     var self = this;
     self.colorScheme = colorScheme;
+    self.networkDetail = networkDetail;
     self.init();
 }; // end constructor
 
@@ -65,6 +66,8 @@ GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
 
     go_data.result.forEach((go_result, i) => {
       var go_term = go_result.native;
+      var go_description = go_result.description;
+      var go_pvalue = go_result.p_value;
       var functional_category = go_result.source;
       // extract the genes associated with the go_term
       var term_gene_list = []
@@ -87,9 +90,9 @@ GoHeatmap.prototype.createGeneGoEdgeObject = function(go_data){
         self.go_by_gene_data[functional_category].edge_list.push({gene: gene_id, go: go_term, score:100});
         // fill go_dict (it may be better to only store this, and create edge_list in visualize)
         if (!(go_term in self.go_by_gene_data[functional_category].go_dict)){
-          self.go_by_gene_data[functional_category].go_dict[go_term] = [gene_id]
+          self.go_by_gene_data[functional_category].go_dict[go_term] = {gene_list: [gene_id], description: go_description, pvalue: go_pvalue, term: go_term}
         } else {
-            self.go_by_gene_data[functional_category].go_dict[go_term].push(gene_id)
+            self.go_by_gene_data[functional_category].go_dict[go_term].gene_list.push(gene_id)
         }
       });
 
@@ -130,6 +133,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                 //.attr("transform", "translate(0," + self.svgHeight + ")")
                 .call(d3.axisTop(self.x))
                 .attr("class", "heatmap-update")
+                .attr("id", "heatmap-x-axis")
                 .selectAll("text")
                 .attr("y", 0)
                 .attr("x", -70)
@@ -138,10 +142,11 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                 .style("text-anchor", "start")
                 .on("click", function(d,i){
                   //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-                  var axis_selection = d.explicitOriginalTarget.__data__;
+                  var axis_selection = d.srcElement.innerHTML;
+                  self.networkDetail.updateGoDetail(self.go_by_gene_data[go_category].go_dict[axis_selection])
                   //color nodes by GO category
                   $("#network-vis").find(".node").each((index,node) => {
-                      if (self.go_by_gene_data[go_category].go_dict[axis_selection].includes(node.__data__.name)){
+                      if (self.go_by_gene_data[go_category].go_dict[axis_selection].gene_list.includes(node.__data__.name)){
                           d3.selectAll("#"+node.__data__.name).attr("fill", self.colorScheme(go_category));
                       }
                   });

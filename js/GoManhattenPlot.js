@@ -17,7 +17,7 @@ function GoManhattenPlot(colorScheme, networkDetail, goHeatmap, functional_categ
  */
 GoManhattenPlot.prototype.init = function(){
     var self = this;
-    self.margin = {top: 100, right: 100, bottom: 0, left: 50};
+    self.margin = {top: 100, right: 20, bottom: 0, left: 40};
     self.go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
 
     //Gets access to the div element created for this chart from HTML
@@ -156,10 +156,12 @@ GoManhattenPlot.prototype.visualize = function(go_object){
       self.svg.append("g")
         .classed("manhatten-plot-instance", true)
         .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
-        .attr("id", "x-axis")
-        .call(d3.axisBottom(self.x));
+        .attr("id", "manhatten-x-axis")
+        .call(d3.axisBottom(self.x))
+        .style("font-size", "20px");
 
-        d3.select("#x-axis")
+
+        d3.select("#manhatten-x-axis")
         .on("click", function(d,i){
           //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
           var axis_selection = d.srcElement.innerHTML;

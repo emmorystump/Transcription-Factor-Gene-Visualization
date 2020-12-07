@@ -146,8 +146,8 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                   self.networkDetail.updateGoDetail(self.go_by_gene_data[go_category].go_dict[axis_selection])
                   //color nodes by GO category
                   $("#network-vis").find(".node").each((index,node) => {
-                      if (self.go_by_gene_data[go_category].go_dict[axis_selection].gene_list.includes(node.__data__.name)){
-                          d3.selectAll("#"+node.__data__.name).attr("fill", self.colorScheme(go_category));
+                      if (self.go_by_gene_data[go_category].go_dict[axis_selection].gene_list.includes(node.id)){
+                          d3.selectAll("#"+node.id).attr("fill", self.colorScheme(go_category));
                       }
                   });
                 });

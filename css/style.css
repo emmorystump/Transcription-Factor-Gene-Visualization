@@ -13,6 +13,14 @@
   overflow: hidden;
 
 }
+.main h1 {
+ padding-top: 10px;
+}
+.help {
+  /* float: left; */
+  margin-right: 10px;
+  margin-bottom: 7px;
+}
 /* cite: https://codepen.io/jcblw/pen/DxAJF  */
 .tab-container{
   background : white;

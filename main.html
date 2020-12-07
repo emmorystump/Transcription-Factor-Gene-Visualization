@@ -192,12 +192,12 @@ Eventually, there will be functionality to allow the user to group the genes in 
                     <!-- First row is network-vis and GO manhatten plot -->
                     <div class="row">
                       <!-- network-vis -->
-                      <div class="col-md-6" id="edge-chart-heading" class="content-heading">
+                      <div class="col-md-6 mt-4" id="edge-chart-heading" class="content-heading">
                           <h2 id="edge-chart-heading-text"></h2>
                           <div class="col" id="network-vis"></div>
                       </div><!-- end network vis -->
                       <!-- manhatten plot -->
-                      <div class="col-md-6" id="go-manhatten-plot">
+                      <div class="col-md-6 mt-4" id="go-manhatten-plot">
                         <div class="col-md-auto">
                           <h2 class="content-heading">Functional Enrichment</h2>
                           <h5 class="content-heading">p-value < .05</h5>
@@ -225,8 +225,10 @@ Eventually, there will be functionality to allow the user to group the genes in 
                         <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
                         <!-- create two rows in this detail-tabs-column -->
                         <div class="col-md-6" id="detail-tabs-column">
+                            <h2>Gene/GO Details</h2>
+
                           <!-- detail tabs -->
-                          <div class="row justify-content-md-center">
+                          <div class="row">
                             <div class="tab-container">
                               <ul class="tabs clearfix" >
                                 <li id="go-detail-tab">
@@ -238,7 +240,7 @@ Eventually, there will be functionality to allow the user to group the genes in 
                             </div><!-- end tab-container -->
                           </div> <!-- end detail tabs row -->
                           <!-- gene/go details -->
-                          <div class="row justify-content-md-center">
+                          <div class="row">
                             <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
                               <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
                               <div class="go-detail-text"></div>

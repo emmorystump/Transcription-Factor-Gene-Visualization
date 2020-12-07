@@ -358,7 +358,7 @@ Network.prototype.visualize = function (gene_id_list) {
     })
         .on("mouseover", function (node_info, gene_info) {
             self.tooltip.style("opacity", 1)
-            d3.select(this).attr("fill", "green");
+            d3.select(this).attr("fill", "maroon");
         })
         .on("mousemove", self.mousemove)
         .on("mouseout", function (node_info, gene_info) {

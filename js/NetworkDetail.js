@@ -25,6 +25,7 @@ NetworkDetail.prototype.init = function(){
     self.go_detail_text = "";
 
     self.yeast_gene_url_prefix = "https://fungidb.org/fungidb/app/search?q=";
+    self.fly_gene_url_prefix = "https://flybase.org/reports/";
 
     self.go_chart_url_prefix = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/%7Bids%7D/chart?ids=";
     self.kegg_path_prefix = "https://www.genome.jp/dbget-bin/www_bfind_sub?mode=bfind&max_hit=1000&dbkey=kegg&keywords=";
@@ -42,6 +43,14 @@ NetworkDetail.prototype.init = function(){
  */
 NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object){
     var self = this;
+    gene_info_url_prefix = "";
+    //get correct link url url_prefix
+    if (sessionStorage.getItem("organism") == "fly"){
+      gene_info_url_prefix = self.fly_gene_url_prefix
+    } else{
+      gene_info_url_prefix = self.yeast_gene_url_prefix
+    } // move this back to sessionStorage
+
     // go terms come from the stored data in data/ itself, not from an API request
     var go_term_array = "" // todo: this wrangling/error handling could be taken care of better in the call to update
     if (typeof(node_object_array.go) == "string"){
@@ -68,7 +77,7 @@ NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object
     self.gene_detail_text = '<p>Gene ID: '+node_object_array.name+
     '</p><p>Gene Name: '+node_object_array.gene_name+
     '</p><p>Score: '+node_object_array.score+
-    '</p><a href="'+ self.yeast_gene_url_prefix+node_object_array.name  +
+    '</p><a href="'+ gene_info_url_prefix+node_object_array.name  +
     '" target="_blank">Gene Info</a><br><a href="'+chart_url +
     '" target="_blank">Gene Go Chart</a><br>';
 

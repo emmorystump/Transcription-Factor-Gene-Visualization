@@ -45,7 +45,7 @@ GoManhattenPlot.prototype.init = function(){
 
     // size scale for the points in the plot -- domain set in visualize()
     self.pointScale = d3.scaleLog()
-                        .range([8, 4])
+                        .range([12, 8])
                         .clamp(true);
 
 }; // end init()

@@ -30,7 +30,7 @@ GoHeatmap.prototype.init = function(){
         .append("g")
         .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
-        // Build X scales and axis:
+    // Build X scales and axis:
     self.x = d3.scaleBand()
       .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
       .padding(0.01);

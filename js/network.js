@@ -85,7 +85,8 @@ Network.prototype.init = function () {
  * @param minScore
  * @param maxScore
  */
-
+// TODO: ADD FUNCTIONALITY TO FILTER BASED ON FUNCTIONAL CATEGORY
+// add button to do so (text could just be filter) that will become present when a suer clicks manhatten x axis label or a go term in gene/function grid
 Network.prototype.update = function(data, organism, tf_selected, minScore, maxScore, selectedType){
   var self = this;
   self.minScore = minScore;
@@ -132,13 +133,11 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
                       tf_selected = sessionStorage.getItem("selectedTf")
                   } // end inner if else clause
                 }// end outer if
-              // wrangleData creates the json and calls visualize
+            // wrangleData creates the json and calls visualize
             self.wrangleData(data, tf_selected, selectedType);
-            // console.log("right before wrangleData selectedTf "+ sessionStorage.getItem("selectedTf"))
-            // console.log("after wrangleData selectedTf "+ sessionStorage.getItem("selectedTf"))
           }); // end d3.csv()
       } catch (err) {
-          console.log("ERROR: Network.update d3.csv. id_name_dict: " + id_name_dict + "; tf_selected: " + tf_selected)
+          console.error("ERROR: Network.update d3.csv. id_name_dict: " + id_name_dict + "; tf_selected: " + tf_selected)
       }
 
 }; // end update()
@@ -147,9 +146,10 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
  * parse network data based on organism/thresholds.
  * Calls Network.visualize()
  *
- * @param tf_selected
+ * @params data: loaded from file, see self.update()
+ * @params tf_selected: the gene id of the current TF
+ * @params selectedType: tf or gene -- part of the functionality to transform input gene to list of regulators (right?)
  */
-
  Network.prototype.wrangleData = function (data, tf_selected, selectedType) {
      var self = this;
      var individual_data_dir = "all/";
@@ -225,6 +225,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
                      } // end inner if
                  }
              } // end for
+             // TODO: EXPORT CURRENT GENE TARGET CSV
              // attach data to Export Results on main page
              var export_results_button = $("#export-network-button");
              //TODO add column names and figure out how to export
@@ -244,7 +245,7 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
 
 /**
  * Visualize network information. This is the end result of calling network.update()
- *
+ * @params gene_id_list
  */
 Network.prototype.visualize = function (gene_id_list) {
     var self = this;

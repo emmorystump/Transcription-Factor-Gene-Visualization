@@ -93,6 +93,7 @@ NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object
  *
  */
 NetworkDetail.prototype.updateGoDetail = function(go_term_info){
+  // TODO: when click on axis label of manhatten plot, put link to the go term go term plot (plot with the map connecting all associated go terms in a functional category)
   var self = this;
   // instantiate variables to determine whether to create go or kegg url link
   var keg_or_go = "";
@@ -184,7 +185,7 @@ NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg
 *                      then the stored self.go/gene_detail_text is used. if that is empty string,
 *                      the self.gene/go_instructions are used instead
 * @params which_div: either 'go' or 'gene'
-**/
+**/ 
 NetworkDetail.prototype.appendText = function(detail_text, which_div){
   var self = this;
   // instantiate variable to hold text

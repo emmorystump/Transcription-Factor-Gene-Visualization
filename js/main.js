@@ -71,6 +71,7 @@
 
       // tab functionality for gene/go detail
       // cite: https://codepen.io/jcblw/pen/DxAJF
+      // TODO: FIGURE OUT WHY CLICKING TABS SHIFTS PAGE VIEW TO TOP WHEN SCROLLED DOWN
       var tabs = $('.tabs > li');
       tabs.on("click", function(d,i){
         tabs.removeClass('active');

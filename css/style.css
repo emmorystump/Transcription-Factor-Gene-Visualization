@@ -41,7 +41,7 @@ ul.tabs{
 }
 
 ul.tabs > li.active{
-  background: #ddd;
+  background: #d0cbc9;
 }
 
 ul.tabs > li{

@@ -312,7 +312,8 @@ Network.prototype.visualize = function (gene_id_list) {
             }
         })
         .attr("stroke", "white")
-        .attr("stroke-width", 1);
+        .attr("stroke-width", 1)
+        .style("opacity", function(d) {if(d.type == "tf") {return 1}else return .9});
 
     node.transition()
         .duration(2000)
@@ -349,27 +350,35 @@ Network.prototype.visualize = function (gene_id_list) {
             event.subject.fy = null;
         }));
 
-    // TODO: KEEP HIGHLIGHTING WHEN GENE IS CLICKED UNTIL NEXT GENE IS CLICKED
     node.on("click", function (node_info, gene_info) {
-        // select all nodes, removed click-highlight class
-        d3.selectAll(".node")
+        // select all nodes, removed node-highlight class
+        d3.selectAll(".node").classed("highlight", false)
+                             .style("stroke", null)
+                             .style("stroke-width", null)
+        // select clicked node and add node-highlight class
+        d3.select(this).classed("highlight", true)
+                       .style("stroke", self.colorScheme("highlight"))
+                       .style("stroke-width", "3" );
         // add click-hightlight class to this node
         self.networkDetail.updateGeneDetail(gene_info, self.tf_dict)
     })
         .on("mouseover", function (node_info, gene_info) {
+            // activate tooltip
             self.tooltip.style("opacity", 1)
-            d3.select(this).attr("fill", "maroon");
+            // add highlight circle to node
+            d3.select(this).style("stroke", self.colorScheme("highlight"))
+                           .style("stroke-width", "3" );
         })
+        // i think this affects the tooltip -- check
         .on("mousemove", self.mousemove)
+        // remove the highlight from all nodes that don't have the highlight class
         .on("mouseout", function (node_info, gene_info) {
-            d3.select(this).attr("fill", function (d, i) {
-                if (gene_info.type == "tf") {
-                    return self.colorScheme("tf")
-                } else {
-                    return self.colorScheme("gene")
-                }
-            })
+            if(d3.select(this).attr("class") != "node highlight"){
+              d3.select(this).style("stroke", null)
+                             .style("stroke-width", null)
+            }
         })
+        // i think this affects the tooltip -- check
         .on("mouseleave", self.mouseleave)
 
 

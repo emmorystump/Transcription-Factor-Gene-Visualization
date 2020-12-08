@@ -91,11 +91,11 @@ GoManhattenPlot.prototype.distributeGOdata = function(go_data_object){
 
   var self = this;
 
-  // update the manhatten plot
-  self.visualize(go_data_object.result);
-
   // send data to the heatmap to parse into gene/go array
   self.goHeatmap.createGeneGoEdgeObject(go_data_object);
+
+  // update the manhatten plot
+  self.visualize(go_data_object.result);
 
 }; // end wrangleAndDistributeGOdata()
 
@@ -147,7 +147,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .duration(2000)
         .attr('opacity', 1);
 
-      // set y scale domain
+      // set y scale domain  go_object[min_pval_index[0]].p_value
       self.y.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
       // set point size domain
       self.pointScale.domain([go_object[min_pval_index[0]].p_value, go_object[max_pval_index[0]].p_value])
@@ -200,14 +200,38 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
         .on("click", function(node_info, data){
+          // d3.select("#network-vis").selectAll(".node")
           self.networkDetail.updateGoDetail({term: data.native, description: data.description, pvalue: data.p_value});
         })
         .on("mouseover", function(node_info, data){
-          // highlight the term circle
-          // put a halo around the selected node
+          var go_category = data.source;
+          var go_term = data.native;
+          // add highlighting to associated genes
+          d3.select("#network-vis").selectAll(".node")
+                                   .attr("fill", function(d,i){
+                                     if(self.goHeatmap.go_by_gene_data[go_category].go_dict[go_term].gene_list.includes(d3.select(this).attr("id"))){
+                                       return self.colorScheme(go_category)
+                                     } else{
+                                       if (d.type == "tf") {
+                                           return self.colorScheme("tf");
+                                       }
+                                       else {
+                                           return self.colorScheme("gene");
+                                       }
+                                     }
+                                   })
         })
+        // remove highlighting from associated genes
         .on("mouseleave", function(node_info, data){
-          // return color to prev
+          d3.select("#network-vis").selectAll(".node")
+                                   .attr("fill", function (d) {
+                                       if (d.type == "tf") {
+                                           return self.colorScheme("tf");
+                                       }
+                                       else {
+                                           return self.colorScheme("gene");
+                                       }
+                                   })
         }); // end circle append
     } // end the else clause of the if statement inside the try clause at the top of the function
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)

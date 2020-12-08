@@ -144,6 +144,16 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                   //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
                   var axis_selection = d.srcElement.innerHTML;
                   self.networkDetail.updateGoDetail(self.go_by_gene_data[go_category].go_dict[axis_selection])
+                  // remove any previous coloring
+                  d3.select("#network-vis").selectAll(".node")
+                                           .attr("fill", function (d) {
+                                               if (d.type == "tf") {
+                                                   return self.colorScheme("tf");
+                                               }
+                                               else {
+                                                   return self.colorScheme("gene");
+                                               }
+                                           })
                   //color nodes by GO category
                   $("#network-vis").find(".node").each((index,node) => {
                       if (self.go_by_gene_data[go_category].go_dict[axis_selection].gene_list.includes(node.id)){

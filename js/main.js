@@ -15,10 +15,10 @@
 
       // Colors associated with major components of page -- passed as argument to each object below
       // Changing the color here will change the color for each element in each vis (eg, if you don't like the GO:BP color, change the first item)
-      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene"];
+      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene", "highlight"];
       self.colorScheme = d3.scaleOrdinal()
         .domain(self.functional_categories)
-        .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693"]);
+        .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693", "#ff1d58"]);
 
       var organism = sessionStorage.getItem("organism")
       switch (organism){

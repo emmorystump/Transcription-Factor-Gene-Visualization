@@ -13,13 +13,6 @@
 
       var self = this;
 
-      // Colors associated with major components of page -- passed as argument to each object below
-      // Changing the color here will change the color for each element in each vis (eg, if you don't like the GO:BP color, change the first item)
-      self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene", "highlight"];
-      self.colorScheme = d3.scaleOrdinal()
-        .domain(self.functional_categories)
-        .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693", "#ff1d58"]);
-
       var organism = sessionStorage.getItem("organism")
       switch (organism){
         case "fly":
@@ -61,13 +54,18 @@
             }); // end on change
           }); // end jquery
 
-      // instantiate weights
-      var weights = new Weights(self.colorScheme, organism);
       // instantiate classes which depend on network ()
-      var networkDetail = new NetworkDetail(self.colorScheme)
-      var goHeatmap = new GoHeatmap(self.colorScheme, networkDetail); //note the inherentence from other objects, particularly the colorScheme
-      var goManhattenPlot = new GoManhattenPlot(self.colorScheme, networkDetail, goHeatmap, self.functional_categories); //note the inherentence from other objects, particularly the colorScheme
-      var network = new Network(self.colorScheme, networkDetail, goManhattenPlot);
+      // eventually want to package the whole network vix in one function that takes a path to a directory to visualize?
+      // TODO: working on making this the data processing function which farms out data to other functions
+      var networkDetail = new NetworkDetail()
+      // instantiate weights
+      var weights = new Weights(networkDetail.colorScheme, organism);
+      var goHeatmap =  new GoHeatmap(networkDetail); //self.colorScheme, networkDetail note the inherentence from other objects, particularly the colorScheme
+                                                                      // TODO: should pass the first x (in this case four) functional_categories, which should always be the go/functional terms
+      // check inheritence -- does goHeatmap have networkDetail functions in goManhattenPlot? If so, last two arguments redundent
+      var goManhattenPlot = new GoManhattenPlot(goHeatmap); //note the inherentence from other objects, particularly the colorScheme
+      // same re: above. This should be the topmost structure
+      var network = new Network(goManhattenPlot);
 
       // tab functionality for gene/go detail
       // cite: https://codepen.io/jcblw/pen/DxAJF
@@ -90,12 +88,14 @@
         plot_tabs.removeClass('active');
         $(this).addClass('active');
         if (this.attributes.id.nodeValue == "heatmap-plot-selector"){
-          goHeatmap.appendPlot("")
+          console.log("heatmap")
+          //goHeatmap.appendPlot()
         } else{
-          goManhattenPlot.appendPlot("")
+          console.log("manhattenplot")
+          //goManhattenPlot.appendPlot()
         }
       });
-      
+
       var files =["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];
       var promises = [];
       files.forEach(function(url) {

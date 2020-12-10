@@ -265,31 +265,28 @@ Eventually, there will be functionality to allow the user to group the genes in 
                           <div id="network-vis"></div>
                         </div>
                         <div id = "row3-col1" class="row">
-                            <div class="col">
-                              <div class="row" id="detail-tabs-column">
-                                  <h2>Gene/GO Details</h2>
-                              </div>
-                              <!-- network detail tabs -->
-                              <div class="row"><!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
-                                <div class="tab-container">
-                                  <ul class="tabs network-detail-tabs clearfix" >
-                                    <li id="go-detail-tab">
-                                      <a href=# >GO Detail</a>
-                                    </li>
-                                    <li id="gene-detail-tab" class=active >
-                                      <a href=# >Gene Detail</a>
-                                    </li>
-                                  </ul>
-                                </div><!-- end tab-container -->
-                              </div>
-                              <div class="row">
-                                <div id="go-gene-detail" class="col m-0 go-gene-detail">
-                                  <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
-                                  <div class="go-detail-text"></div>
-                                </div><!-- end go-gene-detail -->
-                              </div>
+                          <div id = "row3-col1-row1" class="col">
+                            <!-- network detail tabs -->
+                            <div class="row"><!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
+                              <div class="tab-container">
+                                <ul class="tabs network-detail-tabs clearfix" >
+                                  <li id="go-detail-tab">
+                                    <a href=# >Functional Detail</a>
+                                  </li>
+                                  <li id="gene-detail-tab" class=active >
+                                    <a href=# >Gene Detail</a>
+                                  </li>
+                                </ul>
+                              </div><!-- end tab-container -->
                             </div>
-                        </div><!-- end row2-col1 -->
+                            <div class="row">
+                              <div id="go-gene-detail" class="col m-0 go-gene-detail">
+                                <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
+                                <div class="go-detail-text"></div>
+                              </div><!-- end go-gene-detail -->
+                            </div>
+                          </div><!-- row3-col1-row1 -->
+                        </div><!-- end row3-col1 -->
                       </div> <!-- end col1 -->
                       <div id="col2" class="col-md-6">
                         <div id = "col2-row1" class="row">
@@ -304,20 +301,18 @@ Eventually, there will be functionality to allow the user to group the genes in 
                                   <a href=# >Manhatten Plot</a>
                                 </li>
                             </div><!-- end tabs-container -->
-                          </div> <!-- end plot-tabs row -->
-                          <!-- second row of right column is for the plot headings -->
-                          <div class="row plot-heading-row">
-                            <div id="plot-heading-div" class="col"></div>
-                          </div><!-- end plot-heading-row -->
-                          <!-- third row of right column is for the plots -->
-                          <div class="row actual-plot-row">
-                            <div id="plot-div" class="col"></div>
-                          </div><!-- end actual-plot-row -->
-                          <div class="row plot-error-row">
-                            <div id="plot-error"></div>
-                          </div><!-- end actual-plot-row -->
-                        </div> <!-- end col2-row1 -->
-                      </div><!-- end col2 -->
+                          </div>
+                        </div> <!-- col2-row1 -->
+                        <div id="col2-row2" class="row">
+                          <div id="plot-heading-div" class="col"></div>
+                        </div><!-- end col2-row2 -->
+                        <div id="col2-row3" class="row">
+                          <div id="plot-div" class="col"></div>
+                        </div>
+                        <div id="col2-row4" class="row">
+                          <div id="plot-error" class="col"></div>
+                        </div>
+                      </div> <!-- end col2- -->
                     </div><!-- end visualization containing row -->
                   </div><!-- end container-fluid -->
                 </main>

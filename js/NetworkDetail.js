@@ -4,10 +4,9 @@
  * @params colorScheme: global colorScheme passed in main.js
  */
 
-function NetworkDetail(colorScheme){
+function NetworkDetail(){
 
     var self = this;
-    self.colorScheme = colorScheme;
     //var window.gene_name_list = [];
     self.init();
 };
@@ -18,8 +17,15 @@ function NetworkDetail(colorScheme){
 NetworkDetail.prototype.init = function(){
     var self = this;
 
+    // Colors associated with major components of page -- passed as argument to each object below
+    // Changing the color here will change the color for each element in each vis (eg, if you don't like the GO:BP color, change the first item)
+    self.functional_categories = ["GO:BP", "GO:CC","GO:MF","KEGG", "tf", "gene", "highlight"];
+    self.colorScheme = d3.scaleOrdinal()
+      .domain(self.functional_categories)
+      .range(["#751A33","#D28F33","#B34233","#88867D", "#1F4141", "#1A8693", "#ff1d58"]);
+
     self.gene_instructions = "Click a gene in the network visualization for more information";
-    self.go_instructions = "Click one of the significant GO terms on the manhatten plot for more information";
+    self.go_instructions = "Click a point on the manhatten plot for more information on associated functional terms";
 
     self.gene_detail_text = "";
     self.go_detail_text = "";
@@ -32,13 +38,11 @@ NetworkDetail.prototype.init = function(){
 
 };
 
-
-
 /**
  * update self.gene_detail_text and pass the new info to self.appendText()
  *
- * @param node_object_array: passed when network-vis node is clicked -- the d3 created data object associated with each node
- * @param tf_object: tf information, in dictionary structure. see network.js self.tf_dict
+ * @params node_object_array: passed when network-vis node is clicked -- the d3 created data object associated with each node
+ * @params tf_object: tf information, in dictionary structure. see network.js self.tf_dict
  * tf_object structure: {"tf_id": tf.id, "name":tf_geneName, "description": tf_description, "go": tf_go, "link": tf_link}
  */
 NetworkDetail.prototype.updateGeneDetail = function(node_object_array, tf_object){
@@ -185,7 +189,7 @@ NetworkDetail.prototype.goUrlMaker = function(gene_array, url_prefix, go_or_kegg
 *                      then the stored self.go/gene_detail_text is used. if that is empty string,
 *                      the self.gene/go_instructions are used instead
 * @params which_div: either 'go' or 'gene'
-**/ 
+**/
 NetworkDetail.prototype.appendText = function(detail_text, which_div){
   var self = this;
   // instantiate variable to hold text

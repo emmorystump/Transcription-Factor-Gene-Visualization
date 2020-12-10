@@ -255,73 +255,71 @@ Eventually, there will be functionality to allow the user to group the genes in 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                   <div class="container-fluid">
                     <div class="row">
-                    <div class="col-md-6">
-                      <div id = "col1-row1" class="row">
-                        <div class="row content-heading" id="edge-chart-heading">
-                          <h2 id="edge-chart-heading-text"></h2>
+                      <div class="col-md-6">
+                        <div id = "row1-col1" class="row">
+                          <div id="edge-chart-heading">
+                            <h2 id="edge-chart-heading-text"></h2>
+                          </div>
                         </div>
-                        <div class="row content-heading" id="edge-chart-heading">
+                        <div id="row2-col1">
                           <div id="network-vis"></div>
                         </div>
-                      </div>
-                      <div id = "col1-row2" class="row">
-                          <div class="col-md-6">
-                            <div class="row" id="detail-tabs-column">
-                                <h2>Gene/GO Details</h2>
+                        <div id = "row3-col1" class="row">
+                            <div class="col">
+                              <div class="row" id="detail-tabs-column">
+                                  <h2>Gene/GO Details</h2>
+                              </div>
+                              <!-- network detail tabs -->
+                              <div class="row"><!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
+                                <div class="tab-container">
+                                  <ul class="tabs network-detail-tabs clearfix" >
+                                    <li id="go-detail-tab">
+                                      <a href=# >GO Detail</a>
+                                    </li>
+                                    <li id="gene-detail-tab" class=active >
+                                      <a href=# >Gene Detail</a>
+                                    </li>
+                                  </ul>
+                                </div><!-- end tab-container -->
+                              </div>
+                              <div class="row">
+                                <div id="go-gene-detail" class="col m-0 go-gene-detail">
+                                  <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
+                                  <div class="go-detail-text"></div>
+                                </div><!-- end go-gene-detail -->
+                              </div>
                             </div>
-                            <!-- network detail tabs -->
-                            <div class="row"><!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
-                              <div class="tab-container">
-                                <ul class="tabs network-detail-tabs clearfix" >
-                                  <li id="go-detail-tab">
-                                    <a href=# >GO Detail</a>
-                                  </li>
-                                  <li id="gene-detail-tab" class=active >
-                                    <a href=# >Gene Detail</a>
-                                  </li>
-                                </ul>
-                              </div><!-- end tab-container -->
-                            </div>
-                            <div class="row">
-                              <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
-                                <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
-                                <div class="go-detail-text"></div>
-                              </div><!-- end go-gene-detail -->
-                            </div>
-                          </div>
-                      </div><!-- end col1-row2 -->
-                    </div> <!-- end col1 -->
-                    <div class="col-md-6">
-                      <div id = "col2-row1" class="row">
-                        <!-- plot tabs -->
-                        <div class="row plots-tabs">
-                          <div class="tab-container">
-                            <ul class="tabs plot-tabs clearfix" >
-                              <li id="heatmap-plot-selector">
-                                <a href=# >Heatmap</a>
-                              </li>
-                              <li id="manhatten-plot-selector" class=active >
-                                <a href=# >Manhatten Plot</a>
-                              </li>
-                          </div><!-- end tabs-container -->
-                        </div> <!-- end plot-tabs row -->
-                        <!-- second row of right column is for the plot headings -->
-                        <div class="row plot-heading-row">
-                          <div id="plot-heading-div" class="col-md-auto"></div>
-                        </div><!-- end plot-heading-row -->
-                        <!-- third row of right column is for the plots -->
-                        <div class="row actual-plot-row">
-                          <div id="plot-div" class="col-md-auto"></div>
-                        </div><!-- end actual-plot-row -->
-                        <div class="row plot-error-row">
-                          <div id="plot-error"></div>
-                        </div><!-- end actual-plot-row -->
-                      </div> <!-- end plot-col -->
-
-                      </div>
-                    </div>
-                   </div>
-                  </div><!-- end vis container -->
+                        </div><!-- end row2-col1 -->
+                      </div> <!-- end col1 -->
+                      <div id="col2" class="col-md-6">
+                        <div id = "col2-row1" class="row">
+                          <!-- plot tabs -->
+                          <div class="row plots-tabs">
+                            <div class="tab-container">
+                              <ul class="tabs plot-tabs clearfix" >
+                                <li id="heatmap-plot-selector">
+                                  <a href=# >Heatmap</a>
+                                </li>
+                                <li id="manhatten-plot-selector" class=active >
+                                  <a href=# >Manhatten Plot</a>
+                                </li>
+                            </div><!-- end tabs-container -->
+                          </div> <!-- end plot-tabs row -->
+                          <!-- second row of right column is for the plot headings -->
+                          <div class="row plot-heading-row">
+                            <div id="plot-heading-div" class="col"></div>
+                          </div><!-- end plot-heading-row -->
+                          <!-- third row of right column is for the plots -->
+                          <div class="row actual-plot-row">
+                            <div id="plot-div" class="col"></div>
+                          </div><!-- end actual-plot-row -->
+                          <div class="row plot-error-row">
+                            <div id="plot-error"></div>
+                          </div><!-- end actual-plot-row -->
+                        </div> <!-- end col2-row1 -->
+                      </div><!-- end col2 -->
+                    </div><!-- end visualization containing row -->
+                  </div><!-- end container-fluid -->
                 </main>
 
                 <!-- Modal -->

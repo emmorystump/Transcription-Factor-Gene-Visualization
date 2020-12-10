@@ -2,6 +2,15 @@
 /**
  * Constructor
  */
+
+// heading for gomanhatten plot
+ // <h2 class="content-heading">Functional Enrichment
+ //   <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"><span data-feather="help-circle" class="help"></span></a>
+ // </h2>
+ // <h5 class="content-heading">p-value < .05</h5>
+ // <!-- container for notice in the event that there are no enrichment in a given category -->
+ // <div id="manhatten-plot-error"></div>
+
 function GoManhattenPlot(colorScheme, networkDetail, goHeatmap, functional_categories){
 
     var self = this;
@@ -19,36 +28,43 @@ GoManhattenPlot.prototype.init = function(){
     var self = this;
     self.margin = {top: 100, right: 20, bottom: 0, left: 40};
     self.go_categories = ["GO:BP", "GO:CC","GO:MF","KEGG"];
-
-    //Gets access to the div element created for this chart from HTML
-    self.divGoManhattenPlot = d3.select("#go-manhatten-plot").classed("content", true);
-    self.svgBounds = self.divGoManhattenPlot.node().getBoundingClientRect();
-    self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
-    self.svgHeight = 400;
-
-    //creates svg element within the div
-    self.svg = self.divGoManhattenPlot.append("svg")
-        .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight+self.svgBounds.top)
-        .append("g")
-        .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-
-    // build x scales and axis, but do not attach to svg -- this is done in visualize()
-    self.x = d3.scaleBand()
-      .domain(self.go_categories)
-      .range([0, self.svgWidth])
-
-    // Build X scales and axis, but do not attach to svg -- this is done in visualize()
-    self.y = d3.scaleLog()
-      .range([ 0, self.svgHeight-self.margin.top-self.margin.bottom ])
-      .clamp(true);
-
-    // size scale for the points in the plot -- domain set in visualize()
-    self.pointScale = d3.scaleLog()
-                        .range([12, 8])
-                        .clamp(true);
+    // append the manhatten plot by default
+    self.appendPlot()
 
 }; // end init()
+
+GoManhattenPlot.prototype.appendPlot = function(){
+  var self = this;
+  // empty the plot div
+  $("#plot-div").empty();
+  //Gets access to the div element created for this chart from HTML
+  self.divGoManhattenPlot = d3.select("#plot-div").classed("content", true);
+  self.svgBounds = self.divGoManhattenPlot.node().getBoundingClientRect();
+  self.svgWidth = self.svgBounds.width - self.margin.left - self.margin.right;
+  self.svgHeight = 400;
+
+  //creates svg element within the div
+  self.svg = self.divGoManhattenPlot.append("svg")
+      .attr("width",self.svgWidth)
+      .attr("height",self.svgHeight+self.svgBounds.top)
+      .append("g")
+      .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+
+  // build x scales and axis, but do not attach to svg -- this is done in visualize()
+  self.x = d3.scaleBand()
+    .domain(self.go_categories)
+    .range([0, self.svgWidth])
+
+  // Build X scales and axis, but do not attach to svg -- this is done in visualize()
+  self.y = d3.scaleLog()
+    .range([ 0, self.svgHeight-self.margin.top-self.margin.bottom ])
+    .clamp(true);
+
+  // size scale for the points in the plot -- domain set in visualize()
+  self.pointScale = d3.scaleLog()
+                      .range([12, 8])
+                      .clamp(true);
+}
 
 /**
  * accepts gene_id_list, passes to goProfilerGO to create API request from gprofiler
@@ -244,3 +260,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   } // end try .. catch wrapping whole function
 
 }; // end visualize()
+
+GoManhattenPlot.prototype.appendPlot = function () {
+
+};

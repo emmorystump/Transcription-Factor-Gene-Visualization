@@ -254,78 +254,75 @@ Eventually, there will be functionality to allow the user to group the genes in 
                 <!-- Main Section -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                   <div class="container-fluid">
-                    <!-- First row is network-vis and GO manhatten plot -->
                     <div class="row">
-                      <!-- network-vis -->
-                      <div class="col-md-6 mt-4" id="edge-chart-heading" class="content-heading">
+                    <div class="col-md-6">
+                      <div id = "col1-row1" class="row">
+                        <div class="row content-heading" id="edge-chart-heading">
                           <h2 id="edge-chart-heading-text"></h2>
-                          <div class="col" id="network-vis"></div>
-                      </div><!-- end network vis -->
-                      <!-- manhatten plot -->
-                      <div class="col-md-6 mt-4" id="go-manhatten-plot">
-                        <!-- detail tabs -->
-                        <div class="row">
-                          <div class="tab-container">
-                            <ul class="tabs clearfix" >
-                              <li id="plot-selector">
-                                <a href=# >GO Detail</a>
-                              </li>
-                              <li id="plot-selector" class=active >
-                                <a href=# >Gene Detail</a>
-                              </li>
-                          </div><!-- end tab-container -->
-                        </div> <!-- end detail tabs row -->
-                        <div class="row">
-                          <div class="col-md-auto">
-                            <h2 class="content-heading">Functional Enrichment
-                              <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"><span data-feather="help-circle" class="help"></span></a>
-                            </h2>
-                            <h5 class="content-heading">p-value < .05</h5>
-                            <!-- container for notice in the event that there are no enrichment in a given category -->
-                            <div id="manhatten-plot-error"></div>
-                          </div>
-                        </div><!-- end row -->
-                      </div><!-- end manhatten plot -->
-                    </div> <!-- end first row -->
-                    <!-- row two has the heatmap and the detail tabs column (two rows in detail tabs column) -->
-                    <div class="row">
-                        <!-- heatmap -->
-                        <div class="go-heatmap col-md-6">
-                          <div class="col-md-auto">
-                            <h2 class="content-heading">Gene By Functional Category
-                                <a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal"><span data-feather="help-circle" class="help"></span></a>
-                            </h2>
-                            <!-- container for notice in the event that there are no enrichment in a given category -->
-                            <div id="go-heatmap-error"></div>
-                          </div>
                         </div>
-                        <!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
-                        <!-- create two rows in this detail-tabs-column -->
-                        <div class="col-md-6" id="detail-tabs-column">
-                            <h2>Gene/GO Details</h2>
-                          <!-- detail tabs -->
-                          <div class="row">
+                        <div class="row content-heading" id="edge-chart-heading">
+                          <div id="network-vis"></div>
+                        </div>
+                      </div>
+                      <div id = "col1-row2" class="row">
+                        <div class="row">
+                          <div class="col-md-6" id="detail-tabs-column">
+                              <h2>Gene/GO Details</h2>
+                          </div>
+                            <!-- network detail tabs -->
+                            <div class="row"><!-- cite: https://codepen.io/jcblw/pen/DxAJF -->
+                              <div class="tab-container">
+                                <ul class="tabs network-detail-tabs clearfix" >
+                                  <li id="go-detail-tab">
+                                    <a href=# >GO Detail</a>
+                                  </li>
+                                  <li id="gene-detail-tab" class=active >
+                                    <a href=# >Gene Detail</a>
+                                  </li>
+                                </ul>
+                              </div><!-- end tab-container -->
+                            </div>
+                            <div class="row">
+                              <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
+                                <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
+                                <div class="go-detail-text"></div>
+                              </div><!-- end go-gene-detail -->
+                            </div>
+                        </div><!-- end detail-tabs -->
+                      </div><!-- end col1-row2 -->
+                    </div> <!-- end col1 -->
+                    <div class="col-md-6">
+                      <div id = "col2-row1" class="row">
+                        <div class="col-md-6" id="plot-column">
+                          <!-- plot tabs -->
+                          <div class="row plots-tabs">
                             <div class="tab-container">
-                              <ul class="tabs clearfix" >
-                                <li id="go-detail-tab">
-                                  <a href=# >GO Detail</a>
+                              <ul class="tabs plot-tabs clearfix" >
+                                <li id="heatmap-plot-selector">
+                                  <a href=# >Heatmap</a>
                                 </li>
-                                <li id="gene-detail-tab" class=active >
-                                  <a href=# >Gene Detail</a>
+                                <li id="manhatten-plot-selector" class=active >
+                                  <a href=# >Manhatten Plot</a>
                                 </li>
-                            </div><!-- end tab-container -->
-                          </div> <!-- end detail tabs row -->
-                          <!-- gene/go details -->
-                          <div class="row">
-                            <div id="go-gene-detail" class="col-md-4 m-0 go-gene-detail">
-                              <div class="gene-detail-text">Click a gene in the network visualization for more information</div>
-                              <div class="go-detail-text"></div>
-                            </div><!-- end go-gene-detail -->
-                        </div> <!-- end go-gene-detail row -->
-                      </div> <!-- end detail-tabs-column -->
-                    </div><!-- end row 2 -->
+                            </div><!-- end tabs-container -->
+                          </div> <!-- end plot-tabs row -->
+                          <!-- second row of right column is for the plot headings -->
+                          <div class="row plot-heading-row">
+                            <div id="plot-heading-div" class="col-md-auto"></div>
+                          </div><!-- end plot-heading-row -->
+                          <!-- third row of right column is for the plots -->
+                          <div class="row actual-plot-row">
+                            <div id="plot-div" class="col-md-auto"></div>
+                          </div><!-- end actual-plot-row -->
+                          <div class="row plot-error-row">
+                            <div id="plot-error"></div>
+                          </div><!-- end actual-plot-row -->
+                        </div> <!-- end plot-col -->
+                      </div>
+                    </div>
+                   </div>
                   </div><!-- end vis container -->
-              </main>
+                </main>
 
                 <!-- Modal -->
                 <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">

@@ -72,9 +72,9 @@
       // tab functionality for gene/go detail
       // cite: https://codepen.io/jcblw/pen/DxAJF
       // TODO: FIGURE OUT WHY CLICKING TABS SHIFTS PAGE VIEW TO TOP WHEN SCROLLED DOWN
-      var tabs = $('.tabs > li');
-      tabs.on("click", function(d,i){
-        tabs.removeClass('active');
+      var network_detail_tabs = $('.tabs.network-detail-tabs > li');
+      network_detail_tabs.on("click", function(d,i){
+        network_detail_tabs.removeClass('active');
         $(this).addClass('active');
         if (this.attributes.id.nodeValue == "go-detail-tab"){
           $(".gene-detail-text").empty();
@@ -84,8 +84,18 @@
           networkDetail.appendText("", "gene")
         }
       });
-
-
+      // tab functionality for manhatten plot/grid
+      var plot_tabs = $('.tabs.plot-tabs > li');
+      plot_tabs.on("click", function(d,i){
+        plot_tabs.removeClass('active');
+        $(this).addClass('active');
+        if (this.attributes.id.nodeValue == "heatmap-plot-selector"){
+          goHeatmap.appendPlot("")
+        } else{
+          goManhattenPlot.appendPlot("")
+        }
+      });
+      
       var files =["data/fruitfly/gene_info.json", "data/yeast/gene_info.json"];
       var promises = [];
       files.forEach(function(url) {

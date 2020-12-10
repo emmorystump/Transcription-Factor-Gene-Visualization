@@ -2,6 +2,11 @@
 /**
  * Constructor for the a GoHeatmap
  */
+
+ // <h2 class="content-heading">Gene By Functional Category
+ //     <a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal"><span data-feather="help-circle" class="help"></span></a>
+ // </h2>
+
 function GoHeatmap(colorScheme, networkDetail){
 
     var self = this;
@@ -17,35 +22,42 @@ GoHeatmap.prototype.init = function(){
     var self = this;
     self.margin = {top: 100, right: 100, bottom: 30, left: 100};
 
-    //Gets access to the div element created for this chart from HTML
-    var divGoHeatmap = d3.select(".go-heatmap").classed("content", true);
-    self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
-    self.svgWidth = self.svgBounds.width;
-    self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
-    //TODO: DYNAMICALLY SIZE HEATMAP BASED ON INPUT SIZE
-    //creates svg element within the div
-    self.svg = divGoHeatmap.append("svg")
-        .attr("width",self.svgWidth)
-        .attr("height",self.svgHeight+self.svgBounds.top)
-        .append("g")
-        .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-
-    // Build X scales and axis:
-    self.x = d3.scaleBand()
-      .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
-      .padding(0.01);
-
-    // Build X scales and axis:
-    self.y = d3.scaleBand()
-      .range([ self.svgHeight-self.svgBounds.top, 0 ])
-      .padding(0.01);
-
-    // Build color scale
-    self.myColor = d3.scaleLinear()
-      .range(["white", "#69b3a2"])
-      .domain([1,100])
-
 }; // end init()
+
+GoHeatmap.prototype.appendPlot = function(){
+  var self = this;
+
+  // empty plot div
+  $("#plot-div").empty();
+
+  //Gets access to the div element created for this chart from HTML
+  var divGoHeatmap = d3.select("#plot-div").classed("content", true);
+  self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
+  self.svgWidth = self.svgBounds.width;
+  self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
+  //TODO: DYNAMICALLY SIZE HEATMAP BASED ON INPUT SIZE
+  //creates svg element within the div
+  self.svg = divGoHeatmap.append("svg")
+      .attr("width",self.svgWidth)
+      .attr("height",self.svgHeight+self.svgBounds.top)
+      .append("g")
+      .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+
+  // Build X scales and axis:
+  self.x = d3.scaleBand()
+    .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
+    .padding(0.01);
+
+  // Build X scales and axis:
+  self.y = d3.scaleBand()
+    .range([ self.svgHeight-self.svgBounds.top, 0 ])
+    .padding(0.01);
+
+  // Build color scale
+  self.myColor = d3.scaleLinear()
+    .range(["white", "#69b3a2"])
+    .domain([1,100])
+}
 
 /**
  *

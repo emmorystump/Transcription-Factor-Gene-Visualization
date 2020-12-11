@@ -19,16 +19,13 @@ function GoHeatmap(networkDetail){
  */
 GoHeatmap.prototype.init = function(){
     var self = this;
-    self.margin = {top: 100, right: 100, bottom: 30, left: 100};
+    self.margin = {top: 70, right: 100, bottom: 30, left: 100};
 
 }; // end init()
 
 GoHeatmap.prototype.appendPlot = function(go_category){
   var self = this;
   //TOD0: APPEND FUNCTIONAL CATEGORY AS SUBTITLE
-  console.log(go_category)
-  console.log(self.networkDetail.axis_selection)
-  console.log(go_category == "" && typeof self.networkDetail.axis_selection == "undefined")
 
   try{
     if(go_category == "" && typeof self.networkDetail.axis_selection == "undefined"){
@@ -37,6 +34,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
         if (go_category ==""){
           go_category = self.networkDetail.axis_selection;
         }
+
         // heading for gomanhatten plot
          var content_heading = '<h2 class="content-heading">Gene By Functional Term<a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal">\
                                 <span data-feather="help-circle" class="help"></span></a>\
@@ -59,24 +57,51 @@ GoHeatmap.prototype.appendPlot = function(go_category){
         //Gets access to the div element created for this chart from HTML
         var divGoHeatmap = d3.select("#plot-div").classed("content", true);
         self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
-        self.svgWidth = self.svgBounds.width;
-        self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
-        //TODO: DYNAMICALLY SIZE HEATMAP BASED ON INPUT SIZE
+
+        // get number of genes, set height as multiple of this, if go_by_gene_data is populated
+        try{
+          var responsiveSvgHeight = 0
+          var responsiveSvgWidth = 0
+          var num_genes = [...new Set(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat())].length
+          var num_go_terms = [...new Set(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat())].length
+          if (num_genes == 0) throw "no genes in list"
+          if (num_go_terms == 0) throw "no go_terms in list"
+          if(num_genes>30){
+            responsiveSvgHeight = num_genes*10
+          } else if (num_genes > 20){
+            responsiveSvgHeight = num_genes*12
+          } else if (num_genes > 10){
+            responsiveSvgHeight = num_genes*20
+          } else {
+            responsiveSvgHeight = num_genes*70
+          }
+
+          if(num_go_terms > 10){
+            responsiveSvgWidth = num_go_terms * 30
+          } else{
+            responsiveSvgWidth = num_go_terms * 100
+          }
+        } catch(err){
+          responsiveSvgWidth = self.svgBounds.width;
+          responsiveSvgHeight = 800;
+        }
+        console.log(responsiveSvgHeight)
         //creates svg element within the div
         self.svg = divGoHeatmap.append("svg")
-            .attr("width",self.svgWidth)
-            .attr("height",self.svgHeight+self.svgBounds.top)
+            .attr("width", self.svgBounds.width)
+            .attr("height",responsiveSvgHeight+self.svgBounds.top)
             .append("g")
-            .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+            //.style('transform', 'translate(30%, 50%)')
+            .attr("transform", "translate(" + self.margin.left + "," + (self.margin.top) + ")");
 
         // Build X scales and axis:
         self.x = d3.scaleBand()
-          .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
+          .range([ 0, responsiveSvgWidth])
           .padding(0.01);
 
         // Build X scales and axis:
         self.y = d3.scaleBand()
-          .range([ self.svgHeight-self.svgBounds.top, 0 ])
+          .range([ responsiveSvgHeight, 0 ])
           .padding(0.01);
 
         // Build color scale
@@ -108,7 +133,6 @@ GoHeatmap.prototype.appendPlot = function(go_category){
 
 GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING
     var self = this;
-    console.log(go_category)
 
     try{
       if (self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat().length == 0){
@@ -126,7 +150,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
         // add the x axis to the svg element
 
         self.svg.append("g")
-                //.attr("transform", "translate(0," + self.svgHeight + ")")
                 .call(d3.axisTop(self.x))
                 .attr("class", "heatmap-update")
                 .attr("id", "heatmap-x-axis")

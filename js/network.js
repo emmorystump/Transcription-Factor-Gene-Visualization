@@ -2,15 +2,12 @@
 /**
  * Constructor
  *
- * @params colorScheme: color scheme instantiated in main, passed to all objects
- * @params networkDetail: vis object, see ./js/NetworkDetail.js
  * @params goManhattenPlot: vis object, see ./js/GoManhattenPlot.js
  */
-function Network(colorScheme, networkDetail, goManhattenPlot) {
+function Network(goManhattenPlot) {
 
     var self = this;
-    self.colorScheme = colorScheme;
-    self.networkDetail = networkDetail;
+    // This inherets from all previous vis classes except weights currently
     self.goManhattenPlot = goManhattenPlot;
     self.init();
 };
@@ -86,6 +83,7 @@ Network.prototype.init = function () {
  * @param maxScore
  */
 // TODO: ADD FUNCTIONALITY TO FILTER BASED ON FUNCTIONAL CATEGORY
+// TODO: move data handling into networkDetail?
 // add button to do so (text could just be filter) that will become present when a suer clicks manhatten x axis label or a go term in gene/function grid
 Network.prototype.update = function(data, organism, tf_selected, minScore, maxScore, selectedType){
   var self = this;
@@ -306,10 +304,10 @@ Network.prototype.visualize = function (gene_id_list) {
         .attr("r", 10)
         .attr("fill", function (d) {
             if (d.type == "tf") {
-                return self.colorScheme("tf");
+                return self.goManhattenPlot.goHeatmap.networkDetail.colorScheme("tf");
             }
             else {
-                return self.colorScheme("gene");
+                return self.goManhattenPlot.goHeatmap.networkDetail.colorScheme("gene");
             }
         })
         .attr("stroke", "white")
@@ -358,16 +356,16 @@ Network.prototype.visualize = function (gene_id_list) {
                              .style("stroke-width", null)
         // select clicked node and add node-highlight class
         d3.select(this).classed("highlight", true)
-                       .style("stroke", self.colorScheme("highlight"))
+                       .style("stroke", self.goManhattenPlot.goHeatmap.networkDetail.colorScheme("highlight"))
                        .style("stroke-width", "3" );
         // add click-hightlight class to this node
-        self.networkDetail.updateGeneDetail(gene_info, self.tf_dict)
+        self.goManhattenPlot.goHeatmap.networkDetail.updateGeneDetail(gene_info, self.tf_dict)
     })
         .on("mouseover", function (node_info, gene_info) {
             // activate tooltip
             self.tooltip.style("opacity", 1)
             // add highlight circle to node
-            d3.select(this).style("stroke", self.colorScheme("highlight"))
+            d3.select(this).style("stroke", self.goManhattenPlot.goHeatmap.networkDetail.colorScheme("highlight"))
                            .style("stroke-width", "3" );
         })
         // i think this affects the tooltip -- check

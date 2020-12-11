@@ -89,10 +89,10 @@
         $(this).addClass('active');
         if (this.attributes.id.nodeValue == "heatmap-plot-selector"){
           console.log("heatmap")
-          //goHeatmap.appendPlot()
+          goHeatmap.appendPlot("")
         } else{
           console.log("manhattenplot")
-          //goManhattenPlot.appendPlot()
+          goManhattenPlot.appendPlot("")
         }
       });
 

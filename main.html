@@ -31,14 +31,6 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <!-- <a id="homepage-return" class="nav-link active" href="index.html"> -->
-                                <a id="homepage-return" class="nav-link active" onclick="redirectAndClearSession('index.html')">
-
-                                    <span data-feather="home"></span>
-                                    Organisms <span class="sr-only">(current)</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <button id="instructions-modal-button" type="button" class="btn nav-link text-left" data-toggle="modal" data-target="#myInstructionsModal"><span data-feather="file"></span>Instructions</button>
                             </li>
                             <li class="nav-item">
@@ -135,7 +127,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Gene by Functional Category</h4>
+                                <h4 class="modal-title">Gene by Functional Term</h4>
                             </div>
                             <div class="modal-body">
                               <p>Gene targets are listed on the vertical axis and the functional terms on the horizontal axis.</p>
@@ -301,10 +293,23 @@ Eventually, there will be functionality to allow the user to group the genes in 
                                   <a href=# >Manhatten Plot</a>
                                 </li>
                             </div><!-- end tabs-container -->
+                            <!-- help circle for graph instructions -->
+                            <a id="plot-help" class="col-lg-1">
+                              <span data-feather="help-circle"></span>
+                            </a>
                           </div>
                         </div> <!-- col2-row1 -->
                         <div id="col2-row2" class="row">
-                          <div id="plot-heading-div" class="col"></div>
+                          <div id="plot-heading-div" class="col">
+                              <div class="row">
+                                <div id = "plot-title" class="col-lg-6">
+                                  <h2 class="content-heading"></h2>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <h5 id = "plot-subtitle" class="content-heading"></h5>
+                              </div>
+                          </div>
                         </div><!-- end col2-row2 -->
                         <div id="col2-row3" class="row">
                           <div id="plot-div" class="col"></div>

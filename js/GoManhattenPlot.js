@@ -1,15 +1,3 @@
-
-
-
-// heading for gomanhatten plot
- // <h2 class="content-heading">Functional Enrichment
- //   <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"><span data-feather="help-circle" class="help"></span></a>
- // </h2>
- // <h5 class="content-heading">p-value < .05</h5>
- // <!-- container for notice in the event that there are no enrichment in a given category -->
- // <div id="manhatten-plot-error"></div>
-
-
  /**
   * Constructor
   */
@@ -17,7 +5,6 @@ function GoManhattenPlot(goHeatmap){
 
     var self = this;
     self.goHeatmap = goHeatmap;
-    console.log(self.goHeatmap.networkDetail.functional_categories)
     // append the manhatten plot by default
     self.init();
 }; // end constructor
@@ -61,7 +48,9 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
       data: '{"organism":"'+organism+'", "query":'+'["'+gene_array.join('","')+'"],' +'"sources": ["GO:BP", "GO:CC", "GO:MF", "KEGG"], '+'"user_threshold":0.05, "return_only_filtered": true, "ordered": true}', //", "sources:"'+source_id+'"user_threshold":0.05, "all_results": true, "ordered": true}'
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
       success: function( data ) {
-        self.distributeGOdata(JSON.parse(data));
+        var api_data_json = JSON.parse(data)
+        self.go_data_result = api_data_json.result;
+        self.distributeGOdata(api_data_json);
       }
     });
 }; // end gProfilerGO()
@@ -76,7 +65,6 @@ GoManhattenPlot.prototype.distributeGOdata = function(go_data_object){
 
   // send data to the heatmap to parse into gene/go array
   self.createGeneGoEdgeObject(go_data_object);
-
   // update the manhatten plot
   self.appendPlot(go_data_object.result);
 
@@ -87,7 +75,7 @@ GoManhattenPlot.prototype.createGeneGoEdgeObject = function(go_data){
 
     var query_gene_list = go_data.meta.genes_metadata.query.query_1.ensgs
 
-    self.go_by_gene_data = {"GO:BP": {gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
+    self.goHeatmap.networkDetail.go_by_gene_data = {"GO:BP": {gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
                             "GO:CC":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
                             "GO:MF":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}},
                             "KEGG":{gene_list:[], go_term_list:[], edge_list:[], go_dict:{}}
@@ -109,19 +97,19 @@ GoManhattenPlot.prototype.createGeneGoEdgeObject = function(go_data){
       });
 
       // add go term to go_term_list
-      self.go_by_gene_data[functional_category].go_term_list.push(go_term);
+      self.goHeatmap.networkDetail.go_by_gene_data[functional_category].go_term_list.push(go_term);
       term_gene_list.forEach((gene_id, index) => {
         // gene list if the gene is not already listed
-        if(!(gene_id in self.go_by_gene_data[functional_category].gene_list)){
-          self.go_by_gene_data[functional_category].gene_list.push(gene_id);
+        if(!(gene_id in self.goHeatmap.networkDetail.go_by_gene_data[functional_category].gene_list)){
+          self.goHeatmap.networkDetail.go_by_gene_data[functional_category].gene_list.push(gene_id);
         }
         // fill edge_list
-        self.go_by_gene_data[functional_category].edge_list.push({gene: gene_id, go: go_term, score:100});
+        self.goHeatmap.networkDetail.go_by_gene_data[functional_category].edge_list.push({gene: gene_id, go: go_term, score:100});
         // fill go_dict (it may be better to only store this, and create edge_list in visualize)
-        if (!(go_term in self.go_by_gene_data[functional_category].go_dict)){
-          self.go_by_gene_data[functional_category].go_dict[go_term] = {gene_list: [gene_id], description: go_description, pvalue: go_pvalue, term: go_term}
+        if (!(go_term in self.goHeatmap.networkDetail.go_by_gene_data[functional_category].go_dict)){
+          self.goHeatmap.networkDetail.go_by_gene_data[functional_category].go_dict[go_term] = {gene_list: [gene_id], description: go_description, pvalue: go_pvalue, term: go_term}
         } else {
-            self.go_by_gene_data[functional_category].go_dict[go_term].gene_list.push(gene_id)
+            self.goHeatmap.networkDetail.go_by_gene_data[functional_category].go_dict[go_term].gene_list.push(gene_id)
         }
       });
 
@@ -129,11 +117,39 @@ GoManhattenPlot.prototype.createGeneGoEdgeObject = function(go_data){
 
 }; // end createGeneGoEdgeObject()
 
-GoManhattenPlot.prototype.appendPlot = function(go_object){
+GoManhattenPlot.prototype.appendPlot = function(go_data_result){
   var self = this;
+
+  try{
+    console.log("IN TRY")
+    console.log(go_data_result)
+    if (go_data_result == "") throw "value passed to appendPlot is null, looking for go_data_result attr"
+  } catch(err){
+    var go_data_result = self.go_data_result
+    console.log(err)
+  }
+
+  // heading for gomanhatten plot
+   var content_heading = '<h2 class="content-heading">Functional Enrichment\
+                          <span data-feather="help-circle" ></span></label>\
+                           <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"></a>\
+                           </h2>\
+                           <h5 class="content-heading">filtered for signficance (see gProfiler for details)</h5>'
+  $("#plot-error").empty()
+  $("#plot-title").attr("class", "col-lg-6")
+  $("#plot-title").find("h2").text("Functional Enrichment")
+  $("#plot-subtitle").text("filtered for signficance (see gProfiler for details)")
+  $("#plot-help").attr("data-toggle", "modal")
+  $("#plot-help").attr("data-target", "#funtionalEnrichmentModal")
 
   // empty the plot div
   $("#plot-div").empty();
+
+  // switch the Gene Detail/Go Detail tab
+  $("#heatmap-plot-selector").removeClass('active');
+  $("#manhatten-plot-selector").addClass('active');
+
+
   //Gets access to the div element created for this chart from HTML
   self.divGoManhattenPlot = d3.select("#plot-div").classed("content", true);
   self.svgBounds = self.divGoManhattenPlot.node().getBoundingClientRect();
@@ -162,7 +178,7 @@ GoManhattenPlot.prototype.appendPlot = function(go_object){
                       .range([12, 8])
                       .clamp(true);
 
-  self.visualize(go_object)
+  self.visualize(go_data_result)
 };
 
 /**
@@ -224,8 +240,6 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .call(d3.axisBottom(self.x))
         .style("font-size", "20px");
 
-      console.log(self.svg)
-
         d3.select("#manhatten-x-axis")
         .on("click", function(d,i){
           //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
@@ -236,13 +250,14 @@ GoManhattenPlot.prototype.visualize = function(go_object){
               .selectAll(".node")
               .attr("fill", function (d) {
                   if (d.type == "tf") {
-                      return self.goHeatMap.networkDetail.colorScheme("tf");
+                      return self.goHeatmap.networkDetail.colorScheme("tf");
                   }
                   else {
-                      return self.goHeatMap.networkDetail.colorScheme("gene");
+                      return self.goHeatmap.networkDetail.colorScheme("gene");
                   }
                 });
-            self.goHeatmap.update(axis_selection);
+            self.goHeatmap.networkDetail.axis_selection = axis_selection;
+            self.goHeatmap.appendPlot(axis_selection);
           } // end if
         }); // end onclick
 
@@ -261,12 +276,12 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("cy", function(d,i) { return self.y(d.p_value) })
         .attr("r", function(d,i) {return self.pointScale(d.p_value)} )
         .style("opacity", .6)
-        .attr("fill", function(d,i) {return self.goHeatMap.networkDetail.colorScheme(d.source)})
+        .attr("fill", function(d,i) {return self.goHeatmap.networkDetail.colorScheme(d.source)})
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
         .on("click", function(node_info, data){
           // d3.select("#network-vis").selectAll(".node")
-          self.goHeatMap.networkDetail.updateGoDetail({term: data.native, description: data.description, pvalue: data.p_value});
+          self.goHeatmap.networkDetail.updateGoDetail({term: data.native, description: data.description, pvalue: data.p_value});
         })
         .on("mouseover", function(node_info, data){
           var go_category = data.source;
@@ -275,14 +290,14 @@ GoManhattenPlot.prototype.visualize = function(go_object){
           d3.select("#network-vis").selectAll(".node")
                                    .attr("fill", function(d,i){
                                      // TODO: put go_by_gene_data in networkDetail
-                                     if(self.goHeatmap.go_by_gene_data[go_category].go_dict[go_term].gene_list.includes(d3.select(this).attr("id"))){
-                                       return self.goHeatMap.networkDetail.colorScheme(go_category)
+                                     if(self.goHeatmap.networkDetail.go_by_gene_data[go_category].go_dict[go_term].gene_list.includes(d3.select(this).attr("id"))){
+                                       return self.goHeatmap.networkDetail.colorScheme(go_category)
                                      } else{
                                        if (d.type == "tf") {
-                                           return self.goHeatMap.networkDetail.colorScheme("tf");
+                                           return self.goHeatmap.networkDetail.colorScheme("tf");
                                        }
                                        else {
-                                           return self.goHeatMap.networkDetail.colorScheme("gene");
+                                           return self.goHeatmap.networkDetail.colorScheme("gene");
                                        }
                                      }
                                    })
@@ -292,10 +307,10 @@ GoManhattenPlot.prototype.visualize = function(go_object){
           d3.select("#network-vis").selectAll(".node")
                                    .attr("fill", function (d) {
                                        if (d.type == "tf") {
-                                           return self.goHeatMap.networkDetail.colorScheme("tf");
+                                           return self.goHeatmap.networkDetail.colorScheme("tf");
                                        }
                                        else {
-                                           return self.goHeatMap.networkDetail.colorScheme("gene");
+                                           return self.goHeatmap.networkDetail.colorScheme("gene");
                                        }
                                    })
         }); // end mouseleave
@@ -304,10 +319,10 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)
   } catch(err){
     // clear graph and old notices
-    //$(".manhatten-plot-instance").empty()
-    //$("#manhatten-plot-error").empty()
+    $("#plot-div").empty()
+    $("#plot-error").empty()
     // print the notice
-    //$("#manhatten-plot-error").append('<h4>'+err+'</h4>');
+    $("#plot-error").append('<h4>'+err+'</h4>');
   } // end try .. catch wrapping whole function
 
 }; // end visualize()

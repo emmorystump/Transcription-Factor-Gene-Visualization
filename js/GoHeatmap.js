@@ -23,40 +23,76 @@ GoHeatmap.prototype.init = function(){
 
 }; // end init()
 
-GoHeatmap.prototype.appendPlot = function(){
+GoHeatmap.prototype.appendPlot = function(go_category){
   var self = this;
-  console.log('HERE heatmapfunc')
+  //TOD0: APPEND FUNCTIONAL CATEGORY AS SUBTITLE
+  console.log(go_category)
+  console.log(self.networkDetail.axis_selection)
+  console.log(go_category == "" && typeof self.networkDetail.axis_selection == "undefined")
 
-  // empty plot div
-  $("#plot-div").empty();
+  try{
+    if(go_category == "" && typeof self.networkDetail.axis_selection == "undefined"){
+        throw "Click one of the functional categories which label the horizontal axis of the Manhatten Plot"
+    } else{ // end try statement
+        if (go_category ==""){
+          go_category = self.networkDetail.axis_selection;
+        }
+        // heading for gomanhatten plot
+         var content_heading = '<h2 class="content-heading">Gene By Functional Term<a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal">\
+                                <span data-feather="help-circle" class="help"></span></a>\
+                                </h2>'
+        $("#plot-error").empty()
+        $("#plot-title").attr("class", "col-lg-10")
+        $("#plot-title").find("h2").text("Gene By Functional Term")
+        $("#plot-subtitle").text("")
+        $("#plot-help").attr("data-toggle", "modal")
+        $("#plot-help").attr("data-target", "#geneByFunctionalModal")
 
-  //Gets access to the div element created for this chart from HTML
-  var divGoHeatmap = d3.select("#plot-div").classed("content", true);
-  self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
-  self.svgWidth = self.svgBounds.width;
-  self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
-  //TODO: DYNAMICALLY SIZE HEATMAP BASED ON INPUT SIZE
-  //creates svg element within the div
-  self.svg = divGoHeatmap.append("svg")
-      .attr("width",self.svgWidth)
-      .attr("height",self.svgHeight+self.svgBounds.top)
-      .append("g")
-      .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+        // empty the plot div
+        $("#plot-div").empty();
 
-  // Build X scales and axis:
-  self.x = d3.scaleBand()
-    .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
-    .padding(0.01);
+        // switch the Gene Detail/Go Detail tab
+        $("#manhatten-plot-selector").removeClass('active');
+        $("#heatmap-plot-selector").addClass('active');
 
-  // Build X scales and axis:
-  self.y = d3.scaleBand()
-    .range([ self.svgHeight-self.svgBounds.top, 0 ])
-    .padding(0.01);
 
-  // Build color scale
-  self.myColor = d3.scaleLinear()
-    .range(["white", "#69b3a2"])
-    .domain([1,100])
+        //Gets access to the div element created for this chart from HTML
+        var divGoHeatmap = d3.select("#plot-div").classed("content", true);
+        self.svgBounds = divGoHeatmap.node().getBoundingClientRect();
+        self.svgWidth = self.svgBounds.width;
+        self.svgHeight = 1000; // TODO: SOMEHOW, THIS NEEDS TO BE UPDATED WITH THE NUMBER OF GENES TO DISPLAY (maybe bins? 1-20 some length, 20-40 some length, etc)
+        //TODO: DYNAMICALLY SIZE HEATMAP BASED ON INPUT SIZE
+        //creates svg element within the div
+        self.svg = divGoHeatmap.append("svg")
+            .attr("width",self.svgWidth)
+            .attr("height",self.svgHeight+self.svgBounds.top)
+            .append("g")
+            .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+
+        // Build X scales and axis:
+        self.x = d3.scaleBand()
+          .range([ 0, self.svgWidth-self.margin.left-self.margin.right ])
+          .padding(0.01);
+
+        // Build X scales and axis:
+        self.y = d3.scaleBand()
+          .range([ self.svgHeight-self.svgBounds.top, 0 ])
+          .padding(0.01);
+
+        // Build color scale
+        self.myColor = d3.scaleLinear()
+          .range(["white", "#69b3a2"])
+          .domain([1,100])
+
+        self.update(go_category);
+      }
+  } catch(err){
+    console.error(err);
+    // empty the plot div
+    $("#plot-heading-div").empty();
+    $("#plot-div").empty();
+    $("#plot-error").append('<h4>'+err+'</h4>');
+  }
 }
 
 /**
@@ -67,14 +103,13 @@ GoHeatmap.prototype.appendPlot = function(){
 
 GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT OR OTHERWISE CLEAR OLD MAP PRIOR TO UPDATING
     var self = this;
+    console.log(go_category)
 
     try{
       if (self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat().length == 0){
-        throw "No significant GO terms in category: "+go_category
+        throw "No significant GO terms in category: "+go_category + ". Try one of the other functional categories"
       } else{
-        // remove all items from previous graph (everything added to graph below is classed with heatmap-update)
-        $(".heatmap-update").remove()
-        $("#go-heatmap-error").empty()
+        console.log(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat())
 
         // update the y domain with the gene list
         self.y.domain(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat());
@@ -135,10 +170,10 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       } // end else statement inside of try
     } catch(err){
       // clear graph and old notices
-      $(".heatmap-update").remove()
-      $("#go-heatmap-error").empty()
+      $("#plot-div").empty()
+      $("#plot-error").empty()
       // print the notice
-      $("#go-heatmap-error").append('<h4>'+err+'</h4>');
+      $("#plot-error").append('<h4>'+err+'</h4>');
 
     } // end try .. catch
 

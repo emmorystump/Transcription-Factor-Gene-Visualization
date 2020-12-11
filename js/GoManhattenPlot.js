@@ -158,12 +158,12 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
       .attr("width",self.svgWidth)
       .attr("height",self.svgHeight+self.svgBounds.top)
       .append("g")
-      .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+      .attr("transform", "translate(" + self.margin.left + "," + (self.margin.top) + ")");
 
   // build x scales and axis, but do not attach to svg -- this is done in visualize()
   self.x = d3.scaleBand()
     .domain(self.go_categories)
-    .range([0, self.svgWidth])
+    .range([0, self.svgWidth-50])
 
   // Build X scales and axis, but do not attach to svg -- this is done in visualize()
   self.y = d3.scaleLog()
@@ -171,6 +171,10 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
     .clamp(true);
 
   // size scale for the points in the plot -- domain set in visualize()
+  self.x_position = d3.scalePoint()
+    .domain(self.go_categories)
+    .range([self.x("GO:BP")+ self.margin.left+self.margin.right+19.25, self.x("KEGG")+ self.margin.left+self.margin.right+19.25]);
+
   self.pointScale = d3.scaleLog()
                       .range([12, 8])
                       .clamp(true);
@@ -269,7 +273,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .data(go_object)
         .enter()
         .append("circle")
-        .attr("cx", function(d,i) { return self.x(d.source) + self.svgWidth/8 }) // TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
+        .attr("cx", function(d,i) { return self.x_position(d.source) }) //+ self.svgWidth/8.75 TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
         .attr("cy", function(d,i) { return self.y(d.p_value) })
         .attr("r", function(d,i) {return self.pointScale(d.p_value)} )
         .style("opacity", .6)

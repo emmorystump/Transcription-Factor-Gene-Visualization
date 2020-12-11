@@ -84,7 +84,7 @@ node-highlight {
   stroke: black;
   stroke-width="5";
 }
-/* 
+/*
 center-svg {
   display: flex;
   justify-content: center;
@@ -176,6 +176,10 @@ center-svg {
 
   body {
     font-size: .875rem;
+  }
+
+  main {
+    margin-top:25px;
   }
 
   .feather {

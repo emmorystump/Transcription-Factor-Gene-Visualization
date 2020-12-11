@@ -40,7 +40,6 @@ GoHeatmap.prototype.appendPlot = function(go_category){
                                 <span data-feather="help-circle" class="help"></span></a>\
                                 </h2>'
         $("#plot-error").empty()
-        $("#plot-title").attr("class", "col-lg-10")
         $("#plot-title").find("h2").text("Gene By Functional Term")
         $("#plot-subtitle").text("")
         $("#plot-help").attr("data-toggle", "modal")

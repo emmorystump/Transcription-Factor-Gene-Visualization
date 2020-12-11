@@ -113,8 +113,6 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       if (self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat().length == 0){
         throw "No significant GO terms in category: "+go_category + ". Try one of the other functional categories"
       } else{
-        console.log(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat())
-
         // update the y domain with the gene list
         self.y.domain(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat());
         // append the y axis to the svg element

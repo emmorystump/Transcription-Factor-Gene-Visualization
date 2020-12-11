@@ -321,6 +321,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     $("#plot-title").find("h2").text("")
     $("#plot-subtitle").text("")
     $("#plot-error").empty()
+    $("#plot-div").empty()
     // print the notice
     $("#plot-error").append('<h4>'+err+'</h4>');
   } // end try .. catch wrapping whole function

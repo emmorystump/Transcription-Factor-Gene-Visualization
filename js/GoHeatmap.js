@@ -94,7 +94,8 @@ GoHeatmap.prototype.appendPlot = function(go_category){
     $("#plot-error").empty()
 
     $("#plot-div").empty();
-    console.log(err)
+    $("#plot-help").attr("data-toggle", "modal")
+    $("#plot-help").attr("data-target", "#geneByFunctionalModal")
     $("#plot-error").append('<h4>'+err+'</h4>');
   }
 }
@@ -176,7 +177,8 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       $("#plot-subtitle").text("")
       $("#plot-error").empty()
       $("#plot-div").empty()
-      console.log(err)
+      $("#plot-help").attr("data-toggle", "modal")
+      $("#plot-help").attr("data-target", "#geneByFunctionalModal")
       // print the notice
       $("#plot-error").append('<h4>'+err+'</h4>');
 

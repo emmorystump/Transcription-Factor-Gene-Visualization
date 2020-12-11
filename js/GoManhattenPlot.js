@@ -121,12 +121,9 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
   var self = this;
 
   try{
-    console.log("IN TRY")
-    console.log(go_data_result)
     if (go_data_result == "") throw "value passed to appendPlot is null, looking for go_data_result attr"
   } catch(err){
     var go_data_result = self.go_data_result
-    console.log(err)
   }
 
   // heading for gomanhatten plot
@@ -322,6 +319,8 @@ GoManhattenPlot.prototype.visualize = function(go_object){
     $("#plot-subtitle").text("")
     $("#plot-error").empty()
     $("#plot-div").empty()
+    $("#plot-help").attr("data-toggle", "modal")
+    $("#plot-help").attr("data-target", "#funtionalEnrichmentModal")
     // print the notice
     $("#plot-error").append('<h4>'+err+'</h4>');
   } // end try .. catch wrapping whole function

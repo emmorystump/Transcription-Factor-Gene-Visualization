@@ -89,7 +89,10 @@ GoHeatmap.prototype.appendPlot = function(go_category){
   } catch(err){
     console.error(err);
     // empty the plot div
-    $("#plot-heading-div").empty();
+    $("#plot-title").find("h2").text("")
+    $("#plot-subtitle").text("")
+    $("#plot-error").empty()
+    
     $("#plot-div").empty();
     $("#plot-error").append('<h4>'+err+'</h4>');
   }
@@ -170,7 +173,8 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       } // end else statement inside of try
     } catch(err){
       // clear graph and old notices
-      $("#plot-div").empty()
+      $("#plot-title").find("h2").text("")
+      $("#plot-subtitle").text("")
       $("#plot-error").empty()
       // print the notice
       $("#plot-error").append('<h4>'+err+'</h4>');

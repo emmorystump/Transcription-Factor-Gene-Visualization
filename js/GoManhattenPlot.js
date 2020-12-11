@@ -136,7 +136,6 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
                            </h2>\
                            <h5 class="content-heading">filtered for signficance (see gProfiler for details)</h5>'
   $("#plot-error").empty()
-  $("#plot-title").attr("class", "col-lg-6")
   $("#plot-title").find("h2").text("Functional Enrichment")
   $("#plot-subtitle").text("filtered for signficance (see gProfiler for details)")
   $("#plot-help").attr("data-toggle", "modal")
@@ -319,7 +318,8 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)
   } catch(err){
     // clear graph and old notices
-    $("#plot-div").empty()
+    $("#plot-title").find("h2").text("")
+    $("#plot-subtitle").text("")
     $("#plot-error").empty()
     // print the notice
     $("#plot-error").append('<h4>'+err+'</h4>');

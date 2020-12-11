@@ -49,6 +49,7 @@ GoManhattenPlot.prototype.gProfilerGO = function(organism, gene_array){
       headers: { 'content-type': 'application/json', 'Accept': 'application/json' },
       success: function( data ) {
         var api_data_json = JSON.parse(data)
+        console.log(api_data_json)
         self.go_data_result = api_data_json.result;
         self.distributeGOdata(api_data_json);
       }

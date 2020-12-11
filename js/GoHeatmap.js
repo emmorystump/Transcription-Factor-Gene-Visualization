@@ -64,6 +64,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
           var responsiveSvgWidth = 0
           var num_genes = [...new Set(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat())].length
           var num_go_terms = [...new Set(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat())].length
+          console.log(num_go_terms)
           if (num_genes == 0) throw "no genes in list"
           if (num_go_terms == 0) throw "no go_terms in list"
           if(num_genes>30){
@@ -76,10 +77,15 @@ GoHeatmap.prototype.appendPlot = function(go_category){
             responsiveSvgHeight = num_genes*70
           }
 
-          if(num_go_terms > 10){
-            responsiveSvgWidth = num_go_terms * 30
+
+          if(num_go_terms > 15){
+             responsiveSvgWidth = num_go_terms * 10
+          } else if(num_go_terms>10){
+              responsiveSvgWidth = num_go_terms * 25
+          } else if(num_go_terms > 5){
+              responsiveSvgWidth = num_go_terms * 50
           } else{
-            responsiveSvgWidth = num_go_terms * 100
+              responsiveSvgWidth = num_go_terms * 100
           }
         } catch(err){
           responsiveSvgWidth = self.svgBounds.width;
@@ -88,7 +94,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
         console.log(responsiveSvgHeight)
         //creates svg element within the div
         self.svg = divGoHeatmap.append("svg")
-            .attr("width", self.svgBounds.width)
+            .attr("width", self.svgBounds.width-self.margin.left)
             .attr("height",responsiveSvgHeight+self.svgBounds.top)
             .append("g")
             //.style('transform', 'translate(30%, 50%)')

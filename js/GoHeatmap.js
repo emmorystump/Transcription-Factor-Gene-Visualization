@@ -19,7 +19,7 @@ function GoHeatmap(networkDetail){
  */
 GoHeatmap.prototype.init = function(){
     var self = this;
-    self.margin = {top: 70, right: 100, bottom: 30, left: 100};
+    self.margin = {top: 100, right: 100, bottom: 30, left: 100};
 
     self.functional_category_html_buttons = '<div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left:10px">\
                                                <label class="btn active" style="background-color: #751A33; color:white; text-aling=center;">\

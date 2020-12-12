@@ -54,7 +54,7 @@ Network.prototype.init = function () {
     self.mousemove = function (d, i) {
         var x_pos = i.x + 50 + "px";
         if (i.x < self.svgWidth / 2) {
-            x_pos = i.x - 150 + "px"
+            x_pos = i.x - 200 + "px"
         }
         self.tooltip
             .html("<p>Gene Name: " + i.gene_name + "<\p>" + "Gene ID: " + i.name)

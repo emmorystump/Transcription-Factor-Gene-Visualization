@@ -78,7 +78,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
 
 
           if(num_go_terms > 15){
-             responsiveSvgWidth = num_go_terms * 10
+             responsiveSvgWidth = num_go_terms * 15
           } else if(num_go_terms>10){
               responsiveSvgWidth = num_go_terms * 25
           } else if(num_go_terms > 5){

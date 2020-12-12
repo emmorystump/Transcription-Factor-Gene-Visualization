@@ -134,7 +134,7 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
                            </h2>\
                            <h5 class="content-heading">filtered for signficance (see gProfiler for details)</h5>'
   $("#plot-error").empty();
-  $("#plot-title").find("h2").text("Functional Enrichment");
+  //$("#plot-title").find("h2").text("Functional Enrichment");
   $("#go-buttons").empty();
   $("#plot-subtitle").text("filtered for signficance (see gProfiler for details)");
   $("#plot-help").attr("data-toggle", "modal");

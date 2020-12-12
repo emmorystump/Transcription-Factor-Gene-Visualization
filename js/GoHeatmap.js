@@ -52,7 +52,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
 
         // heading for heatmap
         $("#plot-error").empty()
-        $("#plot-title").find("h2").text("Gene By Functional Term")
+        //$("#plot-title").find("h2").text("Gene By Functional Term")
         $("#plot-subtitle").text("")
         $("#go-buttons").append(self.functional_category_html_buttons)
         $("#plot-help").attr("data-toggle", "modal")

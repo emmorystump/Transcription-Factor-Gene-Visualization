@@ -21,6 +21,21 @@ GoHeatmap.prototype.init = function(){
     var self = this;
     self.margin = {top: 70, right: 100, bottom: 30, left: 100};
 
+    self.functional_category_html_buttons = '<div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left:10px">\
+                                               <label class="btn active" style="background-color: #751A33; color:white; text-aling=center;">\
+                                                 <input type="radio" name="options" id="option1" autocomplete="off" checked> GO:Biological Processes\
+                                               </label>\
+                                               <label class="btn" style="background-color: #D28F33; color:white; text-aling=center;>\
+                                                 <input type="radio" name="options" id="option2" autocomplete="off"> GO:Cellular Processes\
+                                               </label>\
+                                               <label class="btn" style="background-color: #B34233; color:white; text-aling=center;>\
+                                                 <input type="radio" name="options" id="option3" autocomplete="off"> GO:Molecular Functions\
+                                               </label>\
+                                               <label class="btn" style="background-color: #88867D; color:white; text-aling=center;>\
+                                                 <input type="radio" name="options" id="option4" autocomplete="off"> KEGG\
+                                               </label>\
+                                            </div>'
+
 }; // end init()
 
 GoHeatmap.prototype.appendPlot = function(go_category){
@@ -35,13 +50,11 @@ GoHeatmap.prototype.appendPlot = function(go_category){
           go_category = self.networkDetail.axis_selection;
         }
 
-        // heading for gomanhatten plot
-         var content_heading = '<h2 class="content-heading">Gene By Functional Term<a id="gene-by-function-help" data-toggle="modal" data-target="#geneByFunctionalModal">\
-                                <span data-feather="help-circle" class="help"></span></a>\
-                                </h2>'
+        // heading for heatmap
         $("#plot-error").empty()
         $("#plot-title").find("h2").text("Gene By Functional Term")
         $("#plot-subtitle").text("")
+        $("#go-buttons").append(self.functional_category_html_buttons)
         $("#plot-help").attr("data-toggle", "modal")
         $("#plot-help").attr("data-target", "#geneByFunctionalModal")
 
@@ -121,6 +134,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
     // empty the plot div
     $("#plot-title").find("h2").text("")
     $("#plot-subtitle").text("")
+    $("#go-buttons").empty()
     $("#plot-error").empty()
 
     $("#plot-div").empty();
@@ -201,12 +215,13 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       } // end else statement inside of try
     } catch(err){
       // clear graph and old notices
-      $("#plot-title").find("h2").text("")
-      $("#plot-subtitle").text("")
-      $("#plot-error").empty()
-      $("#plot-div").empty()
-      $("#plot-help").attr("data-toggle", "modal")
-      $("#plot-help").attr("data-target", "#geneByFunctionalModal")
+      $("#plot-title").find("h2").text("");
+      $("#plot-subtitle").text("");
+      $("#plot-error").empty();
+      $("#plot-div").empty();
+      $("#go-buttons").empty();
+      $("#plot-help").attr("data-toggle", "modal");
+      $("#plot-help").attr("data-target", "#geneByFunctionalModal");
       // print the notice
       $("#plot-error").append('<h4>'+err+'</h4>');
 

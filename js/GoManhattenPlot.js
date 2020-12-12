@@ -133,11 +133,12 @@ GoManhattenPlot.prototype.appendPlot = function(go_data_result){
                            <a id="function-enrich-help" data-toggle="modal" data-target="#funtionalEnrichmentModal"></a>\
                            </h2>\
                            <h5 class="content-heading">filtered for signficance (see gProfiler for details)</h5>'
-  $("#plot-error").empty()
-  $("#plot-title").find("h2").text("Functional Enrichment")
-  $("#plot-subtitle").text("filtered for signficance (see gProfiler for details)")
-  $("#plot-help").attr("data-toggle", "modal")
-  $("#plot-help").attr("data-target", "#funtionalEnrichmentModal")
+  $("#plot-error").empty();
+  $("#plot-title").find("h2").text("Functional Enrichment");
+  $("#go-buttons").empty();
+  $("#plot-subtitle").text("filtered for signficance (see gProfiler for details)");
+  $("#plot-help").attr("data-toggle", "modal");
+  $("#plot-help").attr("data-target", "#funtionalEnrichmentModal");
 
   // empty the plot div
   $("#plot-div").empty();
@@ -320,12 +321,13 @@ GoManhattenPlot.prototype.visualize = function(go_object){
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)
   } catch(err){
     // clear graph and old notices
-    $("#plot-title").find("h2").text("")
-    $("#plot-subtitle").text("")
-    $("#plot-error").empty()
-    $("#plot-div").empty()
-    $("#plot-help").attr("data-toggle", "modal")
-    $("#plot-help").attr("data-target", "#funtionalEnrichmentModal")
+    $("#plot-title").find("h2").text("");
+    $("#plot-subtitle").text("");
+    $("#plot-error").empty();
+    $("#go-buttons").empty();
+    $("#plot-div").empty();
+    $("#plot-help").attr("data-toggle", "modal");
+    $("#plot-help").attr("data-target", "#funtionalEnrichmentModal");
     // print the notice
     $("#plot-error").append('<h4>'+err+'</h4>');
   } // end try .. catch wrapping whole function

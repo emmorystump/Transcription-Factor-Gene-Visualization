@@ -492,3 +492,7 @@ center-svg {
 #go-gene-detail {
   padding-left: 35px;
 }
+
+.mySlides {
+  display: none;
+}

@@ -6,6 +6,7 @@
     <title>CSE 457A Final Project - Group 12</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://d3js.org/d3.v6.js"></script>
 </head>
 
@@ -30,9 +31,9 @@
                 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <button id="instructions-modal-button" type="button" class="btn nav-link text-left" data-toggle="modal" data-target="#myInstructionsModal"><span data-feather="file"></span>Instructions</button>
-                            </li> -->
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="https://washuvis.github.io/genes/project_proposal/proposal.html" onclick="window.open('project_proposal/proposal.html', '_self');">
                                     <span data-feather="link"></span>
@@ -177,63 +178,50 @@
                         <h4 class="modal-title">Instructions</h4>
                         </div>
                         <div class="modal-body">
-                            <ol>
-                                <li>
-                                    Begin by selecting whether to study the fly or yeast. You can switch which creature you are viewing via the “organisms” on the lefthand side bar
-                                </li>
-                                <li>
-                                    Upon selecting your organism, you will view the main visualization page. There are several components to this page:
-                                    <ul>
-                                        <li>The Left Side Bar</li>
-                                        <li>The Network Visualization</li>
-                                        <li>The "Update Inputs" Button (top right corner)</li>
-                                        <li>The Gene Information</li>
-                                        <li>The GO Network</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                   The Left Side Bar:
-                                   <div class="instructions-subtext">
-                                     This side bar contains links to our organism selection via the "organisms" link, to the instructions via the "Instructions" link, to the Process Book via the "Process Book" link, and will eventually allow for a user to export their visualization results via the "Export Results" link. This sidebar also contains notable reference materials and contact information to the Brent Lab.
+                            <div class="slideshow">
+                          
+                          
+                                <button id="clicker-left-initial" class="w3-button" onclick="plusDivs(-1, 1)">Previous</button>
+                                <button id="clicker-right-initial" class="w3-button" onclick="plusDivs(1, 1)">Next</button>
+                          
+                                <div class="w3-content w3-display-container">
+                                    <div class="mySlides">
+                                        <img src="images/GIF1-Show_Selecting_an_Organism.gif" style="width:100%">
+                                        <p>To begin, select an organism you would like to explore.</p>
                                     </div>
-                                </li>
-                                <li> The Network Visualization:
-                                    <div class="instructions-subtext">
-                                        Once you select an organism, a TF (Transcription Factor) network will appear by default. The blue node is a Transcription Factor (read the tf story!), the red nodes are the genes that this Transcription Factor regulates.
+                                    <div class="mySlides">
+                                        <img src="images/GIF2-Populating_Gene_Detail.gif" style="width:100%">
+                                        <p>The network graph displays the genes significantly regulated by a randomly generated transcription factor. To view a gene’s details, click on the gene. </p>
                                     </div>
-                                 </li>
-                                 <li>
-                                     The "Update Inputs" Button
-                                     <div class="instructions-subtext">
-                                        Next, please click the button "Update Inputs" on the top right hand portion of the screen. A side panel will appear. At the top of the side panel is a section to filter the network with edge weights. The values represented in this normalized distribution represent the strength of evidence that the selected Transcription Factor controls a given gene. Therefore, selecting a range within this graph will return all genes regulated by the TF where the strength of evidence is between the given range.
+                                    <div class="mySlides">
+                                        <img src="images/GIF3-Adjusting_Weights.gif" style="width:100%">
+                                        <p>To adjust the significant weight threshold displayed on the network graph, select the “Adjust Network Settings” button in the top right corner and select a new region on the graph.</p>
                                     </div>
-                                    <div class="instructions-subtext">
-                                        Use the brush to select a portion of the curve on the far righthand side. If the network is large (lots of red nodes), select regions further to the right side of the distribution and click "Update Weights". Too many nodes still? Select even less of the curve and update.
+                                    <div class="mySlides">
+                                        <img src="images/GIF4-Searching_TF.gif" style="width:100%">
+                                        <p>To search a Transcription Factor you are interested in, select “Transcription Factor”, enter the TF, and press “Update”.</p>
                                     </div>
-                                    <div class="instructions-subtext">
-                                        Next, try entering a transcription factor or a gene list (The gene list option is currently not implemented).If you are a fly biologist, try entering FBgn0016917. It has a lot of targets -- you may want to increase your minimum threshold!
+                                    <div class="mySlides">
+                                        <img src="images/GIF5-Searching_Gene.gif" style="width:100%">
+                                        <p>To search a Gene you are interested in, select “Gene”, enter the gene, and press “Update”.</p>
                                     </div>
-                                 </li>
-                                 <li>
-                                     The Gene Information:
-                                     <div class="instructions-subtext">
-                                        When you click a gene (all nodes are genes, but the blue one is special because it is a regulator of the red genes), information is populated in the "Gene Detail". This is a place holder at this point, though some information will be populated.
-                                    </div>
-                                 </li>
-                                 <li>
-                                     The GO Network
-                                     <div class="instructions-subtext">
-                                        If there isn't much interesting happening on the Gene Ontology (GO) graph below the node/edge graph, go back to the landing page by clicking "organism" on the left side panel, re-enter the organism page, to see what a new network looks like. Do this until you get more than a handful of dots or enter a TF id in the right side panel (As mentioned before, FBgn0016917 is a good place to start). Different network clusters return more significant hits (see below) than others.
-                                    </div>
-                                    <div class="instructions-subtext">
-                                        GO is one of computational biology's methods of beginning to figure out what genes do and how they relate to one another. The graph is created by sending the target gene list to an external database, which returns GO annotation and a significance score, among other things. The x-axis are different categories that the genes fall into -- for example, GO:BP is a "biological process" while GO:MF is a "molecular function". The dots are (size and height) ranked by their significance. Only annotations that have an adjusted p-value greater than .05 are displayed, and the scale is -log10, so the higher the better.
-                                    </div>
-                                    <div class="instructions-subtext">
-                                        This graph does not have its interactivity yet. Please see the process book for a drawing of what it will do.
-Eventually, there will be functionality to allow the user to group the genes in various different ways (eg, by whether or not there is experimental support for the TF/target edge, or by the gene function).
-                                    </div>
-                                 </li>
-                            </ol>
+                                    <div class="mySlides">
+                                      <img src="images/GIF6-Populate_GO.gif" style="width:100%">
+                                      <p>To populate the GO Details, select a node on the Manhatten Plot Visualization. If your Manhatten plot contains no significant GO terms, try expanding your weight threshold or choosing a new Transcription Factor</p>
+                                  </div>
+                                  <div class="mySlides">
+                                    <img src="images/GIF7-Populate_Heatmap.gif" style="width:100%">
+                                    <p>To populate the heatmap visualization, select a GO Term on the Manhatten Plot axes or select Heatmap and click one of the 4 buttons at the top of the page. </p>
+                                  </div>
+                                  <div class="mySlides">
+                                    <img src="images/GIF8-Highlight-Network.gif.sb-c68a0770-Jqyn0y" style="width:100%">
+                                    <p>Hover over a GO term on the Manhatten Plot or click a GO term on the Heatmap axis in order to highlight significant genes in the network visualization.</p>
+                                </div>
+                                  
+                                    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                                    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+                                  </div>
+                              </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -414,6 +402,27 @@ Eventually, there will be functionality to allow the user to group the genes in 
   ================================================== -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+        
+        function plusDivs(n) {
+          showDivs(slideIndex += n);
+        }
+        
+        function showDivs(n) {
+          var i;
+          var x = document.getElementsByClassName("mySlides");
+          if (n > x.length) {slideIndex = 1}
+          if (n < 1) {slideIndex = x.length}
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          x[slideIndex-1].style.display = "block";  
+        }
+        </script>
 
     <!-- Icons -->
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>

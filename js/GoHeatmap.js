@@ -51,12 +51,13 @@ GoHeatmap.prototype.appendPlot = function(go_category){
         }
 
         // heading for heatmap
-        $("#plot-error").empty()
+        $("#plot-error").empty();
+        $("#go-buttons").empty();
         //$("#plot-title").find("h2").text("Gene By Functional Term")
-        $("#plot-subtitle").text("")
-        $("#go-buttons").append(self.functional_category_html_buttons)
-        $("#plot-help").attr("data-toggle", "modal")
-        $("#plot-help").attr("data-target", "#geneByFunctionalModal")
+        $("#plot-subtitle").text("");
+        $("#go-buttons").append(self.functional_category_html_buttons);
+        $("#plot-help").attr("data-toggle", "modal");
+        $("#plot-help").attr("data-target", "#geneByFunctionalModal");
 
         // empty the plot div
         $("#plot-div").empty();

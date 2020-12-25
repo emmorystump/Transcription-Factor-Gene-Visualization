@@ -240,7 +240,23 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("transform", "translate(0," + (self.svgHeight-self.margin.top-self.margin.bottom) + ")")
         .attr("id", "manhatten-x-axis")
         .call(d3.axisBottom(self.x))
-        .style("font-size", "20px");
+        .style("font-size", "20px")
+        .selectAll("text")
+        .attr("id", function(d,i) {return self.go_categories[[i]]+'-manhatten-axis'})
+        .on('mouseover', function(d,i){
+          var label = d3.select(this).attr('id').split("-")[[0]];
+
+          d3.select(this)
+            .classed('manhatten-plot-inactive', false)
+            .classed('manhatten-plot-active', true)
+            .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
+            .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
+        })
+        .on('mouseout', function(d,i){
+          d3.select(this)
+            .classed('manhatten-plot-active', false)
+            .classed('manhatten-plot-inactive', true)
+        });
 
         d3.select("#manhatten-x-axis")
         .on("click", function(d,i){
@@ -261,7 +277,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
             self.goHeatmap.networkDetail.axis_selection = axis_selection;
             self.goHeatmap.appendPlot(axis_selection);
           } // end if
-        }); // end onclick
+        });// end onclick;// end onclick
 
       // append y axis to dom
       self.svg

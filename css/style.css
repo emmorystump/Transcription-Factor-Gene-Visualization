@@ -13,6 +13,18 @@
   overflow: hidden;
 
 }
+
+.manhatten-plot-active{
+  font-weight: bold;
+
+}
+
+.manhatten-plot-inactive{
+  font-weight: normal;
+  text-shadow: none;
+  fill: black;
+}
+
 .main h1 {
  padding-top: 10px;
 }

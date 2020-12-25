@@ -36,7 +36,7 @@
           $(document).ready(function(){
             $('#selectUploadType').on('change', function() {
               // based on this value, which is equal to the option id, choose whether to hide or show an input box for tf and a file upload for gene list
-              if(this.value==="gene-input-form") {
+              if(this.value === "gene-input-form") {
                 $('#gene-input-form').removeClass("hide");
                 $('#gene-input-form').addClass("show");
 

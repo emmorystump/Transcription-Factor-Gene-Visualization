@@ -77,7 +77,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
           var responsiveSvgWidth = 0
           var num_genes = [...new Set(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat())].length
           var num_go_terms = [...new Set(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat())].length
-          console.log(num_go_terms)
+
           if (num_genes == 0) throw "no genes in list"
           if (num_go_terms == 0) throw "no go_terms in list"
           if(num_genes>30){
@@ -104,7 +104,7 @@ GoHeatmap.prototype.appendPlot = function(go_category){
           responsiveSvgWidth = self.svgBounds.width;
           responsiveSvgHeight = 800;
         }
-        console.log(responsiveSvgHeight)
+
         //creates svg element within the div
         self.svg = divGoHeatmap.append("svg")
             .attr("width", self.svgBounds.width-self.margin.left)
@@ -163,7 +163,22 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
         // append the y axis to the svg element
         self.svg.append("g")
                 .call(d3.axisLeft(self.y))
-                .attr("class", "heatmap-update");
+                .attr("class", "heatmap-update")
+                .on('mouseover', function(d,i){
+                    var label = d3.select(this)
+                    console.log(label)
+
+                    // d3.select(this)
+                    //   .classed('manhatten-plot-inactive', false)
+                    //   .classed('manhatten-plot-active', true)
+                    //   .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
+                    //   .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
+                  })
+                  .on('mouseout', function(d,i){
+                    // d3.select(this)
+                    //   .classed('manhatten-plot-active', false)
+                    //   .classed('manhatten-plot-inactive', true)
+                });
 
         // update the x axis with the go terms
         self.x.domain(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat());
@@ -199,6 +214,21 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                           d3.selectAll("#"+node.id).attr("fill", self.networkDetail.colorScheme(go_category));
                       }
                   });
+                })
+                .on('mouseover', function(d,i){
+                    var label = d3.select(this)
+                    console.log(d3.select(this))
+
+                    // d3.select(this)
+                    //   .classed('manhatten-plot-inactive', false)
+                    //   .classed('manhatten-plot-active', true)
+                    //   .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
+                    //   .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
+                  })
+                  .on('mouseout', function(d,i){
+                    // d3.select(this)
+                    //   .classed('manhatten-plot-active', false)
+                    //   .classed('manhatten-plot-inactive', true)
                 });
 
         // add blocks to heatmap

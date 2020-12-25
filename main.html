@@ -179,11 +179,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="slideshow">
-                          
-                          
+
+
                                 <button id="clicker-left-initial" class="w3-button" onclick="plusDivs(-1, 1)">Previous</button>
                                 <button id="clicker-right-initial" class="w3-button" onclick="plusDivs(1, 1)">Next</button>
-                          
+
                                 <div class="w3-content w3-display-container">
                                     <div class="mySlides">
                                         <img src="images/GIF1-Show_Selecting_an_Organism.gif" style="width:100%">
@@ -217,7 +217,7 @@
                                     <img src="images/GIF8-Highlight-Network.gif.sb-c68a0770-Jqyn0y" style="width:100%">
                                     <p>Hover over a GO term on the Manhatten Plot or click a GO term on the Heatmap axis in order to highlight significant genes in the network visualization.</p>
                                 </div>
-                                  
+
                                     <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
                                     <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
                                   </div>
@@ -235,7 +235,7 @@
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                   <div class="container-fluid">
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div id = "row1-col1" class="row">
                           <div id="edge-chart-heading">
                             <h2 id="edge-chart-heading-text"></h2>
@@ -268,7 +268,7 @@
                           </div><!-- row3-col1-row1 -->
                         </div><!-- end row3-col1 -->
                       </div> <!-- end col1 -->
-                      <div id="col2" class="col-md-6">
+                      <div id="col2" class="col-md-7">
                         <div id = "col2-row1" class="row">
                           <!-- plot tabs -->
                           <div class="row plots-tabs">
@@ -407,20 +407,20 @@
     <script>
         var slideIndex = 1;
         showDivs(slideIndex);
-        
+
         function plusDivs(n) {
           showDivs(slideIndex += n);
         }
-        
+
         function showDivs(n) {
           var i;
           var x = document.getElementsByClassName("mySlides");
           if (n > x.length) {slideIndex = 1}
           if (n < 1) {slideIndex = x.length}
           for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";  
+            x[i].style.display = "none";
           }
-          x[slideIndex-1].style.display = "block";  
+          x[slideIndex-1].style.display = "block";
         }
         </script>
 

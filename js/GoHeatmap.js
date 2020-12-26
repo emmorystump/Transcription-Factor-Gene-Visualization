@@ -220,11 +220,11 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                     var label = d3.select(this)
                     console.log(d3.select(this))
                     d3.select(this)
-                      .classed('manhatten-plot-inactive', false)
+                      .classed('manhatten-plot-inactive', false) // rename this css property
                       .classed('manhatten-plot-active', true)
                       .attr("fill", self.networkDetail.colorScheme(go_category))
-                      //.style("text-shadow", "0px 0px 50px"+self.networkDetail.colorScheme(go_category))
                       .style("cursor", "pointer");
+
                   })
                   .on('mouseout', function(d,i){
                     d3.select(this)

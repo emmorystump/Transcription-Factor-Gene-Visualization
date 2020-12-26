@@ -247,7 +247,7 @@ GoManhattenPlot.prototype.visualize = function(go_object){
           var label = d3.select(this).attr('id').split("-")[[0]];
 
           d3.select(this)
-            .classed('manhatten-plot-inactive', false)
+            .classed('manhatten-plot-inactive', false) // rename this css property -- used in heatmap, also
             .classed('manhatten-plot-active', true)
             .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
             .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
@@ -300,13 +300,22 @@ GoManhattenPlot.prototype.visualize = function(go_object){
         .attr("class", "manhatten-plot-instance")
         .attr("class", function(d,i) {return d.source})
         .on("click", function(node_info, data){
-          // d3.select("#network-vis").selectAll(".node")
+          // update functional detail
           self.goHeatmap.networkDetail.updateGoDetail({term: data.native, description: data.description, pvalue: data.p_value});
-        })
-        .on("mouseover", function(node_info, data){
+          // remove previously highlighted by clicking
+          d3.select("#network-vis").selectAll(".node")
+                                   .attr("fill", function (d) {
+                                       if (d.type == "tf") {
+                                           return self.goHeatmap.networkDetail.colorScheme("tf");
+                                       }
+                                       else {
+                                           return self.goHeatmap.networkDetail.colorScheme("gene");
+                                       }
+                                   });
+
+          // add highlighting to associated genes
           var go_category = data.source;
           var go_term = data.native;
-          // add highlighting to associated genes
           d3.select("#network-vis").selectAll(".node")
                                    .attr("fill", function(d,i){
                                      // TODO: put go_by_gene_data in networkDetail
@@ -320,21 +329,18 @@ GoManhattenPlot.prototype.visualize = function(go_object){
                                            return self.goHeatmap.networkDetail.colorScheme("gene");
                                        }
                                      }
-                                   })
+                                   });
+        })
+        .on("mouseover", function(node_info, data){
+          d3.select(this)
+            .style("cursor", "pointer");
         })
         // remove highlighting from associated genes
         .on("mouseleave", function(node_info, data){
-          d3.select("#network-vis").selectAll(".node")
-                                   .attr("fill", function (d) {
-                                       if (d.type == "tf") {
-                                           return self.goHeatmap.networkDetail.colorScheme("tf");
-                                       }
-                                       else {
-                                           return self.goHeatmap.networkDetail.colorScheme("gene");
-                                       }
-                                   })
+          d3.select(this)
+            .style("cursor", "pointer");
         }); // end mouseleave
-        // console.log(self.svg)
+
     } // end the else clause of the if statement inside the try clause at the top of the function
   // catch the error re: go_object empty and print to screen as notice to user (not really an "error" -- nothing is broken)
   } catch(err){

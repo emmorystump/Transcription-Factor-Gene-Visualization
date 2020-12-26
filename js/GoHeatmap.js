@@ -164,20 +164,21 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
         self.svg.append("g")
                 .call(d3.axisLeft(self.y))
                 .attr("class", "heatmap-update")
+                .selectAll('text')
                 .on('mouseover', function(d,i){
-                    var label = d3.select(this)
-                    console.log(label)
 
-                    // d3.select(this)
-                    //   .classed('manhatten-plot-inactive', false)
-                    //   .classed('manhatten-plot-active', true)
-                    //   .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
-                    //   .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
-                  })
-                  .on('mouseout', function(d,i){
-                    // d3.select(this)
-                    //   .classed('manhatten-plot-active', false)
-                    //   .classed('manhatten-plot-inactive', true)
+                  d3.select(this)
+                    .classed('manhatten-plot-inactive', false)
+                    .classed('manhatten-plot-active', true)
+                    .attr("fill", self.networkDetail.colorScheme(go_category))
+                    //.style("text-shadow", "0px 0px 50px"+self.networkDetail.colorScheme(go_category))
+                    .style("cursor", "pointer");
+                })
+                .on('mouseout', function(d,i){
+                  d3.select(this)
+                    .classed('manhatten-plot-active', false)
+                    .classed('manhatten-plot-inactive', true)
+                    .style("cursor", "default");
                 });
 
         // update the x axis with the go terms
@@ -218,17 +219,18 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                 .on('mouseover', function(d,i){
                     var label = d3.select(this)
                     console.log(d3.select(this))
-
-                    // d3.select(this)
-                    //   .classed('manhatten-plot-inactive', false)
-                    //   .classed('manhatten-plot-active', true)
-                    //   .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
-                    //   .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
+                    d3.select(this)
+                      .classed('manhatten-plot-inactive', false)
+                      .classed('manhatten-plot-active', true)
+                      .attr("fill", self.networkDetail.colorScheme(go_category))
+                      //.style("text-shadow", "0px 0px 50px"+self.networkDetail.colorScheme(go_category))
+                      .style("cursor", "pointer");
                   })
                   .on('mouseout', function(d,i){
-                    // d3.select(this)
-                    //   .classed('manhatten-plot-active', false)
-                    //   .classed('manhatten-plot-inactive', true)
+                    d3.select(this)
+                      .classed('manhatten-plot-active', false)
+                      .classed('manhatten-plot-inactive', true)
+                      .style("cursor", "default");
                 });
 
         // add blocks to heatmap

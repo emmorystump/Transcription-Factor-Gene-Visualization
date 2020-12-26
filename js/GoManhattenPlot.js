@@ -251,11 +251,13 @@ GoManhattenPlot.prototype.visualize = function(go_object){
             .classed('manhatten-plot-active', true)
             .attr("fill", self.goHeatmap.networkDetail.colorScheme(label))
             .style("text-shadow", "0px 0px 50px"+self.goHeatmap.networkDetail.colorScheme(label))
+            .style("cursor", "pointer");
         })
         .on('mouseout', function(d,i){
           d3.select(this)
             .classed('manhatten-plot-active', false)
             .classed('manhatten-plot-inactive', true)
+            .style("cursor", "default");
         });
 
         d3.select("#manhatten-x-axis")

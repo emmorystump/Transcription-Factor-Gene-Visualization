@@ -22,16 +22,16 @@ GoHeatmap.prototype.init = function(){
     self.margin = {top: 100, right: 100, bottom: 30, left: 100};
 
     self.functional_category_html_buttons = '<div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left:10px; margin-top:10px">\
-                                               <label class="btn active" style="background-color: #751A33; color:white; text-aling=center;">\
+                                               <label id="GO:BP-button" class="btn active" style="background-color: #751A33; color:white; text-aling=center;">\
                                                  <input type="radio" name="options" id="option1" autocomplete="off" checked> GO:Biological Processes\
                                                </label>\
-                                               <label class="btn" style="background-color: #D28F33; color:white; text-aling=center;>\
+                                               <label id="GO:CC-button" class="btn" style="background-color: #D28F33; color:white; text-aling=center;>\
                                                  <input type="radio" name="options" id="option2" autocomplete="off"> GO:Cellular Processes\
                                                </label>\
-                                               <label class="btn" style="background-color: #B34233; color:white; text-aling=center;>\
+                                               <label id="GO:MF-button" class="btn" style="background-color: #B34233; color:white; text-aling=center;>\
                                                  <input type="radio" name="options" id="option3" autocomplete="off"> GO:Molecular Functions\
                                                </label>\
-                                               <label class="btn" style="background-color: #88867D; color:white; text-aling=center;>\
+                                               <label id="KEGG-button" class="btn" style="background-color: #88867D; color:white; text-aling=center;>\
                                                  <input type="radio" name="options" id="option4" autocomplete="off"> KEGG\
                                                </label>\
                                             </div>'
@@ -58,6 +58,12 @@ GoHeatmap.prototype.appendPlot = function(go_category){
         $("#go-buttons").append(self.functional_category_html_buttons);
         $("#plot-help").attr("data-toggle", "modal");
         $("#plot-help").attr("data-target", "#geneByFunctionalModal");
+
+        $('#go-buttons').find('label').click(function(){
+          var button_id = $(this).attr("id")
+          var go_category = button_id.split('-')[[0]]
+          self.appendPlot(go_category);
+        });
 
         // empty the plot div
         $("#plot-div").empty();
@@ -158,33 +164,64 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       if (self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat().length == 0){
         throw "No significant GO terms in category: "+go_category + ". Try one of the other functional categories"
       } else{
+        // save the clicked item so as not to clear clicked formatting
+        var y_axis_selection = ''
         // update the y domain with the gene list
         self.y.domain(self.networkDetail.go_by_gene_data[go_category]["gene_list"].flat());
         // append the y axis to the svg element
         self.svg.append("g")
                 .call(d3.axisLeft(self.y))
                 .attr("class", "heatmap-update")
+                .attr('id', 'heatmap-y-axis')
                 .selectAll('text')
-                .on('mouseover', function(d,i){
+                .on('click', function(d,i){
+
+                  d3.select("#heatmap-y-axis")
+                    .selectAll('text')
+                    .classed('manhatten-plot-active', false)
+                    .classed('manhatten-plot-inactive', true)
 
                   d3.select(this)
                     .classed('manhatten-plot-inactive', false)
                     .classed('manhatten-plot-active', true)
                     .attr("fill", self.networkDetail.colorScheme(go_category))
-                    //.style("text-shadow", "0px 0px 50px"+self.networkDetail.colorScheme(go_category))
-                    .style("cursor", "pointer");
+
+                  y_axis_selection = d.srcElement.innerHTML;
+                  // select all nodes, removed node-highlight class
+                  d3.select("#network-vis").selectAll(".node").classed("highlight", false)
+                                       .style("stroke", null)
+                                       .style("stroke-width", null)
+                  // select clicked node and add node-highlight class
+                  d3.select("#network-vis").selectAll("#"+y_axis_selection).classed("highlight", true)
+                                 .style("stroke", self.networkDetail.colorScheme("highlight"))
+                                 .style("stroke-width", "3" );
+
+                  var gene_detail_array  = d3.select("#network-vis").selectAll("#"+y_axis_selection).data()[[0]]
+                  self.networkDetail.updateGeneDetail(gene_detail_array, [])
+
+                })
+                .on('mouseover', function(d,i){
+
+                    d3.select(this)
+                      .classed('manhatten-plot-inactive', false)
+                      .classed('manhatten-plot-active', true)
+                      .attr("fill", self.networkDetail.colorScheme(go_category))
+                      .style("cursor", "pointer");
                 })
                 .on('mouseout', function(d,i){
-                  d3.select(this)
-                    .classed('manhatten-plot-active', false)
-                    .classed('manhatten-plot-inactive', true)
-                    .style("cursor", "default");
+                  if(d3.select(this).data()[[0]] != y_axis_selection){
+                      d3.select(this)
+                        .classed('manhatten-plot-inactive', true)
+                        .classed('manhatten-plot-active', false)
+                        .style("cursor", "default");
+                  }
                 });
 
         // update the x axis with the go terms
         self.x.domain(self.networkDetail.go_by_gene_data[go_category]["go_term_list"].flat());
+        // like the y_axis_selection above, to store the clicked item so as not to clear clicked formatting
+        var x_axis_selection = ''
         // add the x axis to the svg element
-
         self.svg.append("g")
                 .call(d3.axisTop(self.x))
                 .attr("class", "heatmap-update")
@@ -196,9 +233,19 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                 .attr("transform", "rotate(45)")
                 .style("text-anchor", "start")
                 .on("click", function(d,i){
+
+                  d3.select("#heatmap-x-axis")
+                    .selectAll('text')
+                    .classed('manhatten-plot-active', false)
+                    .classed('manhatten-plot-inactive', true)
+
+                  d3.select(this)
+                    .classed('manhatten-plot-inactive', false)
+                    .classed('manhatten-plot-active', true)
+                    .attr("fill", self.networkDetail.colorScheme(go_category))
                   //this extracts the axis label, eg GO:BP, from a click on the xaxis of the GO plot
-                  var axis_selection = d.srcElement.innerHTML;
-                  self.networkDetail.updateGoDetail(self.networkDetail.go_by_gene_data[go_category].go_dict[axis_selection])
+                  x_axis_selection = d.srcElement.innerHTML;
+                  self.networkDetail.updateGoDetail(self.networkDetail.go_by_gene_data[go_category].go_dict[x_axis_selection])
                   // remove any previous coloring
                   d3.select("#network-vis").selectAll(".node")
                                            .attr("fill", function (d) {
@@ -211,7 +258,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
                                            })
                   //color nodes by GO category
                   $("#network-vis").find(".node").each((index,node) => {
-                      if (self.networkDetail.go_by_gene_data[go_category].go_dict[axis_selection].gene_list.includes(node.id)){
+                      if (self.networkDetail.go_by_gene_data[go_category].go_dict[x_axis_selection].gene_list.includes(node.id)){
                           d3.selectAll("#"+node.id).attr("fill", self.networkDetail.colorScheme(go_category));
                       }
                   });
@@ -227,10 +274,12 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
 
                   })
                   .on('mouseout', function(d,i){
-                    d3.select(this)
-                      .classed('manhatten-plot-active', false)
-                      .classed('manhatten-plot-inactive', true)
-                      .style("cursor", "default");
+                    if(d3.select(this).data()[[0]] != x_axis_selection){
+                        d3.select(this)
+                          .classed('manhatten-plot-active', false)
+                          .classed('manhatten-plot-inactive', true)
+                          .style("cursor", "default");
+                    }
                 });
 
         // add blocks to heatmap
@@ -252,7 +301,7 @@ GoHeatmap.prototype.update = function(go_category){ // TODO: ENTER/UPDATE/EXIT O
       $("#plot-subtitle").text("");
       $("#plot-error").empty();
       $("#plot-div").empty();
-      $("#go-buttons").empty();
+      //$("#go-buttons").empty();
       $("#plot-help").attr("data-toggle", "modal");
       $("#plot-help").attr("data-target", "#geneByFunctionalModal");
       // print the notice

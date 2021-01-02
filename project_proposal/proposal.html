@@ -46,6 +46,9 @@
         <li class="nav-item active">
           <a class="nav-link" href="#milestone2">Milestone 2</a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#final-submission">Final Submission</a>
+        </li>
       </ul>
     </div>
 
@@ -407,6 +410,39 @@
     </div>
   </div>
 
+  <div id="final-submission" class="subsection">
+    <h2>Final Submission</h2>
+
+    <p>For this submission, we focused on addressing feedback provided from the milestone 2 submission.</p>
+
+    <div class="slideshow">
+
+      <button id="clicker-left-final" class="w3-button" onclick="plusDivs(-1, 3)">Previous</button>
+      <button id="clicker-right-final" class="w3-button" onclick="plusDivs(1, 3)">Next</button>
+
+      <br /><br />
+
+      <div class="mySlides4">
+        <img src="img/final-1.png" alt="image not displayed: see repository project_proposal/img">
+        <br /><br />
+        <p>Four button options have been added to the Heatmap. Now, the user can click the buttons in addition to clicking the Manhatten Plot axes when viewing the Heatmap. </p>
+      </div>
+      <div class="mySlides4">
+        <img src="img/final-2.png" alt="image not displayed: see repository project_proposal/img">
+        <br /><br />
+        <p>One of the main revisions we made was making the click action of our Manhatten Plot and Heatmap more intuitive to the user. On hover, the Manhatten Plot axes now are highlighted. </p>
+      </div>
+      <div class="mySlides4">
+        <img src="img/final-3.png" alt="image not displayed: see repository project_proposal/img">
+        <br /><br />
+        <p>One of the main revisions we made was making the click action of our Manhatten Plot and Heatmap more intuitive to the user. On hover, the Heatmap axes now are highlighted. </p>
+      </div>
+
+    </div>
+
+
+  </div>
+
 
   <div id="projectSchedule" class="subsection">
 
@@ -483,11 +519,12 @@
   </div>
 
   <script>
-    var slideIndex = [1,1,1];
-    var slideId = ["mySlides1", "mySlides2", "mySlides3"]
+    var slideIndex = [1,1,1,1];
+    var slideId = ["mySlides1", "mySlides2", "mySlides3", "mySlides4"]
     showDivs(1, 0);
     showDivs(1, 1);
     showDivs(1, 2);
+    showDivs(1, 3);
 
     function plusDivs(n, no) {
       showDivs(slideIndex[no] += n, no);

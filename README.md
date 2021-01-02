@@ -1,8 +1,31 @@
+#### Sample Data
+Here are some transcription factors and genes for both the fruit fly and yeast organisms which you can use to test the site, so that you do not have to rely on random select for testing. These are just a few of many, so feel free to test any others you may find as well. 
+
+Fruit Fly - TF
+* FBgn0086350
+* FBgn0030316
+* FBgn0005596
+
+Fruit Fly - Gene
+* FBgn0025702
+* FBgn0028494
+* FBgn0052758
+
+Yeast - TF
+* YJL206C
+* YGR089W
+* YDR423C
+
+Yeast - Gene
+* YKR088C
+* YJL200C
+* YMR144W
+
 
 #### DATA STRUCTURES
 Data structures are in place in the data directory. Data is also queried from external databases on-demand and parsed in the scripts themselves.
 
-# Citation (also in line in code):
+#### Citation (also in line in code):
 
 
 For help making a toggleable modal:

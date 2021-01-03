@@ -227,9 +227,10 @@ Network.prototype.update = function(data, organism, tf_selected, minScore, maxSc
              // attach data to Export Results on main page
              var export_results_button = $("#export-network-button");
              //TODO add column names and figure out how to export
-             var csv_string = $.map(self.allNodeLinks.nodes, function (d) { return [d.name, d.gene_name, d.score].join(",") }).join("\n");
-             var csv_data = encodeURI(csv_string)
-             export_results_button.attr("href", "images/BrentLabLogo.png");
+             var csv_string = "gene_id,gene_name,netprophet_score\n" + $.map(self.allNodeLinks.nodes, function (d) { return [d.name, d.gene_name, d.score].join(",") }).join("\n");
+             var blob = new Blob([csv_string], { type: 'text/csv;charset=utf-8;' });
+             var url = URL.createObjectURL(blob);
+             export_results_button.attr("href", url);
              export_results_button.attr("download", self.tf_dict.id + "_network.csv");
              export_results_button.click();
              // visualize the data

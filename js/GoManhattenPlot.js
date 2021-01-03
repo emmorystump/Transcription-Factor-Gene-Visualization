@@ -288,11 +288,16 @@ GoManhattenPlot.prototype.visualize = function(go_object){
           .call(d3.axisLeft(self.y));
 
       // add circles to manhatten plot
+
       self.svg.selectAll("circle")
         .data(go_object)
         .enter()
         .append("circle")
-        .attr("cx", function(d,i) { return self.x_position(d.source) }) //+ self.svgWidth/8.75 TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
+        .attr("cx", function(d,i) {
+           let max_jitter_bound = self.x_position(d.source)+28
+           let min_jitter_bound = self.x_position(d.source)+3
+           return Math.random() * (max_jitter_bound - min_jitter_bound) + min_jitter_bound
+         }) //+ self.svgWidth/8.75 TODO: THIS NEEDS TO BE SOMEHOW ADJUSTED BASED ON SCREEN SIZE? SOMETHING OTHER THAN HARD CODING
         .attr("cy", function(d,i) { return self.y(d.p_value) })
         .attr("r", function(d,i) {return self.pointScale(d.p_value)} )
         .style("opacity", .6)

@@ -47,6 +47,12 @@
           <a class="nav-link" href="#milestone2">Milestone 2</a>
         </li>
         <li class="nav-item active">
+          <a class="nav-link" href="#user-review">User Reviews</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://htcf.wustl.edu/files/LXmznBMb" download="group12_project_video.mp4">Project Video</a>
+        </li>
+        <li class="nav-item active">
           <a class="nav-link" href="#final-submission">Final Submission</a>
         </li>
       </ul>
@@ -61,7 +67,7 @@
     <div id="pbTitle" class="subsection">
       <h1 id="pbTitle">Process Book</h1>
     </div>
-    
+
     <div id="basicInfo" class="subsection">
       <h2>Basic Info</h2>
 
@@ -410,6 +416,36 @@
     </div>
   </div>
 
+  <div id="user-review">
+    <h2>User Reviews</h2>
+    <h4>Class review (no subject matter knowledge)</h3>
+    <ul>
+      <li>Review 1</li>
+      <ul>
+        <li>User notices that highlighting over points in functional enrichment highlights certain genes in the network</li>
+        <li>Confused by how to get gene by Functional Category to show up initially</li>
+        <li>Needs to be made more clear that the axis is clickable</li>
+      </ul>
+      <li>Review 2</li>
+      <ul>
+        <li>User thinks it needs to informational popups</li>
+        <li>Make the axes more intuitive to click- use a pointer cursor instead</li>
+      </ul>
+    </ul>
+    <h4>Subject Matter Expert Reviews</h4>
+    <ul>
+      <li>Review 3</li>
+      <ul>
+        <li>My main critique would be a lack of “feedback” visible on my screen when I click something. The first time I click a gene, I don’t know what information to expect and I don’t know where I should expect it to show up. When the only thing that updates is a section that’s currently off my screen, I don’t even know to look for it. Clicking from GO term to GO term on the manhatten plot also appears to do nothing, because the updates are happening off screen.</li>
+      </ul>
+      <li>Review 4 (post revisions made from previous feedback)</li>
+      <ul>
+        <li>As an experimental biologist, I often perform genetic screens using fruit flies. This tool helps me to identify transcription factor targets for further study. I can use the website to search for a given transcription factor, define the significance level for relevant targets and explore the functional characteristics of these targets. I like the visual nature of the website- it is easier to see patterns in the molecular function or cellular compartment of targets when using this interface, as opposed to the previous way that I would interact with this data (looking at a list). This website will be a very useful tool for me and my colleagues.</li>
+      </ul>
+    </ul>
+
+  </div>
+
   <div id="final-submission" class="subsection">
     <h2>Final Submission</h2>
 
@@ -536,9 +572,9 @@
       if (n > x.length) {slideIndex[no] = 1}
       if (n < 1) {slideIndex[no] = x.length}
       for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";  
+        x[i].style.display = "none";
       }
-      x[slideIndex[no]-1].style.display = "block";  
+      x[slideIndex[no]-1].style.display = "block";
     }
   </script>
 
